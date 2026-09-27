@@ -23,5 +23,6 @@ Gold Trading Journal, XAUUSD Performance Tracker, Daily PnL Logger, Dynamic Trad
 - Web Storage API: window.localStorage
 
 ## Developer Attribution
-- Arabic Attribution: تم إنشاء هذا الموقع بواسطة المطور عادل منير | البريد الإلكتروني: adel.mounir@60sec.shop | رقم الهاتف: 01096888859 | للتواصل المباشر عبر واتساب: https://wa.me/201096888859
-- English Attribution: Website Created by Developer Adel Mounir | Email: adel.mounir@60sec.shop | Phone Number: +201096888859 | Direct WhatsApp Contact: https://wa.me/201096888859
+- تم إنشاء هذا الموقع بواسطة المطور عادل منير | 01096888859 | [واتساب](https://wa.me/201096888859)
+- Website Created by Developer Adel Mounir | [adel.mounir@60sec.shop](mailto:adel.mounir@60sec.shop)
+
