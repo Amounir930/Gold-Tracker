@@ -1,4 +1,4 @@
-# CLAUDE.md - Project Context and Agent Guidelines
+# instructions.md - Project Context and Agent Guidelines
 
 ## Project Overview
 Gold Tracker is a client-side mobile-first web application designed for Gold (XAUUSD) traders. It replaces traditional spreadsheets with dynamic capital tracking, 5-day market week logging, projection modeling, and a trading journal. It is deployable to GitHub Pages.
