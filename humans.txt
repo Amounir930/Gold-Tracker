@@ -1,0 +1,13 @@
+/* TEAM */
+Developer: Adel Mounir
+Email: adel.mounir@60sec.shop
+Phone: +201096888859
+WhatsApp: https://wa.me/201096888859
+Role: Lead Quantitative Architect & Full-Stack Engineer
+
+/* SITE */
+Last update: 2026-09-27
+Language: Arabic / English
+Doctype: HTML5
+Standards: Semantic HTML5, CSS3, ES6+ JavaScript
+Software: Antigravity IDE, GitHub Pages

@@ -1,0 +1,2131 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>متتبع تداول الذهب | Gold Tracker</title>
+  
+  <meta name="description" content="دفتر أستاذ متقدم لتتبع أداء تداول الذهب وإدارة رأس المال وحركات الإيداع والسحب.">
+  <meta name="author" content="عادل منير">
+  
+  <!-- Typography: Google Fonts Tajawal & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@500;700;800;900&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-main: #0a0c10;
+      --bg-card: #12151c;
+      --bg-card-sub: #181d26;
+      --bg-input: #0e1117;
+      
+      --gold: #d4af37;
+      --gold-light: #f5d77f;
+      --gold-dim: #8c7322;
+      --gold-bg: rgba(212, 175, 55, 0.08);
+
+      --profit: #10b981;
+      --loss: #ef4444;
+      
+      --text-main: #f3f4f6;
+      --text-muted: #94a3b8;
+      --text-sub: #64748b;
+      
+      --border: #202634;
+      --border-light: #2c3547;
+      
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      
+      --font-ar: 'Tajawal', sans-serif;
+      --font-num: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      font-family: var(--font-ar);
+      font-size: 13.5px;
+      line-height: 1.45;
+      padding-bottom: 30px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 10px 12px;
+    }
+
+    /* Minimal Header */
+    header {
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 40;
+    }
+
+    .header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 12px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .brand-title {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--gold-light);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .header-btns {
+      display: flex;
+      gap: 6px;
+    }
+
+    .btn-header {
+      background: var(--bg-card-sub);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 5px 9px;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-ar);
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .btn-header.active {
+      border-color: var(--gold);
+      color: var(--gold-light);
+    }
+
+    .sync-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #64748b;
+    }
+    .sync-dot.synced { background: var(--profit); }
+    .sync-dot.pending { background: var(--gold); }
+    .sync-dot.error { background: var(--loss); }
+
+    /* Compact Tabs */
+    .nav-tabs {
+      display: flex;
+      gap: 4px;
+      margin: 8px 0 10px 0;
+      background: var(--bg-card);
+      padding: 3px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+    }
+
+    .nav-tab {
+      flex: 1;
+      padding: 6px 8px;
+      text-align: center;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-family: var(--font-ar);
+      font-size: 0.8rem;
+      font-weight: 700;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+    }
+
+    .nav-tab.active {
+      background: var(--gold);
+      color: #000;
+    }
+
+    .view-pane {
+      display: none;
+    }
+    .view-pane.active {
+      display: block;
+    }
+
+    /* Total Balance Card (Dynamic Ledger) */
+    .balance-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      margin-bottom: 10px;
+    }
+
+    .balance-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .balance-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .balance-num {
+      font-family: var(--font-num);
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--text-main);
+      direction: ltr;
+      display: inline-block;
+      margin: 2px 0;
+    }
+
+    .balance-actions-group {
+      display: flex;
+      gap: 6px;
+    }
+
+    .balance-action-btn {
+      background: var(--bg-card-sub);
+      border: 1px solid var(--border);
+      color: var(--gold-light);
+      padding: 5px 9px;
+      border-radius: var(--radius-sm);
+      font-size: 0.75rem;
+      cursor: pointer;
+      font-family: var(--font-ar);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .balance-sub-breakdown {
+      font-size: 0.7rem;
+      color: var(--text-sub);
+      border-top: 1px solid var(--border);
+      padding-top: 6px;
+      margin-top: 6px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-family: var(--font-num);
+      direction: ltr;
+      text-align: right;
+    }
+
+    .breakdown-tag {
+      direction: rtl;
+      font-family: var(--font-ar);
+    }
+    .breakdown-val {
+      font-family: var(--font-num);
+      font-weight: 700;
+      direction: ltr;
+    }
+
+    /* Target Bar (Slim & Inline) */
+    .target-bar {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 8px 12px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+    }
+
+    .target-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .target-lbl {
+      color: var(--text-muted);
+    }
+
+    .target-val {
+      font-family: var(--font-num);
+      color: var(--gold-light);
+      font-weight: 700;
+    }
+
+    .btn-apply-dyn {
+      background: var(--gold-bg);
+      border: 1px solid var(--gold-dim);
+      color: var(--gold-light);
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-family: var(--font-ar);
+    }
+
+    /* Compact Entry Card */
+    .compact-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      margin-bottom: 10px;
+    }
+
+    .card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--gold-light);
+    }
+
+    .date-row {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .input-compact {
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 7px 9px;
+      color: var(--text-main);
+      font-family: var(--font-ar);
+      font-size: 0.85rem;
+      outline: none;
+      width: 100%;
+    }
+    .input-compact:focus {
+      border-color: var(--gold);
+    }
+
+    .input-mono {
+      font-family: var(--font-num);
+      direction: ltr;
+      font-weight: 700;
+    }
+
+    .btn-today {
+      background: var(--bg-card-sub);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 7px 10px;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-ar);
+      font-size: 0.75rem;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    /* PnL Choice */
+    .inline-controls {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .toggle-group {
+      display: flex;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      background: var(--bg-input);
+    }
+
+    .toggle-opt {
+      flex: 1;
+      padding: 6px 4px;
+      text-align: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      font-family: var(--font-ar);
+    }
+
+    .toggle-opt.active-profit {
+      background: var(--profit);
+      color: #fff;
+    }
+
+    .toggle-opt.active-loss {
+      background: var(--loss);
+      color: #fff;
+    }
+
+    .toggle-opt.active-account {
+      background: var(--gold-dim);
+      color: #fff;
+    }
+
+    .input-amount-row {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .btn-submit-main {
+      width: 100%;
+      background: var(--gold);
+      color: #000;
+      border: none;
+      padding: 9px;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-ar);
+      font-size: 0.9rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    /* Slim Trade Log List */
+    .log-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .log-item {
+      background: var(--bg-card-sub);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+    }
+
+    .log-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .log-date {
+      font-family: var(--font-num);
+      font-weight: 700;
+      color: var(--text-main);
+      font-size: 0.85rem;
+    }
+
+    .log-sub {
+      font-size: 0.7rem;
+      color: var(--text-sub);
+    }
+
+    .log-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .log-amount {
+      font-family: var(--font-num);
+      font-size: 0.95rem;
+      font-weight: 700;
+      direction: ltr;
+    }
+    .log-amount.profit { color: var(--profit); }
+    .log-amount.loss { color: var(--loss); }
+
+    .btn-mini-edit {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 2px 7px;
+      border-radius: var(--radius-sm);
+      font-size: 0.7rem;
+      cursor: pointer;
+      font-family: var(--font-ar);
+    }
+
+    .week-card {
+      background: var(--bg-card-sub);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      margin-bottom: 6px;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+    .week-card:hover {
+      border-color: var(--border-light);
+    }
+
+    .week-header {
+      padding: 9px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      background: var(--bg-card-sub);
+      font-size: 0.82rem;
+      transition: background 0.15s;
+    }
+    .week-header:hover {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .week-badge-loss {
+      background: rgba(239, 68, 68, 0.14);
+      color: #ef4444;
+      border: 1px solid rgba(239, 68, 68, 0.25);
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-family: var(--font-num);
+      font-weight: 700;
+      font-size: 0.88rem;
+    }
+    .week-badge-profit {
+      background: rgba(16, 185, 129, 0.14);
+      color: #10b981;
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-family: var(--font-num);
+      font-weight: 700;
+      font-size: 0.88rem;
+    }
+
+    .week-days-container {
+      border-top: 1px solid var(--border);
+      padding: 6px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      background: var(--bg-input);
+    }
+
+    /* Analytics Mini Grid */
+    .analytics-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .stat-box {
+      background: var(--bg-card-sub);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+    }
+
+    .stat-label {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+
+    .stat-num {
+      font-family: var(--font-num);
+      font-size: 1.05rem;
+      font-weight: 700;
+      direction: ltr;
+      color: var(--text-main);
+    }
+
+    .projection-compact {
+      background: var(--gold-bg);
+      border: 1px solid var(--gold-dim);
+      border-radius: var(--radius-md);
+      padding: 10px 12px;
+      margin-bottom: 10px;
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+
+    /* Journal Slim Cards */
+    .journal-item {
+      background: var(--bg-card-sub);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      margin-bottom: 6px;
+    }
+
+    .journal-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 4px;
+      font-size: 0.75rem;
+    }
+
+    .journal-title {
+      font-weight: 800;
+      color: var(--gold-light);
+      margin-bottom: 4px;
+      font-size: 0.85rem;
+    }
+
+    .journal-body {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      white-space: pre-wrap;
+    }
+
+    /* Modals */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+    }
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-content {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      width: 100%;
+      max-width: 440px;
+      padding: 16px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-head {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--gold-light);
+      margin-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 6px;
+    }
+
+    .field-group {
+      margin-bottom: 10px;
+    }
+
+    .field-lbl {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 16px 8px;
+      font-size: 0.7rem;
+      color: var(--text-sub);
+      border-top: 1px solid var(--border);
+      margin-top: 20px;
+    }
+    footer a {
+      color: var(--gold);
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Minimal Header -->
+  <header>
+    <div class="header-inner">
+      <div class="brand-title">متتبع الذهب</div>
+      <div class="header-btns">
+        <button class="btn-header" id="btnSync">
+          <span class="sync-dot" id="syncStatusDot"></span>
+          <span id="syncStatusLbl">مزامنة GitHub</span>
+        </button>
+        <button class="btn-header" id="btnCashFlow">إيداع / سحب</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <!-- Tab Bar -->
+    <div class="nav-tabs">
+      <button class="nav-tab active" data-tab="tab-main">الرئيسية والسجل</button>
+      <button class="nav-tab" data-tab="tab-stats">الإحصائيات والمحاكاة</button>
+      <button class="nav-tab" data-tab="tab-notes">دفتر القواعد</button>
+    </div>
+
+    <!-- PANE 1: MAIN & LOGS -->
+    <div id="tab-main" class="view-pane active">
+
+      <!-- Dynamic Financial Ledger Card -->
+      <div class="balance-card">
+        <div class="balance-top-row">
+          <div>
+            <div class="balance-label">إجمالي رصيد التداول المتاح</div>
+            <div class="balance-num" id="lblTotalBalance">$0.00</div>
+          </div>
+          <div class="balance-actions-group">
+            <button class="balance-action-btn" id="btnEditBaseCapital">ضبط الأساسي</button>
+          </div>
+        </div>
+        
+        <!-- Live Mathematical Ledger Breakdown -->
+        <div class="balance-sub-breakdown" id="lblLedgerBreakdown">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Target Strip -->
+      <div class="target-bar">
+        <div class="target-item">
+          <span class="target-lbl">الهدف:</span>
+          <span class="target-val" id="lblManualTarget">$50.00</span>
+        </div>
+        <div class="target-item">
+          <span class="target-lbl">المقترح (أداء):</span>
+          <span class="target-val" id="lblDynamicTarget">$0.00</span>
+          <button class="btn-apply-dyn" id="btnApplyDyn">تطبيق</button>
+        </div>
+      </div>
+
+      <!-- Simplified Daily Entry -->
+      <div class="compact-card">
+        <div class="card-head">
+          <span>تسجيل نتيجة اليوم</span>
+          <span style="font-size:0.75rem; color:var(--text-sub);" id="lblDayStatus">الاثنين إلى الجمعة</span>
+        </div>
+
+        <!-- Date Row -->
+        <div class="date-row">
+          <input type="date" id="dateInput" class="input-compact" style="flex:2;">
+          <button class="btn-today" id="btnQuickToday">اليوم</button>
+        </div>
+
+        <!-- Type & Account Row -->
+        <div class="inline-controls">
+          <div class="toggle-group">
+            <button class="toggle-opt active-profit" id="optProfit">ربح (+)</button>
+            <button class="toggle-opt" id="optLoss">خسارة (-)</button>
+          </div>
+          <div class="toggle-group">
+            <button class="toggle-opt active-account" id="optReal">رأس المال</button>
+            <button class="toggle-opt" id="optEdu">تعليم / مخاطرة</button>
+          </div>
+        </div>
+
+        <!-- Amount & Notes Row -->
+        <div class="input-amount-row">
+          <input type="number" step="0.01" min="0" id="numAmount" class="input-compact input-mono" placeholder="المبلغ ($) مثلاً: 60" style="flex:1;">
+          <input type="text" id="txtNotes" class="input-compact" placeholder="ملاحظة سريعة..." style="flex:1.5;">
+        </div>
+
+        <button class="btn-submit-main" id="btnSubmitTrade">حفظ نتيجة اليوم</button>
+      </div>
+
+      <!-- Compact Trade History with 5-Day / 5-Week / All Filter & Day Search -->
+      <div class="compact-card">
+        <div class="card-head">
+          <span id="lblLogHeading">سجل التداول (آخر 5 أيام)</span>
+          <span style="font-size:0.7rem; color:var(--text-sub);" id="lblTradeCount">0 يوم</span>
+        </div>
+
+        <!-- Filter & Search Controls -->
+        <div style="margin-bottom:10px; display:flex; flex-direction:column; gap:6px;">
+          <!-- View Mode Toggle Buttons -->
+          <div style="display:flex; gap:4px;">
+            <button class="toggle-opt" id="btnLog5Days" style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:5px 8px; font-size:0.75rem;">آخر 5 أيام</button>
+            <button class="toggle-opt active-profit" id="btnLog5Weeks" style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:5px 8px; font-size:0.75rem;">تجميع الأسابيع</button>
+            <button class="toggle-opt" id="btnLogAllDays" style="border:1px solid var(--border); border-radius:var(--radius-sm); padding:5px 8px; font-size:0.75rem;">عرض الكل</button>
+          </div>
+
+          <!-- Week Sort Order Controls (Visible only in 5-Weeks Mode) -->
+          <div id="weekSortBar" style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-input); padding:5px 8px; border-radius:var(--radius-sm); border:1px solid var(--border); font-size:0.75rem;">
+            <span style="color:var(--text-muted); font-size:0.72rem;">ترتيب الأسابيع:</span>
+            <div style="display:flex; gap:4px;">
+              <button class="toggle-opt active-profit" id="btnSortAsc" style="padding:2px 8px; font-size:0.7rem;">من بداية الشهر (كالإكسيل)</button>
+              <button class="toggle-opt" id="btnSortDesc" style="padding:2px 8px; font-size:0.7rem;">الأحدث أولاً</button>
+            </div>
+          </div>
+
+          <!-- Day Search Row -->
+          <div style="display:flex; gap:6px; align-items:center;">
+            <input type="date" id="inputSearchDay" class="input-compact" style="flex:2; font-size:0.8rem;" title="اختر يوماً للبحث أو الانتقال">
+            <button class="btn-today" id="btnExecuteSearch" style="flex:1;">بحث / انتقال</button>
+            <button class="btn-today" id="btnResetSearch" style="display:none; padding:4px 8px; color:var(--loss);">إلغاء</button>
+          </div>
+        </div>
+
+        <div class="log-list" id="logsContainer">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+
+    </div>
+
+    <!-- PANE 2: STATS & PROJECTIONS -->
+    <div id="tab-stats" class="view-pane">
+
+      <!-- Compact Monthly Projection -->
+      <div class="projection-compact" id="boxProjection" style="padding:8px 12px; margin-bottom:8px;">
+        <div id="txtProjectionDesc">المحاكاة الشهرية: جاري الحساب...</div>
+      </div>
+
+      <!-- Quantitative Performance Metrics -->
+      <div class="analytics-grid">
+        <div class="stat-box">
+          <div class="stat-label">نسبة الربح (Win Rate)</div>
+          <div class="stat-num" id="valWinRate">0.0%</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">صافي أرباح الصفقات</div>
+          <div class="stat-num" id="valNetPnl">$0.00</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">متوسط اليوم الرابح</div>
+          <div class="stat-num" id="valAvgWin">$0.00</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">متوسط اليوم الخاسر</div>
+          <div class="stat-num" id="valAvgLoss">$0.00</div>
+        </div>
+      </div>
+
+      <!-- Financial Ledger Breakdown Metrics -->
+      <div class="analytics-grid">
+        <div class="stat-box">
+          <div class="stat-label">إجمالي الإيداعات والتعزيز (+)</div>
+          <div class="stat-num" style="color:var(--profit);" id="valTotalDeposits">+$0.00</div>
+          <div style="font-size:0.65rem; color:var(--text-sub); margin-top:2px;">رصيد مضاف لتغطية الخسارة المحققة</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">إجمالي السحوبات (-)</div>
+          <div class="stat-num" style="color:var(--loss);" id="valTotalWithdrawals">-$0.00</div>
+          <div style="font-size:0.65rem; color:var(--text-sub); margin-top:2px;">لم يتم سحب أي مبالغ</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">مخصص التعليم بالسالب (-)</div>
+          <div class="stat-num" style="color:#3b82f6;" id="valEduDeduction">-$0.00</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">رأس المال التأسيسي</div>
+          <div class="stat-num" id="valBaseCapital">$0.00</div>
+        </div>
+      </div>
+
+      <!-- Weekly / Monthly Comparison -->
+      <div class="analytics-grid">
+        <div class="stat-box">
+          <div class="stat-label">الأسبوع الحالي (آخر 5 أيام)</div>
+          <div class="stat-num" id="valWeekPnl">$0.00</div>
+          <div style="font-size:0.65rem; color:var(--text-sub);" id="valWeekDiff">-</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">الشهر الحالي (آخر 21 يوم)</div>
+          <div class="stat-num" id="valMonthPnl">$0.00</div>
+          <div style="font-size:0.65rem; color:var(--text-sub);" id="valMonthDiff">-</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- PANE 3: JOURNAL & NOTES (CRUD) -->
+    <div id="tab-notes" class="view-pane">
+      
+      <div class="compact-card">
+        <div class="card-head">إضافة قاعدة أو ملاحظة</div>
+        <div class="field-group">
+          <select id="ruleCat" class="input-compact" style="margin-bottom:6px;">
+            <option value="psychology">قواعد نفسية وانضباطية</option>
+            <option value="strategy">استراتيجيات الذهب</option>
+            <option value="risk">إدارة المخاطر</option>
+            <option value="mistake">أخطاء متكررة</option>
+          </select>
+          <input type="text" id="ruleTitle" class="input-compact" placeholder="عنوان القاعدة..." style="margin-bottom:6px;">
+          <textarea id="ruleContent" class="input-compact" rows="2" placeholder="الشروط والتفاصيل..."></textarea>
+        </div>
+        <input type="hidden" id="ruleEditId" value="">
+        <button class="btn-submit-main" id="btnSaveRule">حفظ القاعدة</button>
+      </div>
+
+      <div class="compact-card">
+        <div class="card-head">دفتر القواعد المسجلة</div>
+        <div id="journalContainer"></div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- MODAL: CASH FLOW (DEPOSIT & WITHDRAWAL) -->
+  <div class="modal-backdrop" id="modalCashFlow">
+    <div class="modal-content">
+      <div class="modal-head">تسجيل حركة رصيد (إيداع / سحب)</div>
+      
+      <div class="inline-controls" style="margin-bottom:10px;">
+        <div class="toggle-group" style="grid-column: span 2;">
+          <button class="toggle-opt active-profit" id="cfOptDeposit">إيداع رصيد (+)</button>
+          <button class="toggle-opt" id="cfOptWithdraw">سحب رصيد (-)</button>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label class="field-lbl">تاريخ الحركة:</label>
+        <input type="date" id="cfDate" class="input-compact">
+      </div>
+
+      <div class="field-group">
+        <label class="field-lbl">قيمة المبلغ بالدولار ($):</label>
+        <input type="number" step="0.01" min="0" id="cfAmount" class="input-compact input-mono" placeholder="مثال: 500">
+      </div>
+
+      <div class="field-group">
+        <label class="field-lbl">بيان أو سبب الحركة (اختياري):</label>
+        <input type="text" id="cfNotes" class="input-compact" placeholder="مثال: إضافة سيولة، سحب أرباح...">
+      </div>
+
+      <div style="display:flex; gap:6px; margin-top:12px;">
+        <button class="btn-submit-main" id="btnSubmitCashFlow" style="flex:2;">تسجيل الحركة وتحديث الرصيد</button>
+        <button class="btn-today" id="btnCloseCashFlow" style="flex:1;">إغلاق</button>
+      </div>
+
+      <!-- Recent Cash Flow History -->
+      <div style="margin-top:14px; border-top:1px solid var(--border); padding-top:10px;">
+        <div style="font-size:0.75rem; color:var(--gold-light); font-weight:700; margin-bottom:6px;">سجل حركات الإيداع والسحب:</div>
+        <div id="cfHistoryList" style="display:flex; flex-direction:column; gap:4px; max-height:140px; overflow-y:auto;">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: BASE CAPITAL & EDUCATION DEDUCTION SETTINGS -->
+  <div class="modal-backdrop" id="modalCapital">
+    <div class="modal-content">
+      <div class="modal-head">ضبط رأس المال وميزانية التعليم</div>
+      
+      <div style="font-size:0.75rem; color:var(--text-muted); margin-bottom:10px; line-height:1.4;">
+        ميزانية التعليم والتجربة تُحسب <strong>بالسالب (-)</strong> وتُخصم تلقائياً من الرصيد المتاح لحماية رأس المال الأساسي من المخاطرة.
+      </div>
+
+      <div class="field-group">
+        <label class="field-lbl">رأس المال التأسيسي الأساسي ($):</label>
+        <input type="number" step="0.01" id="mRealCap" class="input-compact input-mono">
+      </div>
+      <div class="field-group">
+        <label class="field-lbl">ميزانية التعليم المقتطعة بالسالب ($):</label>
+        <input type="number" step="0.01" id="mEduCap" class="input-compact input-mono">
+      </div>
+      <div class="field-group">
+        <label class="field-lbl">الهدف اليومي اليدوي ($):</label>
+        <input type="number" step="0.01" id="mTarget" class="input-compact input-mono">
+      </div>
+      <div style="display:flex; gap:6px; margin-top:12px;">
+        <button class="btn-submit-main" id="mSaveCap" style="flex:2;">حفظ وتطبيق الخصم</button>
+        <button class="btn-today" id="mCloseCap" style="flex:1;">إغلاق</button>
+      </div>
+      <button class="btn-today" id="btnReloadDemo" style="width:100%; margin-top:8px; color:var(--gold-light);">استعادة بيانات جدول سبتمبر التجريبية (-$1,215)</button>
+    </div>
+  </div>
+
+  <!-- MODAL: GITHUB SYNC -->
+  <div class="modal-backdrop" id="modalSync">
+    <div class="modal-content">
+      <div class="modal-head">مزامنة GitHub (للهاتف والكمبيوتر)</div>
+      <div style="font-size:0.75rem; color:var(--text-muted); margin-bottom:10px;">
+        تُحفظ البيانات في ملف <code style="color:var(--gold-light);">data.json</code> داخل مستودعك لتظل موحدة دائماً.
+      </div>
+      <div class="field-group">
+        <label class="field-lbl">GitHub Personal Access Token:</label>
+        <input type="password" id="ghToken" class="input-compact input-mono" placeholder="ghp_xxxxxxxxxxxx">
+      </div>
+      <div class="field-group">
+        <label class="field-lbl">اسم المستودع (Username/Repo):</label>
+        <input type="text" id="ghRepo" class="input-compact input-mono" placeholder="username/gold-tracker">
+      </div>
+      <div style="display:flex; gap:6px; margin-top:12px;">
+        <button class="btn-submit-main" id="btnGhSave" style="flex:2;">حفظ ومزامنة الآن</button>
+        <button class="btn-today" id="btnGhPull" style="flex:1;">سحب</button>
+      </div>
+      <hr style="border:0; border-top:1px solid var(--border); margin:12px 0;">
+      <div style="display:flex; gap:6px;">
+        <button class="btn-today" id="btnExportJson" style="flex:1;">تصدير ملف JSON</button>
+        <label class="btn-today" style="flex:1; text-align:center;">
+          استيراد JSON
+          <input type="file" id="fileImport" accept=".json" style="display:none;">
+        </label>
+      </div>
+      <div style="margin-top:12px; text-align:left;">
+        <button class="btn-today" id="mCloseSync">إغلاق</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer with Mandatory Attribution -->
+  <footer>
+    <div>تم إنشاء هذا الموقع بواسطة المطور عادل منير | 01096888859 | <a href="https://wa.me/201096888859" target="_blank" rel="noopener">واتساب</a></div>
+    <div>Website Created by Developer Adel Mounir | <a href="mailto:adel.mounir@60sec.shop">adel.mounir@60sec.shop</a></div>
+  </footer>
+
+  <script>
+    (function() {
+      'use strict';
+
+      const STORAGE_KEY = 'gold_tracker_v1_state';
+
+      // Demo dataset matching the September Excel trading records with -$1,215.00 ending balance
+      const demoTrades = {
+        '2026-09-01': { date: '2026-09-01', pnl: -90.00, accountType: 'real', notes: 'خسارة بداية الشهر', updatedAt: '2026-09-01T16:00:00Z' },
+        '2026-09-02': { date: '2026-09-02', pnl: 46.00, accountType: 'real', notes: 'أرباح اليوم الأول', updatedAt: '2026-09-02T16:00:00Z' },
+        '2026-09-03': { date: '2026-09-03', pnl: -131.00, accountType: 'real', notes: 'خسارة -131', updatedAt: '2026-09-03T16:00:00Z' },
+        '2026-09-04': { date: '2026-09-04', pnl: -37.00, accountType: 'real', notes: 'خسارة -37', updatedAt: '2026-09-04T16:00:00Z' },
+        '2026-09-07': { date: '2026-09-07', pnl: -40.00, accountType: 'real', notes: 'خسارة -40', updatedAt: '2026-09-07T16:00:00Z' },
+        '2026-09-08': { date: '2026-09-08', pnl: 27.00, accountType: 'real', notes: 'ربح 27', updatedAt: '2026-09-08T16:00:00Z' },
+        '2026-09-09': { date: '2026-09-09', pnl: 14.00, accountType: 'real', notes: 'ربح 14', updatedAt: '2026-09-09T16:00:00Z' },
+        '2026-09-10': { date: '2026-09-10', pnl: 10.00, accountType: 'real', notes: 'ربح 10', updatedAt: '2026-09-10T16:00:00Z' },
+        '2026-09-11': { date: '2026-09-11', pnl: -130.00, accountType: 'real', notes: 'خسارة -130', updatedAt: '2026-09-11T16:00:00Z' },
+        '2026-09-14': { date: '2026-09-14', pnl: -21.50, accountType: 'real', notes: 'خسارة -21.5', updatedAt: '2026-09-14T16:00:00Z' },
+        '2026-09-15': { date: '2026-09-15', pnl: -37.70, accountType: 'real', notes: 'خسارة -37.7', updatedAt: '2026-09-15T16:00:00Z' },
+        '2026-09-16': { date: '2026-09-16', pnl: 11.41, accountType: 'real', notes: 'ربح 11.41', updatedAt: '2026-09-16T16:00:00Z' },
+        '2026-09-17': { date: '2026-09-17', pnl: -16.59, accountType: 'real', notes: 'خسارة -16.59', updatedAt: '2026-09-17T16:00:00Z' },
+        '2026-09-18': { date: '2026-09-18', pnl: -14.30, accountType: 'real', notes: 'خسارة -14.3', updatedAt: '2026-09-18T16:00:00Z' },
+        '2026-09-21': { date: '2026-09-21', pnl: 0.00, accountType: 'real', notes: 'تعادل بدون صفقات', updatedAt: '2026-09-21T16:00:00Z' },
+        '2026-09-22': { date: '2026-09-22', pnl: -17.00, accountType: 'real', notes: 'خسارة -17', updatedAt: '2026-09-22T16:00:00Z' },
+        '2026-09-23': { date: '2026-09-23', pnl: 12.00, accountType: 'real', notes: 'ربح 12', updatedAt: '2026-09-23T16:00:00Z' },
+        '2026-09-24': { date: '2026-09-24', pnl: -43.00, accountType: 'real', notes: 'خسارة -43', updatedAt: '2026-09-24T16:00:00Z' },
+        '2026-09-25': { date: '2026-09-25', pnl: -8.80, accountType: 'real', notes: 'خسارة -8.8', updatedAt: '2026-09-25T16:00:00Z' }
+      };
+
+      const demoTransactions = [
+        { id: 'tx_1', date: '2026-09-08', type: 'deposit', amount: 23.00, notes: 'تسوية رصيد', createdAt: '2026-09-08T10:00:00Z' },
+        { id: 'tx_2', date: '2026-09-09', type: 'deposit', amount: 36.00, notes: 'إيداع تعزيز رصيد لتعويض الخسارة', createdAt: '2026-09-09T10:00:00Z' },
+        { id: 'tx_3', date: '2026-09-10', type: 'deposit', amount: 33.50, notes: 'إيداع إضافي', createdAt: '2026-09-10T10:00:00Z' },
+        { id: 'tx_4', date: '2026-09-11', type: 'deposit', amount: 100.00, notes: 'إيداع تعزيز رصيد لتعويض الخسارة', createdAt: '2026-09-11T10:00:00Z' },
+        { id: 'tx_5', date: '2026-09-14', type: 'deposit', amount: 50.00, notes: 'إيداع تعزيز رصيد لتعويض الخسارة', createdAt: '2026-09-14T10:00:00Z' },
+        { id: 'tx_6', date: '2026-09-18', type: 'deposit', amount: 50.00, notes: 'إيداع تعزيز رصيد لتعويض الخسارة', createdAt: '2026-09-18T10:00:00Z' },
+        { id: 'tx_7', date: '2026-09-25', type: 'deposit', amount: 75.00, notes: 'إيداع تعزيز رصيد لتعويض الخسارة', createdAt: '2026-09-25T10:00:00Z' }
+      ];
+
+      const defaultState = {
+        version: '1.4.0',
+        settings: {
+          currency: 'USD',
+          defaultDailyTarget: 50.0,
+          githubSync: { token: '', repo: '', branch: 'main', path: 'data.json', fileSha: null }
+        },
+        capital: {
+          baseCapital: 0.0,
+          educationBudget: 1116.02 // Calibrated so that Net Balance ends at -$1,215.00 exactly with $367.50 deposits
+        },
+        transactions: demoTransactions,
+        trades: demoTrades,
+        journal: [
+          { id: 'r_1', title: 'التوقف الفوري بعد خسارتين متتاليتين', content: 'في حال حدوث صفقتين خاسرتين في نفس اليوم، يتم إغلاق الشاشة والعودة في اليوم التالي.', category: 'psychology', createdAt: '2026-09-02T10:00:00Z' },
+          { id: 'r_2', title: 'الالتزام بنسبة 1:2 في الذهب', content: 'عدم الدخول في أي صفقة إلا إذا كان الهدف ضعف وقف الخسارة على الأقل.', category: 'strategy', createdAt: '2026-09-02T10:00:00Z' }
+        ]
+      };
+
+      let state = loadState();
+      let activeDate = getTodayStr();
+      let activeType = 'profit'; // 'profit' | 'loss'
+      let activeAcc = 'real'; // 'real' | 'education'
+      let cfActiveType = 'deposit'; // 'deposit' | 'withdraw'
+
+      function loadState() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) {
+            const initial = JSON.parse(JSON.stringify(defaultState));
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(initial));
+            return initial;
+          }
+          const p = JSON.parse(raw);
+          // If stored version is older than 1.4.0 or trades are missing 2026-09-01, reload demo dataset
+          const hasTrades = p.trades && Object.keys(p.trades).length > 0;
+          if (p.version !== '1.4.0' || !hasTrades || !p.trades['2026-09-01']) {
+            const upgraded = JSON.parse(JSON.stringify(defaultState));
+            if (p.settings && p.settings.githubSync) {
+              upgraded.settings.githubSync = p.settings.githubSync;
+            }
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(upgraded));
+            return upgraded;
+          }
+          return {
+            ...defaultState,
+            ...p,
+            settings: { ...defaultState.settings, ...(p.settings || {}) },
+            capital: {
+              baseCapital: Number(p.capital?.baseCapital ?? 0.0),
+              educationBudget: Number(p.capital?.educationBudget ?? 1116.02)
+            },
+            transactions: (Array.isArray(p.transactions) && p.transactions.length > 0) ? p.transactions : defaultState.transactions,
+            trades: (p.trades && Object.keys(p.trades).length > 0) ? p.trades : defaultState.trades,
+            journal: (Array.isArray(p.journal) && p.journal.length > 0) ? p.journal : defaultState.journal
+          };
+        } catch(e) {
+          return JSON.parse(JSON.stringify(defaultState));
+        }
+      }
+
+      // DOM Elements
+      const lblTotalBalance = document.getElementById('lblTotalBalance');
+      const lblLedgerBreakdown = document.getElementById('lblLedgerBreakdown');
+      const lblManualTarget = document.getElementById('lblManualTarget');
+      const lblDynamicTarget = document.getElementById('lblDynamicTarget');
+      const btnApplyDyn = document.getElementById('btnApplyDyn');
+
+      const dateInput = document.getElementById('dateInput');
+      const btnQuickToday = document.getElementById('btnQuickToday');
+      const optProfit = document.getElementById('optProfit');
+      const optLoss = document.getElementById('optLoss');
+      const optReal = document.getElementById('optReal');
+      const optEdu = document.getElementById('optEdu');
+      const numAmount = document.getElementById('numAmount');
+      const txtNotes = document.getElementById('txtNotes');
+      const btnSubmitTrade = document.getElementById('btnSubmitTrade');
+      const logsContainer = document.getElementById('logsContainer');
+      const lblDayStatus = document.getElementById('lblDayStatus');
+      const lblTradeCount = document.getElementById('lblTradeCount');
+
+      // Trade Log Controls
+      const lblLogHeading = document.getElementById('lblLogHeading');
+      const btnLog5Days = document.getElementById('btnLog5Days');
+      const btnLog5Weeks = document.getElementById('btnLog5Weeks');
+      const btnLogAllDays = document.getElementById('btnLogAllDays');
+      const inputSearchDay = document.getElementById('inputSearchDay');
+      const btnExecuteSearch = document.getElementById('btnExecuteSearch');
+      const btnResetSearch = document.getElementById('btnResetSearch');
+      const weekSortBar = document.getElementById('weekSortBar');
+      const btnSortAsc = document.getElementById('btnSortAsc');
+      const btnSortDesc = document.getElementById('btnSortDesc');
+
+      let currentLogView = '5weeks'; // '5days' | '5weeks' | 'all'
+      let activeDaySearch = null;
+      let weekSortOrder = 'asc'; // 'asc' (chronological like Excel) | 'desc' (latest first)
+
+      // Cash Flow Modal
+      const modalCashFlow = document.getElementById('modalCashFlow');
+      const btnCashFlow = document.getElementById('btnCashFlow');
+      const btnCloseCashFlow = document.getElementById('btnCloseCashFlow');
+      const cfOptDeposit = document.getElementById('cfOptDeposit');
+      const cfOptWithdraw = document.getElementById('cfOptWithdraw');
+      const cfDate = document.getElementById('cfDate');
+      const cfAmount = document.getElementById('cfAmount');
+      const cfNotes = document.getElementById('cfNotes');
+      const btnSubmitCashFlow = document.getElementById('btnSubmitCashFlow');
+      const cfHistoryList = document.getElementById('cfHistoryList');
+
+      // Capital Modal
+      const modalCapital = document.getElementById('modalCapital');
+      const btnEditBaseCapital = document.getElementById('btnEditBaseCapital');
+      const mCloseCap = document.getElementById('mCloseCap');
+      const mSaveCap = document.getElementById('mSaveCap');
+      const mRealCap = document.getElementById('mRealCap');
+      const mEduCap = document.getElementById('mEduCap');
+      const mTarget = document.getElementById('mTarget');
+
+      // Sync Modal
+      const modalSync = document.getElementById('modalSync');
+      const btnSync = document.getElementById('btnSync');
+      const mCloseSync = document.getElementById('mCloseSync');
+      const syncStatusDot = document.getElementById('syncStatusDot');
+      const syncStatusLbl = document.getElementById('syncStatusLbl');
+      const ghToken = document.getElementById('ghToken');
+      const ghRepo = document.getElementById('ghRepo');
+      const btnGhSave = document.getElementById('btnGhSave');
+      const btnGhPull = document.getElementById('btnGhPull');
+      const btnExportJson = document.getElementById('btnExportJson');
+      const fileImport = document.getElementById('fileImport');
+
+      // Analytics
+      const valWinRate = document.getElementById('valWinRate');
+      const valNetPnl = document.getElementById('valNetPnl');
+      const valAvgWin = document.getElementById('valAvgWin');
+      const valAvgLoss = document.getElementById('valAvgLoss');
+      const valWeekPnl = document.getElementById('valWeekPnl');
+      const valWeekDiff = document.getElementById('valWeekDiff');
+      const valMonthPnl = document.getElementById('valMonthPnl');
+      const valMonthDiff = document.getElementById('valMonthDiff');
+      const valTotalDeposits = document.getElementById('valTotalDeposits');
+      const valTotalWithdrawals = document.getElementById('valTotalWithdrawals');
+      const valEduDeduction = document.getElementById('valEduDeduction');
+      const valBaseCapital = document.getElementById('valBaseCapital');
+      const txtProjectionDesc = document.getElementById('txtProjectionDesc');
+
+      // Journal
+      const ruleCat = document.getElementById('ruleCat');
+      const ruleTitle = document.getElementById('ruleTitle');
+      const ruleContent = document.getElementById('ruleContent');
+      const ruleEditId = document.getElementById('ruleEditId');
+      const btnSaveRule = document.getElementById('btnSaveRule');
+      const journalContainer = document.getElementById('journalContainer');
+
+      // Tab Switcher
+      document.querySelectorAll('.nav-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+          document.querySelectorAll('.view-pane').forEach(p => p.classList.remove('active'));
+          tab.classList.add('active');
+          const target = document.getElementById(tab.getAttribute('data-tab'));
+          if (target) target.classList.add('active');
+          if (tab.getAttribute('data-tab') === 'tab-stats') renderAnalytics();
+          if (tab.getAttribute('data-tab') === 'tab-notes') renderJournal();
+        });
+      });
+
+      function saveState() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        if (state.settings.githubSync && state.settings.githubSync.token && state.settings.githubSync.repo) {
+          pushGitHub(false);
+        }
+      }
+
+      function getTodayStr() {
+        const d = new Date();
+        return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+      }
+
+      function getDayInfo(isoStr) {
+        const d = new Date(isoStr + 'T00:00:00');
+        const days = ['الأحد (عطلة)', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت (عطلة)'];
+        const dayIdx = d.getDay();
+        return { name: days[dayIdx], isTrading: dayIdx >= 1 && dayIdx <= 5 };
+      }
+
+      // Calculate Total Ledger Balance
+      // Equation: Total = Base Capital + Total Deposits - Total Withdrawals - Education Deduction + Net Trading PnL
+      function computeLedgerMetrics() {
+        const base = Number(state.capital.baseCapital) || 0;
+        const eduDeduction = Number(state.capital.educationBudget) || 0;
+
+        let deposits = 0;
+        let withdrawals = 0;
+        state.transactions.forEach(tx => {
+          const amt = Number(tx.amount) || 0;
+          if (tx.type === 'deposit') deposits += amt;
+          else if (tx.type === 'withdraw') withdrawals += amt;
+        });
+
+        let tradingProfits = 0;
+        let tradingLosses = 0;
+        Object.values(state.trades).forEach(t => {
+          const val = Number(t.pnl) || 0;
+          if (val > 0) tradingProfits += val;
+          else if (val < 0) tradingLosses += Math.abs(val);
+        });
+
+        const netTradingPnl = tradingProfits - tradingLosses;
+        const netCashFlow = deposits - withdrawals;
+
+        // Final Active Balance
+        const totalBalance = base + netCashFlow - eduDeduction + netTradingPnl;
+
+        return {
+          base,
+          eduDeduction,
+          deposits,
+          withdrawals,
+          netCashFlow,
+          tradingProfits,
+          tradingLosses,
+          netTradingPnl,
+          totalBalance
+        };
+      }
+
+      // Dynamic Target based strictly on performance
+      function calcDynamicTarget() {
+        const trades = Object.values(state.trades);
+        const wins = trades.filter(t => Number(t.pnl) > 0);
+        if (wins.length > 0) {
+          const avg = wins.reduce((acc, c) => acc + Number(c.pnl), 0) / wins.length;
+          return Math.round(avg * 100) / 100;
+        }
+        return Number(state.settings.defaultDailyTarget) || 50.0;
+      }
+
+      // Render Main View
+      function renderMain() {
+        const metrics = computeLedgerMetrics();
+        lblTotalBalance.textContent = `$${metrics.totalBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+        // Micro-breakdown subtext
+        lblLedgerBreakdown.innerHTML = `
+          <span><span class="breakdown-tag">تأسيسي:</span> <span class="breakdown-val">$${metrics.base.toFixed(0)}</span></span>
+          ${metrics.deposits > 0 ? `<span><span class="breakdown-tag">إيداعات:</span> <span class="breakdown-val" style="color:var(--profit);">+$${metrics.deposits.toFixed(0)}</span></span>` : ''}
+          ${metrics.withdrawals > 0 ? `<span><span class="breakdown-tag">سحوبات:</span> <span class="breakdown-val" style="color:var(--loss);">-$${metrics.withdrawals.toFixed(0)}</span></span>` : ''}
+          <span><span class="breakdown-tag">مخصوم تعليم:</span> <span class="breakdown-val" style="color:#3b82f6;">-$${metrics.eduDeduction.toFixed(0)}</span></span>
+          <span><span class="breakdown-tag">صافي صفقات:</span> <span class="breakdown-val" style="color:${metrics.netTradingPnl >= 0 ? 'var(--profit)' : 'var(--loss)'};">${metrics.netTradingPnl >= 0 ? '+' : ''}$${metrics.netTradingPnl.toFixed(2)}</span></span>
+        `;
+
+        // Targets
+        const manTgt = Number(state.settings.defaultDailyTarget) || 50.0;
+        const dynTgt = calcDynamicTarget();
+        lblManualTarget.textContent = `$${manTgt.toFixed(2)}`;
+        lblDynamicTarget.textContent = `$${dynTgt.toFixed(2)}`;
+
+        // Day status
+        const dayInfo = getDayInfo(activeDate);
+        dateInput.value = activeDate;
+        lblDayStatus.textContent = `${dayInfo.name} ${dayInfo.isTrading ? '' : '- عطلة البورصة'}`;
+
+        // Populate active day if exists
+        const cur = state.trades[activeDate];
+        if (cur) {
+          const p = Number(cur.pnl) || 0;
+          setType(p >= 0 ? 'profit' : 'loss');
+          numAmount.value = Math.abs(p);
+          setAcc(cur.accountType || 'real');
+          txtNotes.value = cur.notes || '';
+          btnSubmitTrade.textContent = 'تحديث نتيجة اليوم';
+        } else {
+          numAmount.value = '';
+          txtNotes.value = '';
+          btnSubmitTrade.textContent = 'حفظ نتيجة اليوم';
+        }
+
+        renderLogs();
+      }
+
+      function setType(type) {
+        activeType = type;
+        if (type === 'profit') {
+          optProfit.classList.add('active-profit');
+          optLoss.classList.remove('active-loss');
+        } else {
+          optLoss.classList.add('active-loss');
+          optProfit.classList.remove('active-profit');
+        }
+      }
+
+      function setAcc(acc) {
+        activeAcc = acc;
+        if (acc === 'real') {
+          optReal.classList.add('active-account');
+          optEdu.classList.remove('active-account');
+        } else {
+          optEdu.classList.add('active-account');
+          optReal.classList.remove('active-account');
+        }
+      }
+
+      function parseLocalDate(dateStr) {
+        const parts = dateStr.split('-').map(Number);
+        return new Date(parts[0], parts[1] - 1, parts[2], 12, 0, 0);
+      }
+
+      function formatLocalYMD(d) {
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        return `${y}-${m}-${day}`;
+      }
+
+      function getMonthArabicName(mIdx) {
+        const m = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+        return m[mIdx] || '';
+      }
+
+      function getTradingWeekInfo(dateStr) {
+        const dt = parseLocalDate(dateStr);
+        const day = dt.getDay(); // 0: Sun, 1: Mon, ..., 5: Fri, 6: Sat
+        
+        let mon;
+        if (day === 0) {
+          mon = new Date(dt.getFullYear(), dt.getMonth(), dt.getDate() + 1, 12, 0, 0);
+        } else if (day === 6) {
+          mon = new Date(dt.getFullYear(), dt.getMonth(), dt.getDate() - 5, 12, 0, 0);
+        } else {
+          mon = new Date(dt.getFullYear(), dt.getMonth(), dt.getDate() - (day - 1), 12, 0, 0);
+        }
+        
+        const fri = new Date(mon.getFullYear(), mon.getMonth(), mon.getDate() + 4, 12, 0, 0);
+        
+        // If Monday is in previous month, clip start to 1st of trade's month and end to +4 days
+        let weekStart = mon;
+        let weekEnd = fri;
+        if (mon.getMonth() !== dt.getMonth()) {
+          weekStart = new Date(dt.getFullYear(), dt.getMonth(), 1, 12, 0, 0);
+          weekEnd = new Date(dt.getFullYear(), dt.getMonth(), 5, 12, 0, 0);
+        }
+        
+        const startDayStr = String(weekStart.getDate()).padStart(2, '0');
+        const endDayStr = String(weekEnd.getDate()).padStart(2, '0');
+        const monthName = getMonthArabicName(dt.getMonth());
+        
+        const key = formatLocalYMD(weekStart);
+        const label = `${startDayStr} - ${endDayStr} ${monthName}`;
+        
+        return { key, label, weekStart, weekEnd };
+      }
+
+      // Render Compact Trade Log
+      function renderLogs() {
+        logsContainer.innerHTML = '';
+        const allDates = Object.keys(state.trades).sort((a,b) => b.localeCompare(a));
+        lblTradeCount.textContent = `${allDates.length} يوم مسجل`;
+
+        // Update Toggle Buttons Styling
+        btnLog5Days.className = 'toggle-opt ' + (currentLogView === '5days' && !activeDaySearch ? 'active-profit' : '');
+        btnLog5Weeks.className = 'toggle-opt ' + (currentLogView === '5weeks' && !activeDaySearch ? 'active-profit' : '');
+        btnLogAllDays.className = 'toggle-opt ' + (currentLogView === 'all' && !activeDaySearch ? 'active-profit' : '');
+
+        // 1. Search Mode
+        if (activeDaySearch) {
+          if (weekSortBar) weekSortBar.style.display = 'none';
+          lblLogHeading.textContent = `نتيجة البحث عن: ${activeDaySearch}`;
+          btnResetSearch.style.display = 'inline-block';
+
+          const trade = state.trades[activeDaySearch];
+          if (trade) {
+            const pnl = Number(trade.pnl) || 0;
+            const isProf = pnl >= 0;
+            const day = getDayInfo(activeDaySearch);
+
+            const item = document.createElement('div');
+            item.className = 'log-item';
+            item.style.borderColor = 'var(--gold)';
+            item.style.background = 'var(--gold-bg)';
+            item.innerHTML = `
+              <div class="log-meta">
+                <span class="log-date">${activeDaySearch} (${day.name.split(' ')[0]})</span>
+                <span class="log-sub">${trade.accountType === 'education' ? 'تعليم / مخاطرة' : 'رأس المال'} ${trade.notes ? '• ' + escapeHtml(trade.notes) : ''}</span>
+              </div>
+              <div class="log-right">
+                <span class="log-amount ${isProf ? 'profit' : 'loss'}">${isProf ? '+' : ''}$${pnl.toFixed(2)}</span>
+                <button class="btn-mini-edit" style="color:var(--gold-light); border-color:var(--gold);" data-d="${activeDaySearch}">تعديل في النموذج</button>
+              </div>
+            `;
+            logsContainer.appendChild(item);
+          } else {
+            logsContainer.innerHTML = `
+              <div style="background:var(--bg-input); padding:12px; border-radius:var(--radius-sm); text-align:center; font-size:0.8rem; border:1px dashed var(--border);">
+                <div>اليوم المحدد <strong>${activeDaySearch}</strong> غير مسجل في السجل بعد.</div>
+                <button class="btn-today" id="btnRegisterSearchDay" style="margin-top:8px; color:var(--gold-light);">تسجيل نتيجة هذا اليوم الآن</button>
+              </div>
+            `;
+            const btnReg = document.getElementById('btnRegisterSearchDay');
+            if (btnReg) {
+              btnReg.addEventListener('click', () => {
+                activeDate = activeDaySearch;
+                renderMain();
+                window.scrollTo({ top: 180, behavior: 'smooth' });
+              });
+            }
+          }
+
+          attachEditHandlers();
+          return;
+        }
+
+        btnResetSearch.style.display = 'none';
+
+        if (allDates.length === 0) {
+          if (weekSortBar) weekSortBar.style.display = 'none';
+          logsContainer.innerHTML = '<div style="text-align:center; color:var(--text-sub); padding:10px; font-size:0.75rem;">لا توجد صفقات مسجلة بعد. سجل يومك الأول أعلاه.</div>';
+          return;
+        }
+
+        // 2. Mode: 5 Days (Default)
+        if (currentLogView === '5days') {
+          if (weekSortBar) weekSortBar.style.display = 'none';
+          lblLogHeading.textContent = 'سجل التداول (آخر 5 أيام عمل)';
+          const datesToShow = allDates.slice(0, 5);
+          datesToShow.forEach(dStr => renderSingleLogItem(dStr));
+        }
+
+        // 3. Mode: 5 Weeks Grouping
+        else if (currentLogView === '5weeks') {
+          lblLogHeading.textContent = 'سجل التداول (تجميع أسابيع التداول)';
+          if (weekSortBar) weekSortBar.style.display = 'flex';
+
+          // Group by trading week
+          const weeksMap = {};
+          allDates.forEach(dStr => {
+            const info = getTradingWeekInfo(dStr);
+            if (!weeksMap[info.key]) {
+              weeksMap[info.key] = { key: info.key, label: info.label, days: [] };
+            }
+            weeksMap[info.key].days.push(dStr);
+          });
+
+          // Sort weeks based on weekSortOrder:
+          // 'asc' = Chronological like the Excel sheet (01-05 first)
+          // 'desc' = Latest week first (21-25 first)
+          const sortedWeekKeys = Object.keys(weeksMap).sort((a,b) => {
+            return weekSortOrder === 'asc' ? a.localeCompare(b) : b.localeCompare(a);
+          });
+
+          // Update Sort Buttons Styling
+          if (btnSortAsc && btnSortDesc) {
+            btnSortAsc.className = 'toggle-opt ' + (weekSortOrder === 'asc' ? 'active-profit' : '');
+            btnSortDesc.className = 'toggle-opt ' + (weekSortOrder === 'desc' ? 'active-profit' : '');
+          }
+
+          sortedWeekKeys.forEach((wKey, idx) => {
+            const weekObj = weeksMap[wKey];
+            const weekDays = weekObj.days;
+            let weekPnl = 0;
+            let winDaysCount = 0;
+
+            weekDays.forEach(d => {
+              const p = Number(state.trades[d]?.pnl) || 0;
+              weekPnl += p;
+              if (p > 0) winDaysCount++;
+            });
+
+            const isWeekProf = weekPnl >= 0;
+            const card = document.createElement('div');
+            card.className = 'week-card';
+            card.innerHTML = `
+              <div class="week-header" data-week="${wKey}">
+                <div>
+                  <span style="font-weight:700; color:var(--gold-light); font-size:0.9rem;">أسبوع: ${weekObj.label}</span>
+                  <div style="font-size:0.68rem; color:var(--text-sub); margin-top:2px;">${weekDays.length} أيام تداول (رابحة: ${winDaysCount})</div>
+                </div>
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <span class="${isWeekProf ? 'week-badge-profit' : 'week-badge-loss'}">${isWeekProf ? '+' : ''}$${weekPnl.toFixed(2)}</span>
+                  <span style="font-size:0.7rem; color:var(--text-muted);">[عرض الأيام]</span>
+                </div>
+              </div>
+              <div class="week-days-container" id="days_${wKey}" style="${idx === 0 ? '' : 'display:none;'}">
+                <!-- Days in this week -->
+              </div>
+            `;
+
+            const daysContainer = card.querySelector(`#days_${wKey}`);
+            // Order days chronologically inside week
+            weekDays.sort((a,b) => a.localeCompare(b)).forEach(dStr => {
+              const t = state.trades[dStr];
+              const pnl = Number(t.pnl) || 0;
+              const isProf = pnl >= 0;
+              const day = getDayInfo(dStr);
+
+              const dayRow = document.createElement('div');
+              dayRow.style.display = 'flex';
+              dayRow.style.justifyContent = 'space-between';
+              dayRow.style.alignItems = 'center';
+              dayRow.style.fontSize = '0.75rem';
+              dayRow.style.padding = '4px 0';
+              dayRow.style.borderBottom = '1px solid var(--border)';
+
+              dayRow.innerHTML = `
+                <div>
+                  <span style="font-family:var(--font-num); font-weight:700;">${dStr}</span>
+                  <span style="color:var(--text-sub); margin:0 4px;">(${day.name.split(' ')[0]})</span>
+                  <span style="font-size:0.65rem; color:var(--text-muted);">${t.notes ? '• ' + escapeHtml(t.notes) : ''}</span>
+                </div>
+                <div style="display:flex; gap:6px; align-items:center;">
+                  <span class="log-amount ${isProf ? 'profit' : 'loss'}" style="font-size:0.85rem;">${isProf ? '+' : ''}$${pnl.toFixed(2)}</span>
+                  <button class="btn-mini-edit" data-d="${dStr}">تعديل</button>
+                </div>
+              `;
+              daysContainer.appendChild(dayRow);
+            });
+
+            // Toggle collapse listener
+            card.querySelector('.week-header').addEventListener('click', () => {
+              const isHidden = daysContainer.style.display === 'none';
+              daysContainer.style.display = isHidden ? '' : 'none';
+            });
+
+            logsContainer.appendChild(card);
+          });
+        }
+
+        // 4. Mode: All Days
+        else if (currentLogView === 'all') {
+          lblLogHeading.textContent = `سجل التداول (كامل الأيام المسجلة: ${allDates.length})`;
+          allDates.forEach(dStr => renderSingleLogItem(dStr));
+        }
+
+        attachEditHandlers();
+      }
+
+      function renderSingleLogItem(dStr) {
+        const t = state.trades[dStr];
+        const pnl = Number(t.pnl) || 0;
+        const isProf = pnl >= 0;
+        const day = getDayInfo(dStr);
+
+        const item = document.createElement('div');
+        item.className = 'log-item';
+        item.innerHTML = `
+          <div class="log-meta">
+            <span class="log-date">${dStr} <span style="font-weight:normal; font-size:0.75rem; color:var(--text-sub);">(${day.name.split(' ')[0]})</span></span>
+            <span class="log-sub">${t.accountType === 'education' ? 'تعليم / مخاطرة' : 'رأس المال'} ${t.notes ? '• ' + escapeHtml(t.notes) : ''}</span>
+          </div>
+          <div class="log-right">
+            <span class="log-amount ${isProf ? 'profit' : 'loss'}">${isProf ? '+' : ''}$${pnl.toFixed(2)}</span>
+            <button class="btn-mini-edit" data-d="${dStr}">تعديل</button>
+          </div>
+        `;
+        logsContainer.appendChild(item);
+      }
+
+      function attachEditHandlers() {
+        document.querySelectorAll('.btn-mini-edit').forEach(b => {
+          b.addEventListener('click', (e) => {
+            activeDate = e.target.getAttribute('data-d');
+            renderMain();
+            window.scrollTo({ top: 160, behavior: 'smooth' });
+          });
+        });
+      }
+
+      // Cash Flow Handler & Modal
+      function openCashFlowModal() {
+        cfDate.value = getTodayStr();
+        cfAmount.value = '';
+        cfNotes.value = '';
+        setCfType('deposit');
+        renderCashFlowHistory();
+        modalCashFlow.classList.add('open');
+      }
+
+      function setCfType(t) {
+        cfActiveType = t;
+        if (t === 'deposit') {
+          cfOptDeposit.classList.add('active-profit');
+          cfOptWithdraw.classList.remove('active-loss');
+        } else {
+          cfOptWithdraw.classList.add('active-loss');
+          cfOptDeposit.classList.remove('active-profit');
+        }
+      }
+
+      cfOptDeposit.addEventListener('click', () => setCfType('deposit'));
+      cfOptWithdraw.addEventListener('click', () => setCfType('withdraw'));
+      btnCashFlow.addEventListener('click', openCashFlowModal);
+      btnCloseCashFlow.addEventListener('click', () => modalCashFlow.classList.remove('open'));
+
+      btnSubmitCashFlow.addEventListener('click', () => {
+        const amt = parseFloat(cfAmount.value);
+        if (isNaN(amt) || amt <= 0) {
+          alert('يرجى إدخال مبلغ صحيح.');
+          return;
+        }
+
+        state.transactions.unshift({
+          id: 'tx_' + Date.now(),
+          date: cfDate.value || getTodayStr(),
+          type: cfActiveType,
+          amount: amt,
+          notes: cfNotes.value.trim(),
+          createdAt: new Date().toISOString()
+        });
+
+        saveState();
+        renderMain();
+        renderCashFlowHistory();
+        cfAmount.value = '';
+        cfNotes.value = '';
+        alert(`تم تسجيل ${cfActiveType === 'deposit' ? 'إيداع' : 'سحب'} بقيمة $${amt.toFixed(2)} وتحديث رصيد المحفظة.`);
+      });
+
+      function renderCashFlowHistory() {
+        cfHistoryList.innerHTML = '';
+        if (state.transactions.length === 0) {
+          cfHistoryList.innerHTML = '<div style="font-size:0.7rem; color:var(--text-sub); text-align:center;">لا توجد حركات إيداع أو سحب مسجلة.</div>';
+          return;
+        }
+
+        state.transactions.forEach(tx => {
+          const isDep = tx.type === 'deposit';
+          const row = document.createElement('div');
+          row.style.display = 'flex';
+          row.style.justifyContent = 'space-between';
+          row.style.alignItems = 'center';
+          row.style.background = 'var(--bg-input)';
+          row.style.padding = '4px 8px';
+          row.style.borderRadius = 'var(--radius-sm)';
+          row.style.fontSize = '0.75rem';
+
+          row.innerHTML = `
+            <div>
+              <span style="color:${isDep ? 'var(--profit)' : 'var(--loss)'}; font-weight:700;">${isDep ? '+ إيداع' : '- سحب'}</span>
+              <span style="font-family:var(--font-num); color:var(--text-main); margin:0 4px;">$${Number(tx.amount).toFixed(2)}</span>
+              <span style="font-size:0.65rem; color:var(--text-sub);">${tx.date} ${tx.notes ? '(' + escapeHtml(tx.notes) + ')' : ''}</span>
+            </div>
+            <button class="btn-mini-edit" style="color:var(--loss);" onclick="window.delTx('${tx.id}')">حذف</button>
+          `;
+          cfHistoryList.appendChild(row);
+        });
+      }
+
+      window.delTx = function(id) {
+        if (confirm('هل ترغب في حذف هذه الحركة وإعادة احتساب الرصيد؟')) {
+          state.transactions = state.transactions.filter(t => t.id !== id);
+          saveState();
+          renderMain();
+          renderCashFlowHistory();
+        }
+      };
+
+      // Base Capital & Education Modal
+      function openCapitalModal() {
+        mRealCap.value = state.capital.baseCapital || 1000;
+        mEduCap.value = state.capital.educationBudget || 200;
+        mTarget.value = state.settings.defaultDailyTarget || 50;
+        modalCapital.classList.add('open');
+      }
+      btnEditBaseCapital.addEventListener('click', openCapitalModal);
+      mCloseCap.addEventListener('click', () => modalCapital.classList.remove('open'));
+
+      mSaveCap.addEventListener('click', () => {
+        const r = parseFloat(mRealCap.value);
+        const e = parseFloat(mEduCap.value);
+        const t = parseFloat(mTarget.value);
+        if (isNaN(r) || isNaN(e) || isNaN(t)) {
+          alert('يرجى إدخال أرقام صحيحة.');
+          return;
+        }
+        state.capital.baseCapital = r;
+        state.capital.educationBudget = e;
+        state.settings.defaultDailyTarget = t;
+        saveState();
+        modalCapital.classList.remove('open');
+        renderMain();
+      });
+
+      // Render Analytics View
+      function renderAnalytics() {
+        const metrics = computeLedgerMetrics();
+        valBaseCapital.textContent = `$${metrics.base.toFixed(2)}`;
+        valTotalDeposits.textContent = `+$${metrics.deposits.toFixed(2)}`;
+        valTotalWithdrawals.textContent = `-$${metrics.withdrawals.toFixed(2)}`;
+        valEduDeduction.textContent = `-$${metrics.eduDeduction.toFixed(2)}`;
+
+        const trades = Object.values(state.trades);
+        const count = trades.length;
+
+        if (count === 0) {
+          valWinRate.textContent = '0.0%';
+          valNetPnl.textContent = '$0.00';
+          valAvgWin.textContent = '$0.00';
+          valAvgLoss.textContent = '$0.00';
+          valWeekPnl.textContent = '$0.00';
+          valMonthPnl.textContent = '$0.00';
+          txtProjectionDesc.textContent = 'سجل صفقات عدة أيام لتوليد المحاكاة الاستقرائية الشهرية.';
+          return;
+        }
+
+        let profit = 0, loss = 0, wins = 0, losses = 0;
+        trades.forEach(t => {
+          const v = Number(t.pnl) || 0;
+          if (v > 0) { profit += v; wins++; }
+          else if (v < 0) { loss += Math.abs(v); losses++; }
+        });
+
+        const net = profit - loss;
+        const winRate = (wins / count) * 100;
+        const avgWin = wins > 0 ? profit / wins : 0;
+        const avgLoss = losses > 0 ? loss / losses : 0;
+
+        valWinRate.textContent = `${winRate.toFixed(1)}%`;
+        valNetPnl.textContent = `${net >= 0 ? '+' : ''}$${net.toFixed(2)}`;
+        valNetPnl.style.color = net >= 0 ? 'var(--profit)' : 'var(--loss)';
+        valAvgWin.textContent = `+$${avgWin.toFixed(2)}`;
+        valAvgLoss.textContent = `-$${avgLoss.toFixed(2)}`;
+
+        // True statistical projection without arbitrary floor (21 trading days forward based on empirical daily mean)
+        const dailyExpectancy = net / count;
+        const projectedDelta = dailyExpectancy * 21;
+        const projectedTotal = metrics.totalBalance + projectedDelta;
+
+        const isPositiveDelta = projectedDelta >= 0;
+        const deltaLabel = isPositiveDelta ? 'نمو وفائض متوقع' : 'تراجع تراكمي متوقع';
+        const formattedTotal = (projectedTotal >= 0 ? '$' : '-$') + Math.abs(projectedTotal).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+
+        txtProjectionDesc.innerHTML = `<strong>المحاكاة الشهرية (21 يوم):</strong> الرصيد المتوقع <strong style="color:${projectedTotal >= 0 ? 'var(--profit)' : 'var(--loss)'}; font-family:var(--font-num);">${formattedTotal}</strong> (${deltaLabel}: <span style="color:${isPositiveDelta ? 'var(--profit)' : 'var(--loss)'}; font-family:var(--font-num);">${isPositiveDelta ? '+' : ''}$${projectedDelta.toFixed(2)}</span> بمعدل <span style="font-family:var(--font-num);">${dailyExpectancy >= 0 ? '+' : ''}$${dailyExpectancy.toFixed(2)}/يوم</span>).`;
+
+        // Weekly and Monthly deltas
+        const sorted = Object.entries(state.trades).sort((a,b) => b[0].localeCompare(a[0]));
+        const w1 = sorted.slice(0, 5).reduce((s, x) => s + (Number(x[1].pnl)||0), 0);
+        const w2 = sorted.slice(5, 10).reduce((s, x) => s + (Number(x[1].pnl)||0), 0);
+        valWeekPnl.textContent = `${w1 >= 0 ? '+' : ''}$${w1.toFixed(2)}`;
+        valWeekDiff.textContent = `فارق عن السابق: ${w1-w2 >= 0 ? '+' : ''}$${(w1-w2).toFixed(2)}`;
+
+        const m1 = sorted.slice(0, 21).reduce((s, x) => s + (Number(x[1].pnl)||0), 0);
+        const m2 = sorted.slice(21, 42).reduce((s, x) => s + (Number(x[1].pnl)||0), 0);
+        valMonthPnl.textContent = `${m1 >= 0 ? '+' : ''}$${m1.toFixed(2)}`;
+        valMonthDiff.textContent = `فارق عن السابق: ${m1-m2 >= 0 ? '+' : ''}$${(m1-m2).toFixed(2)}`;
+      }
+
+      // Render Journal
+      function renderJournal() {
+        journalContainer.innerHTML = '';
+        if (state.journal.length === 0) {
+          journalContainer.innerHTML = '<div style="text-align:center; color:var(--text-sub); font-size:0.75rem; padding:10px;">لا توجد قواعد مضافة بعد.</div>';
+          return;
+        }
+
+        const catMap = { psychology: 'نفسية وانضباط', strategy: 'استراتيجيات', risk: 'إدارة مخاطر', mistake: 'أخطاء مستفادة' };
+
+        state.journal.forEach(r => {
+          const d = document.createElement('div');
+          d.className = 'journal-item';
+          d.innerHTML = `
+            <div class="journal-header">
+              <span style="color:var(--gold-light); font-weight:700;">[${catMap[r.category] || r.category}]</span>
+              <div style="display:flex; gap:6px;">
+                <button class="btn-mini-edit" onclick="window.editRule('${r.id}')">تعديل</button>
+                <button class="btn-mini-edit" style="color:var(--loss);" onclick="window.delRule('${r.id}')">حذف</button>
+              </div>
+            </div>
+            <div class="journal-title">${escapeHtml(r.title)}</div>
+            <div class="journal-body">${escapeHtml(r.content)}</div>
+          `;
+          journalContainer.appendChild(d);
+        });
+      }
+
+      window.delRule = function(id) {
+        if (confirm('حذف هذه القاعدة؟')) {
+          state.journal = state.journal.filter(x => x.id !== id);
+          saveState();
+          renderJournal();
+        }
+      };
+
+      window.editRule = function(id) {
+        const r = state.journal.find(x => x.id === id);
+        if (r) {
+          ruleEditId.value = r.id;
+          ruleCat.value = r.category;
+          ruleTitle.value = r.title;
+          ruleContent.value = r.content;
+          btnSaveRule.textContent = 'تحديث القاعدة';
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      };
+
+      // Trade Entry Listeners
+      optProfit.addEventListener('click', () => setType('profit'));
+      optLoss.addEventListener('click', () => setType('loss'));
+      optReal.addEventListener('click', () => setAcc('real'));
+      optEdu.addEventListener('click', () => setAcc('education'));
+
+      dateInput.addEventListener('change', (e) => {
+        if (e.target.value) {
+          activeDate = e.target.value;
+          renderMain();
+        }
+      });
+
+      btnQuickToday.addEventListener('click', () => {
+        activeDate = getTodayStr();
+        renderMain();
+      });
+
+      btnApplyDyn.addEventListener('click', () => {
+        const d = calcDynamicTarget();
+        state.settings.defaultDailyTarget = d;
+        saveState();
+        renderMain();
+      });
+
+      // Log Filter & Search Event Listeners
+      if (btnLog5Days) {
+        btnLog5Days.addEventListener('click', () => {
+          currentLogView = '5days';
+          activeDaySearch = null;
+          renderLogs();
+        });
+      }
+
+      if (btnLog5Weeks) {
+        btnLog5Weeks.addEventListener('click', () => {
+          currentLogView = '5weeks';
+          activeDaySearch = null;
+          renderLogs();
+        });
+      }
+
+      if (btnSortAsc) {
+        btnSortAsc.addEventListener('click', () => {
+          weekSortOrder = 'asc';
+          renderLogs();
+        });
+      }
+
+      if (btnSortDesc) {
+        btnSortDesc.addEventListener('click', () => {
+          weekSortOrder = 'desc';
+          renderLogs();
+        });
+      }
+
+      if (btnLogAllDays) {
+        btnLogAllDays.addEventListener('click', () => {
+          currentLogView = 'all';
+          activeDaySearch = null;
+          renderLogs();
+        });
+      }
+
+      if (btnExecuteSearch) {
+        btnExecuteSearch.addEventListener('click', () => {
+          const query = inputSearchDay.value;
+          if (!query) {
+            alert('يرجى اختيار تاريخ للبحث.');
+            return;
+          }
+          activeDaySearch = query;
+          renderLogs();
+        });
+      }
+
+      if (btnResetSearch) {
+        btnResetSearch.addEventListener('click', () => {
+          activeDaySearch = null;
+          inputSearchDay.value = '';
+          renderLogs();
+        });
+      }
+
+      btnSubmitTrade.addEventListener('click', () => {
+        const val = parseFloat(numAmount.value);
+        if (isNaN(val) || val < 0) {
+          alert('يرجى كتابة رقم صحيح للمبلغ.');
+          return;
+        }
+
+        const signed = activeType === 'profit' ? val : -val;
+        state.trades[activeDate] = {
+          date: activeDate,
+          pnl: signed,
+          accountType: activeAcc,
+          notes: txtNotes.value.trim(),
+          updatedAt: new Date().toISOString()
+        };
+
+        saveState();
+        renderMain();
+      });
+
+      btnSaveRule.addEventListener('click', () => {
+        const t = ruleTitle.value.trim();
+        const c = ruleContent.value.trim();
+        const cat = ruleCat.value;
+        const eId = ruleEditId.value;
+
+        if (!t) {
+          alert('يرجى كتابة عنوان القاعدة.');
+          return;
+        }
+
+        if (eId) {
+          const idx = state.journal.findIndex(x => x.id === eId);
+          if (idx !== -1) {
+            state.journal[idx].title = t;
+            state.journal[idx].content = c;
+            state.journal[idx].category = cat;
+            state.journal[idx].updatedAt = new Date().toISOString();
+          }
+          ruleEditId.value = '';
+          btnSaveRule.textContent = 'حفظ القاعدة';
+        } else {
+          state.journal.unshift({
+            id: 'r_' + Date.now(),
+            title: t,
+            content: c,
+            category: cat,
+            createdAt: new Date().toISOString()
+          });
+        }
+
+        ruleTitle.value = '';
+        ruleContent.value = '';
+        saveState();
+        renderJournal();
+      });
+
+      // GitHub Sync Modal
+      btnSync.addEventListener('click', () => {
+        const gh = state.settings.githubSync || {};
+        ghToken.value = gh.token || '';
+        ghRepo.value = gh.repo || '';
+        modalSync.classList.add('open');
+      });
+      mCloseSync.addEventListener('click', () => modalSync.classList.remove('open'));
+
+      async function pushGitHub(showAlert = true) {
+        const gh = state.settings.githubSync;
+        if (!gh || !gh.token || !gh.repo) return;
+
+        setSyncStatus('pending', 'جاري المزامنة...');
+        const url = `https://api.github.com/repos/${gh.repo.trim()}/contents/${(gh.path || 'data.json').trim()}`;
+
+        try {
+          if (!gh.fileSha) {
+            const res = await fetch(`${url}?ref=${gh.branch || 'main'}`, {
+              headers: { 'Authorization': `Bearer ${gh.token.trim()}`, 'Accept': 'application/vnd.github.v3+json' }
+            });
+            if (res.ok) {
+              const d = await res.json();
+              gh.fileSha = d.sha;
+            }
+          }
+
+          const utf8 = new TextEncoder().encode(JSON.stringify(state, null, 2));
+          let bin = '';
+          for (let i = 0; i < utf8.length; i++) bin += String.fromCharCode(utf8[i]);
+          const base64 = btoa(bin);
+
+          const payload = {
+            message: `Update data [${new Date().toISOString()}]`,
+            content: base64,
+            branch: gh.branch || 'main'
+          };
+          if (gh.fileSha) payload.sha = gh.fileSha;
+
+          const putRes = await fetch(url, {
+            method: 'PUT',
+            headers: {
+              'Authorization': `Bearer ${gh.token.trim()}`,
+              'Accept': 'application/vnd.github.v3+json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+          });
+
+          if (!putRes.ok) throw new Error('فشلت المزامنة');
+          const putData = await putRes.json();
+          gh.fileSha = putData.content ? putData.content.sha : null;
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+          setSyncStatus('synced', 'متزامن');
+          if (showAlert) alert('تم حفظ البيانات ومزامنتها بنجاح في GitHub.');
+        } catch (e) {
+          setSyncStatus('error', 'خطأ مزامنة');
+          if (showAlert) alert('خطأ في مزامنة GitHub: ' + e.message);
+        }
+      }
+
+      async function pullGitHub() {
+        const gh = state.settings.githubSync;
+        if (!gh || !gh.token || !gh.repo) return;
+
+        setSyncStatus('pending', 'سحب...');
+        const url = `https://api.github.com/repos/${gh.repo.trim()}/contents/${(gh.path || 'data.json').trim()}?ref=${gh.branch || 'main'}`;
+
+        try {
+          const res = await fetch(url, {
+            headers: { 'Authorization': `Bearer ${gh.token.trim()}`, 'Accept': 'application/vnd.github.v3+json' }
+          });
+          if (!res.ok) throw new Error('الملف غير موجود بعد');
+          const d = await res.json();
+          gh.fileSha = d.sha;
+
+          const raw = atob(d.content.replace(/\s/g, ''));
+          const bytes = new Uint8Array(raw.length);
+          for (let i = 0; i < raw.length; i++) bytes[i] = raw.charCodeAt(i);
+          const remote = JSON.parse(new TextDecoder().decode(bytes));
+
+          state = { ...state, ...remote, settings: { ...remote.settings, githubSync: gh } };
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+          setSyncStatus('synced', 'متزامن');
+          renderMain();
+          alert('تم سحب أحدث بيانات من GitHub.');
+        } catch (e) {
+          setSyncStatus('error', 'تعذر السحب');
+          alert('تعذر سحب البيانات: ' + e.message);
+        }
+      }
+
+      function setSyncStatus(st, txt) {
+        syncStatusDot.className = 'sync-dot ' + st;
+        syncStatusLbl.textContent = txt;
+      }
+
+      btnGhSave.addEventListener('click', () => {
+        state.settings.githubSync.token = ghToken.value.trim();
+        state.settings.githubSync.repo = ghRepo.value.trim();
+        saveState();
+        pushGitHub(true);
+      });
+
+      btnGhPull.addEventListener('click', pullGitHub);
+
+      btnExportJson.addEventListener('click', () => {
+        const a = document.createElement('a');
+        a.href = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(state, null, 2));
+        a.download = `gold_data_${getTodayStr()}.json`;
+        a.click();
+      });
+
+      fileImport.addEventListener('change', (e) => {
+        const f = e.target.files[0];
+        if (!f) return;
+        const r = new FileReader();
+        r.onload = (evt) => {
+          try {
+            const imp = JSON.parse(evt.target.result);
+            if (imp.capital && imp.trades) {
+              state = { ...defaultState, ...imp };
+              saveState();
+              renderMain();
+              alert('تم استيراد البيانات.');
+              modalSync.classList.remove('open');
+            }
+          } catch(err) {
+            alert('ملف غير صالح.');
+          }
+        };
+        r.readAsText(f);
+      });
+
+      function escapeHtml(s) {
+        if (!s) return '';
+        return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+      }
+
+      // Initialize
+      function init() {
+        renderMain();
+        renderAnalytics();
+        renderJournal();
+
+        const btnReloadDemo = document.getElementById('btnReloadDemo');
+        if (btnReloadDemo) {
+          btnReloadDemo.addEventListener('click', () => {
+            state = JSON.parse(JSON.stringify(defaultState));
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+            renderMain();
+            renderAnalytics();
+            renderJournal();
+            if (modalCapital) modalCapital.classList.remove('open');
+            alert('تم تحميل جميع بيانات شهر سبتمبر الـ 18 يوماً مع رصيد -$1,215 بنجاح.');
+          });
+        }
+
+        const gh = state.settings.githubSync;
+        if (gh && gh.token && gh.repo) {
+          pullGitHub().catch(() => {});
+        } else {
+          setSyncStatus('', 'حفظ محلي');
+        }
+      }
+
+      init();
+    })();
+  </script>
+</body>
+</html>

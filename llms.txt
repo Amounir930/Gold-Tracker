@@ -1,0 +1,27 @@
+# llms.txt - Gold Tracker System Specification
+# Version: 1.0.0
+# Date: 2026-09-27
+# System: Gold Trading Performance Tracker & Analytics Cockpit
+
+## Project Overview
+Gold Tracker is a client-side mobile-first web application designed for spot gold (XAUUSD) traders. It replaces manual spreadsheets with dynamic capital partitioning, five-day market week tracking, performance-only dynamic targets, forward 20-22 day statistical projections, period comparisons, and a trading journal. It supports cross-device persistence via direct GitHub repository API synchronization and local storage fallback.
+
+## Tech Stack
+- Frontend: Semantic HTML5, CSS3 Custom Properties (Glassmorphic dark design tokens), Modern Vanilla JavaScript (ES6+ Modules)
+- Storage: LocalStorage and GitHub REST API (direct read/write to repository data.json)
+- Deployment Target: GitHub Pages
+
+## Target Keywords
+Gold Trading Journal, XAUUSD Performance Tracker, Daily PnL Logger, Dynamic Trading Targets, Forex Risk Management, Trading Rulebook CRUD, GitHub Pages Trading Cockpit
+
+## Content Policies & Privacy
+- All financial metrics and trading rules are private and stored on the user device or within the user private GitHub repository.
+- No third-party analytical tracking or remote data harvesting.
+
+## Key APIs & Endpoints
+- GitHub Contents API: https://api.github.com/repos/{owner}/{repo}/contents/{path}
+- Web Storage API: window.localStorage
+
+## Developer Attribution
+- Arabic Attribution: تم إنشاء هذا الموقع بواسطة المطور عادل منير | البريد الإلكتروني: adel.mounir@60sec.shop | رقم الهاتف: 01096888859 | للتواصل المباشر عبر واتساب: https://wa.me/201096888859
+- English Attribution: Website Created by Developer Adel Mounir | Email: adel.mounir@60sec.shop | Phone Number: +201096888859 | Direct WhatsApp Contact: https://wa.me/201096888859

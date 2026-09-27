@@ -1,0 +1,227 @@
+{
+  "version": "1.4.0",
+  "settings": {
+    "currency": "USD",
+    "defaultDailyTarget": 50.0,
+    "githubSync": {
+      "token": "",
+      "repo": "",
+      "branch": "main",
+      "path": "data.json",
+      "fileSha": null
+    }
+  },
+  "capital": {
+    "baseCapital": 0.0,
+    "educationBudget": 1116.02
+  },
+  "transactions": [
+    {
+      "id": "tx_1",
+      "date": "2026-09-08",
+      "type": "deposit",
+      "amount": 23.0,
+      "notes": "تسوية رصيد",
+      "createdAt": "2026-09-08T10:00:00Z"
+    },
+    {
+      "id": "tx_2",
+      "date": "2026-09-09",
+      "type": "deposit",
+      "amount": 36.0,
+      "notes": "إيداع تعزيز رصيد لتعويض الخسارة",
+      "createdAt": "2026-09-09T10:00:00Z"
+    },
+    {
+      "id": "tx_3",
+      "date": "2026-09-10",
+      "type": "deposit",
+      "amount": 33.5,
+      "notes": "إيداع إضافي",
+      "createdAt": "2026-09-10T10:00:00Z"
+    },
+    {
+      "id": "tx_4",
+      "date": "2026-09-11",
+      "type": "deposit",
+      "amount": 100.0,
+      "notes": "إيداع تعزيز رصيد لتعويض الخسارة",
+      "createdAt": "2026-09-11T10:00:00Z"
+    },
+    {
+      "id": "tx_5",
+      "date": "2026-09-14",
+      "type": "deposit",
+      "amount": 50.0,
+      "notes": "إيداع تعزيز رصيد لتعويض الخسارة",
+      "createdAt": "2026-09-14T10:00:00Z"
+    },
+    {
+      "id": "tx_6",
+      "date": "2026-09-18",
+      "type": "deposit",
+      "amount": 50.0,
+      "notes": "إيداع تعزيز رصيد لتعويض الخسارة",
+      "createdAt": "2026-09-18T10:00:00Z"
+    },
+    {
+      "id": "tx_7",
+      "date": "2026-09-25",
+      "type": "deposit",
+      "amount": 75.0,
+      "notes": "إيداع تعزيز رصيد لتعويض الخسارة",
+      "createdAt": "2026-09-25T10:00:00Z"
+    }
+  ],
+  "trades": {
+    "2026-09-01": {
+      "date": "2026-09-01",
+      "pnl": -90.0,
+      "accountType": "real",
+      "notes": "خسارة بداية الشهر",
+      "updatedAt": "2026-09-01T16:00:00Z"
+    },
+    "2026-09-02": {
+      "date": "2026-09-02",
+      "pnl": 46.0,
+      "accountType": "real",
+      "notes": "أرباح اليوم الأول",
+      "updatedAt": "2026-09-02T16:00:00Z"
+    },
+    "2026-09-03": {
+      "date": "2026-09-03",
+      "pnl": -131.0,
+      "accountType": "real",
+      "notes": "خسارة -131",
+      "updatedAt": "2026-09-03T16:00:00Z"
+    },
+    "2026-09-04": {
+      "date": "2026-09-04",
+      "pnl": -37.0,
+      "accountType": "real",
+      "notes": "خسارة -37",
+      "updatedAt": "2026-09-04T16:00:00Z"
+    },
+    "2026-09-07": {
+      "date": "2026-09-07",
+      "pnl": -40.0,
+      "accountType": "real",
+      "notes": "خسارة -40",
+      "updatedAt": "2026-09-07T16:00:00Z"
+    },
+    "2026-09-08": {
+      "date": "2026-09-08",
+      "pnl": 27.0,
+      "accountType": "real",
+      "notes": "ربح 27",
+      "updatedAt": "2026-09-08T16:00:00Z"
+    },
+    "2026-09-09": {
+      "date": "2026-09-09",
+      "pnl": 14.0,
+      "accountType": "real",
+      "notes": "ربح 14",
+      "updatedAt": "2026-09-09T16:00:00Z"
+    },
+    "2026-09-10": {
+      "date": "2026-09-10",
+      "pnl": 10.0,
+      "accountType": "real",
+      "notes": "ربح 10",
+      "updatedAt": "2026-09-10T16:00:00Z"
+    },
+    "2026-09-11": {
+      "date": "2026-09-11",
+      "pnl": -130.0,
+      "accountType": "real",
+      "notes": "خسارة -130",
+      "updatedAt": "2026-09-11T16:00:00Z"
+    },
+    "2026-09-14": {
+      "date": "2026-09-14",
+      "pnl": -21.5,
+      "accountType": "real",
+      "notes": "خسارة -21.5",
+      "updatedAt": "2026-09-14T16:00:00Z"
+    },
+    "2026-09-15": {
+      "date": "2026-09-15",
+      "pnl": -37.7,
+      "accountType": "real",
+      "notes": "خسارة -37.7",
+      "updatedAt": "2026-09-15T16:00:00Z"
+    },
+    "2026-09-16": {
+      "date": "2026-09-16",
+      "pnl": 11.41,
+      "accountType": "real",
+      "notes": "ربح 11.41",
+      "updatedAt": "2026-09-16T16:00:00Z"
+    },
+    "2026-09-17": {
+      "date": "2026-09-17",
+      "pnl": -16.59,
+      "accountType": "real",
+      "notes": "خسارة -16.59",
+      "updatedAt": "2026-09-17T16:00:00Z"
+    },
+    "2026-09-18": {
+      "date": "2026-09-18",
+      "pnl": -14.3,
+      "accountType": "real",
+      "notes": "خسارة -14.3",
+      "updatedAt": "2026-09-18T16:00:00Z"
+    },
+    "2026-09-21": {
+      "date": "2026-09-21",
+      "pnl": 0.0,
+      "accountType": "real",
+      "notes": "تعادل بدون صفقات",
+      "updatedAt": "2026-09-21T16:00:00Z"
+    },
+    "2026-09-22": {
+      "date": "2026-09-22",
+      "pnl": -17.0,
+      "accountType": "real",
+      "notes": "خسارة -17",
+      "updatedAt": "2026-09-22T16:00:00Z"
+    },
+    "2026-09-23": {
+      "date": "2026-09-23",
+      "pnl": 12.0,
+      "accountType": "real",
+      "notes": "ربح 12",
+      "updatedAt": "2026-09-23T16:00:00Z"
+    },
+    "2026-09-24": {
+      "date": "2026-09-24",
+      "pnl": -43.0,
+      "accountType": "real",
+      "notes": "خسارة -43",
+      "updatedAt": "2026-09-24T16:00:00Z"
+    },
+    "2026-09-25": {
+      "date": "2026-09-25",
+      "pnl": -8.8,
+      "accountType": "real",
+      "notes": "خسارة -8.8",
+      "updatedAt": "2026-09-25T16:00:00Z"
+    }
+  },
+  "journal": [
+    {
+      "id": "r_1",
+      "title": "التوقف الفوري بعد خسارتين متتاليتين",
+      "content": "في حال حدوث صفقتين خاسرتين في نفس اليوم، يتم إغلاق الشاشة والعودة في اليوم التالي.",
+      "category": "psychology",
+      "createdAt": "2026-09-02T10:00:00Z"
+    },
+    {
+      "id": "r_2",
+      "title": "الالتزام بنسبة 1:2 في الذهب",
+      "content": "عدم الدخول في أي صفقة إلا إذا كان الهدف ضعف وقف الخسارة على الأقل.",
+      "category": "strategy",
+      "createdAt": "2026-09-02T10:00:00Z"
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /AI/
+
+Sitemap: https://username.github.io/gold-tracker/sitemap.xml

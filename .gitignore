@@ -1,0 +1,20 @@
+# Project Dependencies
+node_modules/
+dist/
+build/
+.cache/
+
+# Environment Variables
+.env
+.env.local
+.env.production
+
+# Strict Project Encapsulation - Canonical AI Directory Protected
+AI/
+.gemini/
+
+# Operating System & IDE Artifacts
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
