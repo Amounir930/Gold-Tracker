@@ -214,27 +214,39 @@
     }
 
     .balance-sub-breakdown {
-      font-size: 0.7rem;
+      font-size: 0.75rem;
       color: var(--text-sub);
       border-top: 1px solid var(--border);
-      padding-top: 6px;
-      margin-top: 6px;
+      padding-top: 8px;
+      margin-top: 8px;
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
-      font-family: var(--font-num);
-      direction: ltr;
-      text-align: right;
+      gap: 6px 10px;
+      justify-content: center;
+      align-items: center;
+      direction: rtl;
+    }
+
+    .breakdown-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 3px 8px;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(255, 255, 255, 0.06);
     }
 
     .breakdown-tag {
       direction: rtl;
       font-family: var(--font-ar);
+      color: var(--text-sub);
     }
     .breakdown-val {
       font-family: var(--font-num);
       font-weight: 700;
       direction: ltr;
+      unicode-bidi: isolate;
     }
 
     /* Target Bar (Slim & Inline) */
@@ -682,15 +694,22 @@
       </div>
 
       <!-- Target Strip -->
-      <div class="target-bar">
-        <div class="target-item">
-          <span class="target-lbl">الهدف:</span>
-          <span class="target-val" id="lblManualTarget">$50.00</span>
+      <div class="target-bar" style="display:flex; flex-direction:column; gap:6px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+          <div class="target-item">
+            <span class="target-lbl">الهدف الحالي:</span>
+            <span class="target-val" id="lblManualTarget">$50.00</span>
+          </div>
+          <div class="target-item" style="gap:6px;">
+            <span class="target-lbl">المقترح (متوسط الأداء):</span>
+            <span class="target-val" id="lblDynamicTarget" style="color:var(--gold-light);">$0.00</span>
+            <button class="btn-apply-dyn" id="btnApplyDyn" title="تطبيق الهدف المقترح كهدف يومي">تطبيق</button>
+          </div>
         </div>
-        <div class="target-item">
-          <span class="target-lbl">المقترح (أداء):</span>
-          <span class="target-val" id="lblDynamicTarget">$0.00</span>
-          <button class="btn-apply-dyn" id="btnApplyDyn">تطبيق</button>
+        <div class="target-breakdown-sub" style="display:flex; justify-content:space-between; font-size:0.72rem; color:var(--text-sub); border-top:1px dashed var(--border); padding-top:4px; width:100%;">
+          <span>متوسط اليوم الرابح: <span class="breakdown-val" id="lblTargetAvgWin" style="color:var(--profit);">+$0.00</span></span>
+          <span>متوسط اليوم الخاسر: <span class="breakdown-val" id="lblTargetAvgLoss" style="color:var(--loss);">-$0.00</span></span>
+          <span>المتوسط بينهما: <span class="breakdown-val" id="lblTargetMid" style="color:var(--gold-light);">$0.00</span></span>
         </div>
       </div>
 
@@ -1242,36 +1261,79 @@
         };
       }
 
-      // Dynamic Target based strictly on performance
-      function calcDynamicTarget() {
+      function formatMoney(amount, showSign = false) {
+        const n = Number(amount) || 0;
+        const absVal = Math.abs(n).toLocaleString('en-US', {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        });
+        if (n < 0) {
+          return `-$${absVal}`;
+        }
+        if (showSign && n > 0) {
+          return `+$${absVal}`;
+        }
+        return `$${absVal}`;
+      }
+
+      // Dynamic Target based on empirical performance (balancing wins and losses)
+      function calcPerformanceTargets() {
         const trades = Object.values(state.trades);
         const wins = trades.filter(t => Number(t.pnl) > 0);
-        if (wins.length > 0) {
-          const avg = wins.reduce((acc, c) => acc + Number(c.pnl), 0) / wins.length;
-          return Math.round(avg * 100) / 100;
+        const losses = trades.filter(t => Number(t.pnl) < 0);
+
+        const avgWin = wins.length > 0 ? wins.reduce((acc, c) => acc + Number(c.pnl), 0) / wins.length : 0;
+        const avgLoss = losses.length > 0 ? losses.reduce((acc, c) => acc + Math.abs(Number(c.pnl)), 0) / losses.length : 0;
+
+        let balancedTarget = Number(state.settings.defaultDailyTarget) || 50.0;
+        if (avgWin > 0 && avgLoss > 0) {
+          balancedTarget = (avgWin + avgLoss) / 2;
+        } else if (avgWin > 0) {
+          balancedTarget = avgWin;
+        } else if (avgLoss > 0) {
+          balancedTarget = avgLoss;
         }
-        return Number(state.settings.defaultDailyTarget) || 50.0;
+
+        return {
+          avgWin: Math.round(avgWin * 100) / 100,
+          avgLoss: Math.round(avgLoss * 100) / 100,
+          balancedTarget: Math.round(balancedTarget * 100) / 100
+        };
+      }
+
+      function calcDynamicTarget() {
+        return calcPerformanceTargets().balancedTarget;
       }
 
       // Render Main View
       function renderMain() {
         const metrics = computeLedgerMetrics();
-        lblTotalBalance.textContent = `$${metrics.totalBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        lblTotalBalance.textContent = formatMoney(metrics.totalBalance);
+        lblTotalBalance.style.color = metrics.totalBalance >= 0 ? 'var(--text-main)' : 'var(--loss)';
 
-        // Micro-breakdown subtext
+        // Micro-breakdown subtext (Dynamic Tag & Consistent RTL formatting)
+        const isLoss = metrics.netTradingPnl < 0;
+        const pnlTag = isLoss ? 'صافي خسائر صفقات:' : 'صافي أرباح صفقات:';
         lblLedgerBreakdown.innerHTML = `
-          <span><span class="breakdown-tag">تأسيسي:</span> <span class="breakdown-val">$${metrics.base.toFixed(0)}</span></span>
-          ${metrics.deposits > 0 ? `<span><span class="breakdown-tag">إيداعات:</span> <span class="breakdown-val" style="color:var(--profit);">+$${metrics.deposits.toFixed(0)}</span></span>` : ''}
-          ${metrics.withdrawals > 0 ? `<span><span class="breakdown-tag">سحوبات:</span> <span class="breakdown-val" style="color:var(--loss);">-$${metrics.withdrawals.toFixed(0)}</span></span>` : ''}
-          <span><span class="breakdown-tag">مخصوم تعليم:</span> <span class="breakdown-val" style="color:#3b82f6;">-$${metrics.eduDeduction.toFixed(0)}</span></span>
-          <span><span class="breakdown-tag">صافي صفقات:</span> <span class="breakdown-val" style="color:${metrics.netTradingPnl >= 0 ? 'var(--profit)' : 'var(--loss)'};">${metrics.netTradingPnl >= 0 ? '+' : ''}$${metrics.netTradingPnl.toFixed(2)}</span></span>
+          <span class="breakdown-pill"><span class="breakdown-tag">تأسيسي:</span> <span class="breakdown-val">${formatMoney(metrics.base)}</span></span>
+          ${metrics.deposits > 0 ? `<span class="breakdown-pill"><span class="breakdown-tag">إيداعات:</span> <span class="breakdown-val" style="color:var(--profit);">${formatMoney(metrics.deposits, true)}</span></span>` : ''}
+          ${metrics.withdrawals > 0 ? `<span class="breakdown-pill"><span class="breakdown-tag">سحوبات:</span> <span class="breakdown-val" style="color:var(--loss);">${formatMoney(-metrics.withdrawals, true)}</span></span>` : ''}
+          <span class="breakdown-pill"><span class="breakdown-tag">مخصوم تعليم:</span> <span class="breakdown-val" style="color:#3b82f6;">${formatMoney(-metrics.eduDeduction, true)}</span></span>
+          <span class="breakdown-pill"><span class="breakdown-tag">${pnlTag}</span> <span class="breakdown-val" style="color:${metrics.netTradingPnl >= 0 ? 'var(--profit)' : 'var(--loss)'};">${formatMoney(metrics.netTradingPnl, true)}</span></span>
         `;
 
-        // Targets
+        // Targets & Performance breakdown
         const manTgt = Number(state.settings.defaultDailyTarget) || 50.0;
-        const dynTgt = calcDynamicTarget();
-        lblManualTarget.textContent = `$${manTgt.toFixed(2)}`;
-        lblDynamicTarget.textContent = `$${dynTgt.toFixed(2)}`;
+        const perf = calcPerformanceTargets();
+        lblManualTarget.textContent = formatMoney(manTgt);
+        lblDynamicTarget.textContent = formatMoney(perf.balancedTarget);
+
+        const lblAvgWinEl = document.getElementById('lblTargetAvgWin');
+        const lblAvgLossEl = document.getElementById('lblTargetAvgLoss');
+        const lblTargetMidEl = document.getElementById('lblTargetMid');
+        if (lblAvgWinEl) lblAvgWinEl.textContent = formatMoney(perf.avgWin, true);
+        if (lblAvgLossEl) lblAvgLossEl.textContent = formatMoney(-perf.avgLoss, true);
+        if (lblTargetMidEl) lblTargetMidEl.textContent = formatMoney(perf.balancedTarget);
 
         // Day status
         const dayInfo = getDayInfo(activeDate);
@@ -1401,7 +1463,7 @@
                 <span class="log-sub">${trade.accountType === 'education' ? 'تعليم / مخاطرة' : 'رأس المال'} ${trade.notes ? '• ' + escapeHtml(trade.notes) : ''}</span>
               </div>
               <div class="log-right">
-                <span class="log-amount ${isProf ? 'profit' : 'loss'}">${isProf ? '+' : ''}$${pnl.toFixed(2)}</span>
+                <span class="log-amount ${isProf ? 'profit' : 'loss'}">${formatMoney(pnl, true)}</span>
                 <button class="btn-mini-edit" style="color:var(--gold-light); border-color:var(--gold);" data-d="${activeDaySearch}">تعديل في النموذج</button>
               </div>
             `;
@@ -1493,7 +1555,7 @@
                   <div style="font-size:0.68rem; color:var(--text-sub); margin-top:2px;">${weekDays.length} أيام تداول (رابحة: ${winDaysCount})</div>
                 </div>
                 <div style="display:flex; align-items:center; gap:8px;">
-                  <span class="${isWeekProf ? 'week-badge-profit' : 'week-badge-loss'}">${isWeekProf ? '+' : ''}$${weekPnl.toFixed(2)}</span>
+                  <span class="${isWeekProf ? 'week-badge-profit' : 'week-badge-loss'}">${formatMoney(weekPnl, true)}</span>
                   <span style="font-size:0.7rem; color:var(--text-muted);">[عرض الأيام]</span>
                 </div>
               </div>
@@ -1525,7 +1587,7 @@
                   <span style="font-size:0.65rem; color:var(--text-muted);">${t.notes ? '• ' + escapeHtml(t.notes) : ''}</span>
                 </div>
                 <div style="display:flex; gap:6px; align-items:center;">
-                  <span class="log-amount ${isProf ? 'profit' : 'loss'}" style="font-size:0.85rem;">${isProf ? '+' : ''}$${pnl.toFixed(2)}</span>
+                  <span class="log-amount ${isProf ? 'profit' : 'loss'}" style="font-size:0.85rem;">${formatMoney(pnl, true)}</span>
                   <button class="btn-mini-edit" data-d="${dStr}">تعديل</button>
                 </div>
               `;
@@ -1565,7 +1627,7 @@
             <span class="log-sub">${t.accountType === 'education' ? 'تعليم / مخاطرة' : 'رأس المال'} ${t.notes ? '• ' + escapeHtml(t.notes) : ''}</span>
           </div>
           <div class="log-right">
-            <span class="log-amount ${isProf ? 'profit' : 'loss'}">${isProf ? '+' : ''}$${pnl.toFixed(2)}</span>
+            <span class="log-amount ${isProf ? 'profit' : 'loss'}">${formatMoney(pnl, true)}</span>
             <button class="btn-mini-edit" data-d="${dStr}">تعديل</button>
           </div>
         `;
@@ -1700,10 +1762,10 @@
       // Render Analytics View
       function renderAnalytics() {
         const metrics = computeLedgerMetrics();
-        valBaseCapital.textContent = `$${metrics.base.toFixed(2)}`;
-        valTotalDeposits.textContent = `+$${metrics.deposits.toFixed(2)}`;
-        valTotalWithdrawals.textContent = `-$${metrics.withdrawals.toFixed(2)}`;
-        valEduDeduction.textContent = `-$${metrics.eduDeduction.toFixed(2)}`;
+        valBaseCapital.textContent = formatMoney(metrics.base);
+        valTotalDeposits.textContent = formatMoney(metrics.deposits, true);
+        valTotalWithdrawals.textContent = formatMoney(-metrics.withdrawals, true);
+        valEduDeduction.textContent = formatMoney(-metrics.eduDeduction, true);
 
         const trades = Object.values(state.trades);
         const count = trades.length;
@@ -1732,18 +1794,18 @@
         const avgLoss = losses > 0 ? loss / losses : 0;
 
         valWinRate.textContent = `${winRate.toFixed(1)}%`;
-        valNetPnl.textContent = `${net >= 0 ? '+' : ''}$${net.toFixed(2)}`;
+        valNetPnl.textContent = formatMoney(net, true);
         valNetPnl.style.color = net >= 0 ? 'var(--profit)' : 'var(--loss)';
         document.getElementById('lblNetPnl').textContent = net >= 0 ? 'صافي أرباح الصفقات' : 'صافي خسائر الصفقات';
-        valAvgWin.textContent = `+$${avgWin.toFixed(2)}`;
-        valAvgLoss.textContent = `-$${avgLoss.toFixed(2)}`;
+        valAvgWin.textContent = formatMoney(avgWin, true);
+        valAvgLoss.textContent = formatMoney(-avgLoss, true);
 
         const dailyExp = net / count;
-        document.getElementById('valDailyExp').textContent = `${dailyExp >= 0 ? '+' : ''}$${dailyExp.toFixed(2)}`;
+        document.getElementById('valDailyExp').textContent = formatMoney(dailyExp, true);
         document.getElementById('valDailyExp').style.color = dailyExp >= 0 ? 'var(--profit)' : 'var(--loss)';
         document.getElementById('lblDailyExp').textContent = dailyExp >= 0 ? 'المتوسط اليومي (ربح)' : 'المتوسط اليومي (خسارة)';
-        const suggestedTarget = Math.max(avgLoss, avgWin * 1.5).toFixed(2);
-        document.getElementById('valDailyTarget').textContent = `+$${suggestedTarget}`;
+        const balancedTarget = (avgWin + avgLoss) / 2;
+        document.getElementById('valDailyTarget').textContent = formatMoney(balancedTarget);
 
         // True statistical projection without arbitrary floor (21 trading days forward based on empirical daily mean)
         const dailyExpectancy = net / count;
