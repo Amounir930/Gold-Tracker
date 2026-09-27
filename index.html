@@ -783,7 +783,7 @@
           <div class="stat-num" id="valWinRate">0.0%</div>
         </div>
         <div class="stat-box">
-          <div class="stat-label">صافي أرباح الصفقات</div>
+          <div class="stat-label" id="lblNetPnl">صافي نتائج الصفقات</div>
           <div class="stat-num" id="valNetPnl">$0.00</div>
         </div>
         <div class="stat-box">
@@ -1726,6 +1726,7 @@
         valWinRate.textContent = `${winRate.toFixed(1)}%`;
         valNetPnl.textContent = `${net >= 0 ? '+' : ''}$${net.toFixed(2)}`;
         valNetPnl.style.color = net >= 0 ? 'var(--profit)' : 'var(--loss)';
+        document.getElementById('lblNetPnl').textContent = net >= 0 ? 'صافي أرباح الصفقات' : 'صافي خسائر الصفقات';
         valAvgWin.textContent = `+$${avgWin.toFixed(2)}`;
         valAvgLoss.textContent = `-$${avgLoss.toFixed(2)}`;
 
