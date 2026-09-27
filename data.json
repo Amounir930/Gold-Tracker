@@ -1,5 +1,5 @@
 {
-  "version": "1.4.0",
+  "version": "1.5.0",
   "settings": {
     "currency": "USD",
     "defaultDailyTarget": 50.0,
@@ -13,6 +13,7 @@
   },
   "capital": {
     "baseCapital": 0.0,
+    "availableBalance": 40.0,
     "educationBudget": 1116.02
   },
   "transactions": [

@@ -195,6 +195,62 @@
       margin: 2px 0;
     }
 
+    .balance-hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin: 8px 0;
+    }
+
+    @media (max-width: 520px) {
+      .balance-hero-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .hero-kpi-box {
+      background: var(--bg-card-sub);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .hero-kpi-box.available-box {
+      border-color: rgba(34, 197, 94, 0.4);
+      background: rgba(34, 197, 94, 0.05);
+    }
+
+    .hero-kpi-box.ledger-box {
+      border-color: rgba(239, 68, 68, 0.4);
+      background: rgba(239, 68, 68, 0.05);
+    }
+
+    .hero-kpi-title {
+      font-size: 0.75rem;
+      color: var(--text-sub);
+      margin-bottom: 4px;
+      font-weight: 700;
+    }
+
+    .hero-kpi-num {
+      font-family: var(--font-num);
+      font-size: 1.55rem;
+      font-weight: 800;
+      direction: ltr;
+      unicode-bidi: isolate;
+    }
+
+    .hero-kpi-sub {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+
     .balance-actions-group {
       display: flex;
       gap: 6px;
@@ -675,15 +731,28 @@
     <!-- PANE 1: MAIN & LOGS -->
     <div id="tab-main" class="view-pane active">
 
-      <!-- Dynamic Financial Ledger Card -->
+      <!-- Balance & Ledger Hero Card (Dual KPI) -->
       <div class="balance-card">
         <div class="balance-top-row">
           <div>
-            <div class="balance-label">إجمالي رصيد التداول المتاح</div>
-            <div class="balance-num" id="lblTotalBalance">$0.00</div>
+            <div class="balance-label">حالة المحفظة والرصيد</div>
           </div>
           <div class="balance-actions-group">
             <button class="balance-action-btn" id="btnEditBaseCapital">ضبط الأساسي</button>
+          </div>
+        </div>
+        
+        <!-- Dual KPI Hero Display -->
+        <div class="balance-hero-grid">
+          <div class="hero-kpi-box available-box">
+            <div class="hero-kpi-title">رصيد التداول المتاح للتداول</div>
+            <div class="hero-kpi-num" id="lblAvailableBalance" style="color:var(--profit);">$40.00</div>
+            <div class="hero-kpi-sub">المبلغ الفعلي المتبقي في الحساب</div>
+          </div>
+          <div class="hero-kpi-box ledger-box">
+            <div class="hero-kpi-title">الإجمالي بعد خصم كل شيء</div>
+            <div class="hero-kpi-num" id="lblTotalBalance" style="color:var(--loss);">-$1,215.00</div>
+            <div class="hero-kpi-sub">صافي العجز التراكمي الشامل</div>
           </div>
         </div>
         
@@ -941,16 +1010,20 @@
       </div>
 
       <div class="field-group">
+        <label class="field-lbl">رصيد التداول المتاح حالياً في الحساب ($):</label>
+        <input type="number" step="0.01" id="mAvailCap" class="input-compact input-mono" placeholder="40.00">
+      </div>
+      <div class="field-group">
         <label class="field-lbl">رأس المال التأسيسي الأساسي ($):</label>
-        <input type="number" step="0.01" id="mRealCap" class="input-compact input-mono">
+        <input type="number" step="0.01" id="mRealCap" class="input-compact input-mono" placeholder="0.00">
       </div>
       <div class="field-group">
         <label class="field-lbl">ميزانية التعليم المقتطعة بالسالب ($):</label>
-        <input type="number" step="0.01" id="mEduCap" class="input-compact input-mono">
+        <input type="number" step="0.01" id="mEduCap" class="input-compact input-mono" placeholder="1116.02">
       </div>
       <div class="field-group">
         <label class="field-lbl">الهدف اليومي اليدوي ($):</label>
-        <input type="number" step="0.01" id="mTarget" class="input-compact input-mono">
+        <input type="number" step="0.01" id="mTarget" class="input-compact input-mono" placeholder="50.00">
       </div>
       <div style="display:flex; gap:6px; margin-top:12px;">
         <button class="btn-submit-main" id="mSaveCap" style="flex:2;">حفظ وتطبيق الخصم</button>
@@ -1035,7 +1108,7 @@
       ];
 
       const defaultState = {
-        version: '1.4.0',
+        version: '1.5.0',
         settings: {
           currency: 'USD',
           defaultDailyTarget: 50.0,
@@ -1043,6 +1116,7 @@
         },
         capital: {
           baseCapital: 0.0,
+          availableBalance: 40.0,
           educationBudget: 1116.02 // Calibrated so that Net Balance ends at -$1,215.00 exactly with $367.50 deposits
         },
         transactions: demoTransactions,
@@ -1068,13 +1142,27 @@
             return initial;
           }
           const p = JSON.parse(raw);
-          // If stored version is older than 1.4.0 or trades are missing 2026-09-01, reload demo dataset
           const hasTrades = p.trades && Object.keys(p.trades).length > 0;
-          if (p.version !== '1.4.0' || !hasTrades || !p.trades['2026-09-01']) {
+          
+          // Auto-migrate legacy states or clean up accidental 1000 base capital
+          if (p.version !== '1.5.0' || !hasTrades || !p.trades['2026-09-01'] || p.capital?.baseCapital === 1000 || p.capital?.availableBalance === undefined) {
             const upgraded = JSON.parse(JSON.stringify(defaultState));
             if (p.settings && p.settings.githubSync) {
               upgraded.settings.githubSync = p.settings.githubSync;
             }
+            if (p.trades && Object.keys(p.trades).length > 0) {
+              upgraded.trades = p.trades;
+            }
+            if (Array.isArray(p.transactions) && p.transactions.length > 0) {
+              upgraded.transactions = p.transactions;
+            }
+            if (Array.isArray(p.journal) && p.journal.length > 0) {
+              upgraded.journal = p.journal;
+            }
+            upgraded.capital.baseCapital = (p.capital?.baseCapital === 1000) ? 0.0 : Number(p.capital?.baseCapital || 0.0);
+            upgraded.capital.availableBalance = p.capital?.availableBalance !== undefined ? Number(p.capital.availableBalance) : 40.0;
+            upgraded.capital.educationBudget = Number(p.capital?.educationBudget) || 1116.02;
+            upgraded.version = '1.5.0';
             localStorage.setItem(STORAGE_KEY, JSON.stringify(upgraded));
             return upgraded;
           }
@@ -1084,6 +1172,7 @@
             settings: { ...defaultState.settings, ...(p.settings || {}) },
             capital: {
               baseCapital: Number(p.capital?.baseCapital ?? 0.0),
+              availableBalance: Number(p.capital?.availableBalance ?? 40.0),
               educationBudget: Number(p.capital?.educationBudget ?? 1116.02)
             },
             transactions: (Array.isArray(p.transactions) && p.transactions.length > 0) ? p.transactions : defaultState.transactions,
@@ -1096,6 +1185,7 @@
       }
 
       // DOM Elements
+      const lblAvailableBalance = document.getElementById('lblAvailableBalance');
       const lblTotalBalance = document.getElementById('lblTotalBalance');
       const lblLedgerBreakdown = document.getElementById('lblLedgerBreakdown');
       const lblManualTarget = document.getElementById('lblManualTarget');
@@ -1148,6 +1238,7 @@
       const btnEditBaseCapital = document.getElementById('btnEditBaseCapital');
       const mCloseCap = document.getElementById('mCloseCap');
       const mSaveCap = document.getElementById('mSaveCap');
+      const mAvailCap = document.getElementById('mAvailCap');
       const mRealCap = document.getElementById('mRealCap');
       const mEduCap = document.getElementById('mEduCap');
       const mTarget = document.getElementById('mTarget');
@@ -1224,6 +1315,7 @@
       // Equation: Total = Base Capital + Total Deposits - Total Withdrawals - Education Deduction + Net Trading PnL
       function computeLedgerMetrics() {
         const base = Number(state.capital.baseCapital) || 0;
+        const availableBalance = state.capital.availableBalance !== undefined ? Number(state.capital.availableBalance) : 40.0;
         const eduDeduction = Number(state.capital.educationBudget) || 0;
 
         let deposits = 0;
@@ -1245,11 +1337,12 @@
         const netTradingPnl = tradingProfits - tradingLosses;
         const netCashFlow = deposits - withdrawals;
 
-        // Final Active Balance
+        // Final Active Balance after all deductions
         const totalBalance = base + netCashFlow - eduDeduction + netTradingPnl;
 
         return {
           base,
+          availableBalance,
           eduDeduction,
           deposits,
           withdrawals,
@@ -1309,7 +1402,11 @@
       function renderMain() {
         const metrics = computeLedgerMetrics();
         lblTotalBalance.textContent = formatMoney(metrics.totalBalance);
-        lblTotalBalance.style.color = metrics.totalBalance >= 0 ? 'var(--text-main)' : 'var(--loss)';
+        lblTotalBalance.style.color = metrics.totalBalance >= 0 ? 'var(--profit)' : 'var(--loss)';
+
+        if (lblAvailableBalance) {
+          lblAvailableBalance.textContent = formatMoney(metrics.availableBalance);
+        }
 
         // Micro-breakdown subtext (Dynamic Tag & Consistent RTL formatting)
         const isLoss = metrics.netTradingPnl < 0;
@@ -1320,6 +1417,7 @@
           ${metrics.withdrawals > 0 ? `<span class="breakdown-pill"><span class="breakdown-tag">سحوبات:</span> <span class="breakdown-val" style="color:var(--loss);">${formatMoney(-metrics.withdrawals, true)}</span></span>` : ''}
           <span class="breakdown-pill"><span class="breakdown-tag">مخصوم تعليم:</span> <span class="breakdown-val" style="color:#3b82f6;">${formatMoney(-metrics.eduDeduction, true)}</span></span>
           <span class="breakdown-pill"><span class="breakdown-tag">${pnlTag}</span> <span class="breakdown-val" style="color:${metrics.netTradingPnl >= 0 ? 'var(--profit)' : 'var(--loss)'};">${formatMoney(metrics.netTradingPnl, true)}</span></span>
+          <span class="breakdown-pill" style="border-color:var(--gold-dim);"><span class="breakdown-tag" style="color:var(--gold-light);">الإجمالي بعد الخصم:</span> <span class="breakdown-val" style="color:var(--loss);">${formatMoney(metrics.totalBalance)}</span></span>
         `;
 
         // Targets & Performance breakdown
@@ -1735,8 +1833,9 @@
 
       // Base Capital & Education Modal
       function openCapitalModal() {
-        mRealCap.value = state.capital.baseCapital || 1000;
-        mEduCap.value = state.capital.educationBudget || 200;
+        mAvailCap.value = Number(state.capital.availableBalance !== undefined ? state.capital.availableBalance : 40.0);
+        mRealCap.value = Number(state.capital.baseCapital) || 0;
+        mEduCap.value = Number(state.capital.educationBudget) || 1116.02;
         mTarget.value = state.settings.defaultDailyTarget || 50;
         modalCapital.classList.add('open');
       }
@@ -1744,6 +1843,7 @@
       mCloseCap.addEventListener('click', () => modalCapital.classList.remove('open'));
 
       mSaveCap.addEventListener('click', () => {
+        const a = parseFloat(mAvailCap.value);
         const r = parseFloat(mRealCap.value);
         const e = parseFloat(mEduCap.value);
         const t = parseFloat(mTarget.value);
@@ -1751,12 +1851,14 @@
           alert('يرجى إدخال أرقام صحيحة.');
           return;
         }
+        state.capital.availableBalance = isNaN(a) ? 40.0 : a;
         state.capital.baseCapital = r;
         state.capital.educationBudget = e;
         state.settings.defaultDailyTarget = t;
         saveState();
         modalCapital.classList.remove('open');
         renderMain();
+        renderAnalytics();
       });
 
       // Render Analytics View
