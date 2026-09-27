@@ -794,6 +794,14 @@
           <div class="stat-label">متوسط اليوم الخاسر</div>
           <div class="stat-num" id="valAvgLoss">$0.00</div>
         </div>
+        <div class="stat-box" style="border: 1px solid var(--gold-dim);">
+          <div class="stat-label" id="lblDailyExp">المتوسط اليومي الفعلي</div>
+          <div class="stat-num" id="valDailyExp">$0.00</div>
+        </div>
+        <div class="stat-box" style="border: 1px solid var(--gold-dim);">
+          <div class="stat-label">الهدف اليومي المقترح</div>
+          <div class="stat-num" id="valDailyTarget" style="color: var(--gold-light);">$0.00</div>
+        </div>
       </div>
 
       <!-- Financial Ledger Breakdown Metrics -->
@@ -1729,6 +1737,13 @@
         document.getElementById('lblNetPnl').textContent = net >= 0 ? 'صافي أرباح الصفقات' : 'صافي خسائر الصفقات';
         valAvgWin.textContent = `+$${avgWin.toFixed(2)}`;
         valAvgLoss.textContent = `-$${avgLoss.toFixed(2)}`;
+
+        const dailyExp = net / count;
+        document.getElementById('valDailyExp').textContent = `${dailyExp >= 0 ? '+' : ''}$${dailyExp.toFixed(2)}`;
+        document.getElementById('valDailyExp').style.color = dailyExp >= 0 ? 'var(--profit)' : 'var(--loss)';
+        document.getElementById('lblDailyExp').textContent = dailyExp >= 0 ? 'المتوسط اليومي (ربح)' : 'المتوسط اليومي (خسارة)';
+        const suggestedTarget = Math.max(avgLoss, avgWin * 1.5).toFixed(2);
+        document.getElementById('valDailyTarget').textContent = `+$${suggestedTarget}`;
 
         // True statistical projection without arbitrary floor (21 trading days forward based on empirical daily mean)
         const dailyExpectancy = net / count;
