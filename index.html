@@ -224,27 +224,33 @@
     }
 
     .balance-sub-breakdown {
-      font-size: 0.75rem;
-      color: var(--text-sub);
+      font-size: 0.72rem;
+      color: var(--text-muted);
       border-top: 1px solid var(--border);
-      padding-top: 8px;
-      margin-top: 8px;
+      padding-top: 6px;
+      margin-top: 6px;
       display: flex;
       flex-wrap: wrap;
-      gap: 6px 10px;
+      gap: 4px 8px;
       justify-content: center;
       align-items: center;
       direction: rtl;
+      line-height: 1.4;
     }
 
     .breakdown-pill {
       display: inline-flex;
       align-items: center;
-      gap: 4px;
-      background: rgba(255, 255, 255, 0.03);
-      padding: 3px 8px;
-      border-radius: var(--radius-sm);
-      border: 1px solid rgba(255, 255, 255, 0.06);
+      gap: 3px;
+      background: transparent;
+      padding: 0;
+      border: none;
+    }
+
+    .breakdown-sep {
+      color: var(--border);
+      font-weight: 700;
+      margin: 0 1px;
     }
 
     .breakdown-tag {
@@ -948,15 +954,15 @@
   <!-- Minimal Header -->
   <header>
     <div class="header-inner">
-      <div class="brand-title">متتبع الذهب</div>
+      <div class="brand-title">
+        متتبع الذهب
+        <span class="sync-dot" id="syncStatusDot" title="حالة المزامنة"></span>
+      </div>
       <div class="header-btns">
-        <button class="btn-header" id="btnSoundToggle" title="تفعيل أو كتم صوت التنبيهات">صوت التنبيه: يعمل</button>
-        <button class="btn-header" id="btnSync">
-          <span class="sync-dot" id="syncStatusDot"></span>
-          <span id="syncStatusLbl">مزامنة GitHub</span>
-        </button>
+        <span id="syncStatusLbl" style="display:none;">مزامنة GitHub</span>
+        <button class="btn-header" id="btnSync">مزامنة</button>
         <button class="btn-header" id="btnCashFlow">إيداع / سحب</button>
-        <button class="btn-header" id="btnLogout" style="color:var(--loss);" title="تسجيل الخروج من الحساب">خروج</button>
+        <button class="btn-header" id="btnLogout" style="color:var(--loss);" title="تسجيل الخروج">خروج</button>
       </div>
     </div>
   </header>
@@ -965,29 +971,14 @@
 
     <!-- Tab Bar -->
     <div class="nav-tabs">
-      <button class="nav-tab active" data-tab="tab-main">الرئيسية والسجل</button>
-      <button class="nav-tab" data-tab="tab-sessions">جلسات السيولة والتنبيهات</button>
-      <button class="nav-tab" data-tab="tab-stats">الإحصائيات والمحاكاة</button>
-      <button class="nav-tab" data-tab="tab-notes">دفتر القواعد</button>
+      <button class="nav-tab active" data-tab="tab-main">الرئيسية</button>
+      <button class="nav-tab" data-tab="tab-sessions">الجلسات</button>
+      <button class="nav-tab" data-tab="tab-stats">الإحصائيات</button>
+      <button class="nav-tab" data-tab="tab-notes">القواعد</button>
     </div>
 
     <!-- PANE 1: MAIN & LOGS -->
     <div id="tab-main" class="view-pane active">
-
-      <!-- Current Session & Alert Indicator Bar -->
-      <div class="session-strip" id="sessionStrip">
-        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px;">
-          <div style="display:flex; align-items:center; gap:8px;">
-            <span class="session-pulse-dot" id="sessionPulseDot"></span>
-            <span style="font-weight:700; color:var(--gold-light);" id="lblActiveSessionTitle">جلسة آسيا (01:00 - 09:00)</span>
-            <span class="session-lot-badge" id="lblActiveSessionLot">اللوت: 0.01</span>
-          </div>
-          <div style="font-size:0.75rem; color:var(--text-muted); font-family:var(--font-num);" id="lblCairoClock">07:15 ص (القاهرة)</div>
-        </div>
-        <div style="font-size:0.75rem; color:var(--text-sub); margin-top:4px;" id="lblActiveSessionDirective">
-          توجيه الجلسة: تحديد قمة وقاع النطاق لرصد فخاخ السيولة لاحقاً.
-        </div>
-      </div>
 
       <!-- Balance Card: Single Clean Box (خانة واحدة) -->
       <div class="balance-card">
@@ -1013,23 +1004,21 @@
         </div>
       </div>
 
-      <!-- Target Strip -->
-      <div class="target-bar" style="display:flex; flex-direction:column; gap:6px;">
-        <div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-          <div class="target-item">
-            <span class="target-lbl">الهدف الحالي:</span>
-            <span class="target-val" id="lblManualTarget">$50.00</span>
-          </div>
-          <div class="target-item" style="gap:6px;">
-            <span class="target-lbl">المقترح (متوسط الأداء):</span>
-            <span class="target-val" id="lblDynamicTarget" style="color:var(--gold-light);">$0.00</span>
-            <button class="btn-apply-dyn" id="btnApplyDyn" title="تطبيق الهدف المقترح كهدف يومي">تطبيق</button>
-          </div>
+      <!-- Target Strip (Single Line, Ultra Clean) -->
+      <div class="target-bar" style="display:flex; justify-content:space-between; align-items:center; padding:7px 12px; margin-bottom:8px;">
+        <div class="target-item">
+          <span class="target-lbl">الهدف اليومي:</span>
+          <span class="target-val" id="lblManualTarget">$50.00</span>
         </div>
-        <div class="target-breakdown-sub" style="display:flex; justify-content:space-between; font-size:0.72rem; color:var(--text-sub); border-top:1px dashed var(--border); padding-top:4px; width:100%;">
-          <span>متوسط اليوم الرابح: <span class="breakdown-val" id="lblTargetAvgWin" style="color:var(--profit);">+$0.00</span></span>
-          <span>متوسط اليوم الخاسر: <span class="breakdown-val" id="lblTargetAvgLoss" style="color:var(--loss);">-$0.00</span></span>
-          <span>المتوسط بينهما: <span class="breakdown-val" id="lblTargetMid" style="color:var(--gold-light);">$0.00</span></span>
+        <div class="target-item" style="gap:6px;">
+          <span class="target-lbl">المقترح:</span>
+          <span class="target-val" id="lblDynamicTarget" style="color:var(--gold-light);">$0.00</span>
+          <button class="btn-apply-dyn" id="btnApplyDyn" title="تطبيق الهدف المقترح كهدف يومي">تطبيق</button>
+        </div>
+        <div style="display:none;">
+          <span id="lblTargetAvgWin"></span>
+          <span id="lblTargetAvgLoss"></span>
+          <span id="lblTargetMid"></span>
         </div>
       </div>
 
@@ -1110,6 +1099,21 @@
     <!-- PANE: SESSIONS & LIQUIDITY SCHEDULE (المحطات المؤسسية وتدفق سيولة الذهب) -->
     <div id="tab-sessions" class="view-pane">
       
+      <!-- Current Session & Alert Indicator Bar -->
+      <div class="session-strip" id="sessionStrip">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span class="session-pulse-dot" id="sessionPulseDot"></span>
+            <span style="font-weight:700; color:var(--gold-light);" id="lblActiveSessionTitle">جلسة آسيا (01:00 - 09:00)</span>
+            <span class="session-lot-badge" id="lblActiveSessionLot">اللوت: 0.01</span>
+          </div>
+          <div style="font-size:0.75rem; color:var(--text-muted); font-family:var(--font-num);" id="lblCairoClock">07:15 ص (القاهرة)</div>
+        </div>
+        <div style="font-size:0.75rem; color:var(--text-sub); margin-top:4px;" id="lblActiveSessionDirective">
+          توجيه الجلسة: تحديد قمة وقاع النطاق لرصد فخاخ السيولة لاحقاً.
+        </div>
+      </div>
+
       <!-- Session Header & Live Cairo Clock -->
       <div class="session-card">
         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
@@ -1118,7 +1122,7 @@
             <div style="font-size:1.15rem; font-weight:800; color:var(--gold-light); font-family:var(--font-num); direction:ltr; text-align:right;" id="lblCairoClockDetail">--:--:-- (القاهرة)</div>
           </div>
           <div style="display:flex; gap:6px; flex-wrap:wrap;">
-            <button class="btn-today" id="btnSoundToggleDetail">صوت التنبيه: يعمل</button>
+            <button class="btn-today" id="btnSoundToggle">صوت التنبيه: يعمل</button>
             <button class="btn-today" id="btnRequestNotif">إشعارات المتصفح</button>
             <button class="btn-today" id="btnTestAlert" style="color:var(--gold-light);">اختبار التنبيه</button>
           </div>
@@ -2241,10 +2245,13 @@
         const egpRateVal = Number(state?.settings?.egpRate) || 50.0;
         lblLedgerBreakdown.innerHTML = `
           <span class="breakdown-pill"><span class="breakdown-tag">تأسيسي:</span> <span class="breakdown-val">${formatMoney(metrics.base)}</span></span>
-          ${metrics.deposits > 0 ? `<span class="breakdown-pill"><span class="breakdown-tag">إيداعات:</span> <span class="breakdown-val" style="color:var(--profit);">${formatMoney(metrics.deposits, true)}</span></span>` : ''}
-          ${metrics.withdrawals > 0 ? `<span class="breakdown-pill"><span class="breakdown-tag">سحوبات:</span> <span class="breakdown-val" style="color:var(--loss);">${formatMoney(-metrics.withdrawals, true)}</span></span>` : ''}
+          <span class="breakdown-sep">·</span>
+          ${metrics.deposits > 0 ? `<span class="breakdown-pill"><span class="breakdown-tag">إيداعات:</span> <span class="breakdown-val" style="color:var(--profit);">${formatMoney(metrics.deposits, true)}</span></span><span class="breakdown-sep">·</span>` : ''}
+          ${metrics.withdrawals > 0 ? `<span class="breakdown-pill"><span class="breakdown-tag">سحوبات:</span> <span class="breakdown-val" style="color:var(--loss);">${formatMoney(-metrics.withdrawals, true)}</span></span><span class="breakdown-sep">·</span>` : ''}
           <span class="breakdown-pill"><span class="breakdown-tag">مخصوم تعليم:</span> <span class="breakdown-val" style="color:#3b82f6;">${formatMoney(-metrics.eduDeduction, true)}</span></span>
+          <span class="breakdown-sep">·</span>
           <span class="breakdown-pill"><span class="breakdown-tag">${pnlTag}</span> <span class="breakdown-val" style="color:${metrics.netTradingPnl >= 0 ? 'var(--profit)' : 'var(--loss)'};">${formatMoney(metrics.netTradingPnl, true)}</span></span>
+          <span class="breakdown-sep">·</span>
           <span class="breakdown-pill"><span class="breakdown-tag">الصرف:</span> <span class="breakdown-val">${egpRateVal} ج.م/$</span></span>
         `;
 
