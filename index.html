@@ -654,21 +654,309 @@
       font-weight: 600;
     }
 
+    /* Login Gate Overlay */
+    .login-gate {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 12, 16, 0.96);
+      backdrop-filter: blur(8px);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .login-gate.hidden {
+      display: none !important;
+    }
+    .login-card {
+      background: var(--bg-card);
+      border: 1px solid var(--gold-dim);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6), 0 0 20px rgba(234, 179, 8, 0.12);
+      border-radius: var(--radius-md);
+      width: 100%;
+      max-width: 380px;
+      padding: 24px;
+    }
+    .login-badge {
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--gold-light);
+      background: var(--gold-bg);
+      border: 1px solid var(--gold-dim);
+      padding: 3px 8px;
+      border-radius: var(--radius-sm);
+      margin-bottom: 10px;
+    }
+    .login-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin: 0 0 6px 0;
+    }
+    .login-desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin: 0 0 16px 0;
+      line-height: 1.4;
+    }
+    .login-error {
+      background: rgba(239, 68, 68, 0.12);
+      border: 1px solid rgba(239, 68, 68, 0.35);
+      color: #ef4444;
+      padding: 8px 10px;
+      border-radius: var(--radius-sm);
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    /* Live Session Strip */
+    .session-strip {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-right: 3px solid var(--gold);
+      border-radius: var(--radius-md);
+      padding: 10px 12px;
+      margin-bottom: 10px;
+    }
+    .session-pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--profit);
+      display: inline-block;
+      box-shadow: 0 0 8px var(--profit);
+      animation: pulseAnim 2s infinite;
+    }
+    @keyframes pulseAnim {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+    .session-lot-badge {
+      font-family: var(--font-num);
+      font-size: 0.72rem;
+      font-weight: 700;
+      background: var(--gold-bg);
+      color: var(--gold-light);
+      border: 1px solid var(--gold-dim);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    /* Floating Alert Toast */
+    .alert-toast {
+      position: fixed;
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-150%);
+      width: calc(100% - 24px);
+      max-width: 480px;
+      background: var(--bg-card);
+      border: 1px solid var(--gold);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 24px rgba(234, 179, 8, 0.25);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      z-index: 10000;
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .alert-toast.show {
+      transform: translateX(-50%) translateY(0);
+    }
+    .alert-toast-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .alert-toast-tag {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--gold-light);
+      background: var(--gold-bg);
+      border: 1px solid var(--gold-dim);
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+    .alert-toast-time {
+      font-family: var(--font-num);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+    .alert-toast-close {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.3rem;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .alert-toast-title {
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: var(--text-main);
+    }
+    .alert-toast-body {
+      font-size: 0.78rem;
+      color: var(--text-sub);
+      line-height: 1.35;
+    }
+    .alert-toast-directive {
+      background: rgba(234, 179, 8, 0.08);
+      border: 1px dashed var(--gold-dim);
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      font-size: 0.78rem;
+      color: var(--gold-light);
+      font-weight: 700;
+      line-height: 1.4;
+    }
+    .alert-toast-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 4px;
+    }
+    .alert-toast-lot {
+      font-size: 0.75rem;
+      font-family: var(--font-num);
+      color: var(--text-main);
+      font-weight: 700;
+    }
+    .alert-toast-ack-btn {
+      background: var(--gold);
+      color: #000;
+      border: none;
+      padding: 5px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 0.76rem;
+      font-weight: 800;
+      cursor: pointer;
+      font-family: var(--font-ar);
+    }
+
+    /* Sessions Table */
+    .session-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      margin-bottom: 10px;
+    }
+    .session-table-wrap {
+      overflow-x: auto;
+      margin-top: 8px;
+    }
+    .session-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.75rem;
+      text-align: right;
+    }
+    .session-table th {
+      background: var(--bg-card-sub);
+      color: var(--gold-light);
+      font-weight: 700;
+      padding: 8px 6px;
+      border: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    .session-table td {
+      padding: 8px 6px;
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      vertical-align: middle;
+    }
+    .session-table tr.active-row {
+      background: rgba(234, 179, 8, 0.1);
+      outline: 1px solid var(--gold-dim);
+    }
+    .session-lot-tag {
+      font-family: var(--font-num);
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      display: inline-block;
+      white-space: nowrap;
+    }
+    .session-lot-tag.allowed {
+      background: rgba(16, 185, 129, 0.15);
+      color: #10b981;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+    .session-lot-tag.forbidden {
+      background: rgba(239, 68, 68, 0.15);
+      color: #ef4444;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
 
   </style>
 </head>
 <body>
+
+  <!-- Login Gate Overlay -->
+  <div id="loginGate" class="login-gate">
+    <div class="login-card">
+      <div class="login-badge">نظام حماية وإدارة حساب التداول</div>
+      <h1 class="login-title">متتبع الذهب | Gold Tracker</h1>
+      <p class="login-desc">أدخل بيانات الاعتماد للمتابعة والوصول إلى سجل الصفقات والحسابات.</p>
+      
+      <div id="loginError" class="login-error" style="display:none;"></div>
+      
+      <form id="loginForm" onsubmit="return false;">
+        <div class="field-group">
+          <label class="field-lbl" for="loginUser">اسم المستخدم:</label>
+          <input type="text" id="loginUser" class="input-compact" placeholder="adel" autocomplete="username" required>
+        </div>
+        
+        <div class="field-group">
+          <label class="field-lbl" for="loginPass">كلمة المرور:</label>
+          <input type="password" id="loginPass" class="input-compact" placeholder="adel123" autocomplete="current-password" required>
+        </div>
+        
+        <div style="display:flex; align-items:center; gap:8px; margin:12px 0;">
+          <input type="checkbox" id="chkRememberMe" checked style="cursor:pointer; accent-color:var(--gold);">
+          <label for="chkRememberMe" style="font-size:0.75rem; color:var(--text-sub); cursor:pointer;">تذكر تسجيل الدخول على هذا المتصفح</label>
+        </div>
+        
+        <button type="submit" id="btnLoginSubmit" class="btn-submit-main" style="width:100%; padding:10px; font-size:0.9rem;">تسجيل الدخول</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Floating Alert Toast -->
+  <div id="alertToast" class="alert-toast">
+    <div class="alert-toast-head">
+      <div style="display:flex; align-items:center; gap:8px;">
+        <span class="alert-toast-tag" id="alertToastTag">تنبيه سيولة مؤسسية</span>
+        <span class="alert-toast-time" id="alertToastTime"></span>
+      </div>
+      <button class="alert-toast-close" id="btnAlertClose">&times;</button>
+    </div>
+    <div class="alert-toast-title" id="alertToastTitle"></div>
+    <div class="alert-toast-body" id="alertToastBody"></div>
+    <div class="alert-toast-directive" id="alertToastDirective"></div>
+    <div class="alert-toast-footer">
+      <span class="alert-toast-lot" id="alertToastLot"></span>
+      <button class="alert-toast-ack-btn" id="btnAlertAck">تأكيد وقراءة التنبيه</button>
+    </div>
+  </div>
 
   <!-- Minimal Header -->
   <header>
     <div class="header-inner">
       <div class="brand-title">متتبع الذهب</div>
       <div class="header-btns">
+        <button class="btn-header" id="btnSoundToggle" title="تفعيل أو كتم صوت التنبيهات">صوت التنبيه: يعمل</button>
         <button class="btn-header" id="btnSync">
           <span class="sync-dot" id="syncStatusDot"></span>
           <span id="syncStatusLbl">مزامنة GitHub</span>
         </button>
         <button class="btn-header" id="btnCashFlow">إيداع / سحب</button>
+        <button class="btn-header" id="btnLogout" style="color:var(--loss);" title="تسجيل الخروج من الحساب">خروج</button>
       </div>
     </div>
   </header>
@@ -678,12 +966,28 @@
     <!-- Tab Bar -->
     <div class="nav-tabs">
       <button class="nav-tab active" data-tab="tab-main">الرئيسية والسجل</button>
+      <button class="nav-tab" data-tab="tab-sessions">جلسات السيولة والتنبيهات</button>
       <button class="nav-tab" data-tab="tab-stats">الإحصائيات والمحاكاة</button>
       <button class="nav-tab" data-tab="tab-notes">دفتر القواعد</button>
     </div>
 
     <!-- PANE 1: MAIN & LOGS -->
     <div id="tab-main" class="view-pane active">
+
+      <!-- Current Session & Alert Indicator Bar -->
+      <div class="session-strip" id="sessionStrip">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span class="session-pulse-dot" id="sessionPulseDot"></span>
+            <span style="font-weight:700; color:var(--gold-light);" id="lblActiveSessionTitle">جلسة آسيا (01:00 - 09:00)</span>
+            <span class="session-lot-badge" id="lblActiveSessionLot">اللوت: 0.01</span>
+          </div>
+          <div style="font-size:0.75rem; color:var(--text-muted); font-family:var(--font-num);" id="lblCairoClock">07:15 ص (القاهرة)</div>
+        </div>
+        <div style="font-size:0.75rem; color:var(--text-sub); margin-top:4px;" id="lblActiveSessionDirective">
+          توجيه الجلسة: تحديد قمة وقاع النطاق لرصد فخاخ السيولة لاحقاً.
+        </div>
+      </div>
 
       <!-- Balance Card: Single Clean Box (خانة واحدة) -->
       <div class="balance-card">
@@ -798,6 +1102,87 @@
 
         <div class="log-list" id="logsContainer">
           <!-- Rendered by JS -->
+        </div>
+      </div>
+
+    </div>
+
+    <!-- PANE: SESSIONS & LIQUIDITY SCHEDULE (المحطات المؤسسية وتدفق سيولة الذهب) -->
+    <div id="tab-sessions" class="view-pane">
+      
+      <!-- Session Header & Live Cairo Clock -->
+      <div class="session-card">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+          <div>
+            <div style="font-size:0.75rem; color:var(--text-muted);">التوقيت المرجعي المعتمد:</div>
+            <div style="font-size:1.15rem; font-weight:800; color:var(--gold-light); font-family:var(--font-num); direction:ltr; text-align:right;" id="lblCairoClockDetail">--:--:-- (القاهرة)</div>
+          </div>
+          <div style="display:flex; gap:6px; flex-wrap:wrap;">
+            <button class="btn-today" id="btnSoundToggleDetail">صوت التنبيه: يعمل</button>
+            <button class="btn-today" id="btnRequestNotif">إشعارات المتصفح</button>
+            <button class="btn-today" id="btnTestAlert" style="color:var(--gold-light);">اختبار التنبيه</button>
+          </div>
+        </div>
+        
+        <div style="margin-top:10px; padding:8px 10px; background:var(--bg-input); border-radius:var(--radius-sm); border:1px solid var(--border);">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:0.72rem; color:var(--text-muted);">المحطة الحالية:</span>
+            <span style="font-size:0.75rem; font-weight:700; color:var(--gold-light);" id="lblCurrentSessionName">جلسة آسيا</span>
+          </div>
+          <div style="font-size:0.74rem; color:var(--text-sub); margin-top:4px;" id="lblCurrentSessionDesc">تذبذب بطيء داخل نطاق عرضي ضيق | اللوت الموصى به: 0.01</div>
+        </div>
+      </div>
+
+      <!-- Two Strict Discipline Alerts (تنبيهات الانضباط الصارم وحماية الرصيد) -->
+      <div class="session-card" style="border-right:3px solid var(--loss);">
+        <div style="font-size:0.85rem; font-weight:800; color:var(--text-main); margin-bottom:8px;">
+          تنبيهات الانضباط الصارم وحماية الرصيد
+        </div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <div style="background:rgba(239, 68, 68, 0.08); border:1px solid rgba(239, 68, 68, 0.25); border-radius:var(--radius-sm); padding:8px 10px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-weight:700; color:#ef4444; font-size:0.78rem;">تنبيه الفجر (05:00 ص):</span>
+              <span style="font-family:var(--font-num); font-size:0.7rem; color:var(--text-muted);">05:00 القاهرة</span>
+            </div>
+            <div style="font-size:0.74rem; color:var(--text-sub); margin-top:2px;">
+              اقفل الصفقات حتى لو خسران لوقف تدفق السيولة والنزيف وحماية رصيد المحفظة.
+            </div>
+          </div>
+
+          <div style="background:rgba(239, 68, 68, 0.08); border:1px solid rgba(239, 68, 68, 0.25); border-radius:var(--radius-sm); padding:8px 10px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-weight:700; color:#ef4444; font-size:0.78rem;">تنبيه المساء (07:00 م / 19:00):</span>
+              <span style="font-family:var(--font-num); font-size:0.7rem; color:var(--text-muted);">19:00 القاهرة</span>
+            </div>
+            <div style="font-size:0.74rem; color:var(--text-sub); margin-top:2px;">
+              بعد الساعة 7 مساءً: اقفل الصفقات والشارت نظراً لقفل البنوك وانعدام السيولة -- حافظ على رصيدك.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Institutional Schedule Table (جدول المحطات المؤسسية وتدفق سيولة الذهب) -->
+      <div class="session-card">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:0.85rem; font-weight:800; color:var(--gold-light);">جدول تدفق السيولة وجلسات الذهب المؤسسية</span>
+          <span style="font-size:0.7rem; color:var(--text-muted);">توقيت القاهرة الرسمي</span>
+        </div>
+
+        <div class="session-table-wrap">
+          <table class="session-table">
+            <thead>
+              <tr>
+                <th>الجلسة / المحطة المؤسسية</th>
+                <th>التوقيت (القاهرة)</th>
+                <th>طبيعة حركة الذهب</th>
+                <th>اللوت الموصى به</th>
+                <th>التوجيه الفني التنفيذي</th>
+              </tr>
+            </thead>
+            <tbody id="sessionTableBody">
+              <!-- Populated by JS with live highlight -->
+            </tbody>
+          </table>
         </div>
       </div>
 
@@ -1655,6 +2040,32 @@
       const btnSaveRule = document.getElementById('btnSaveRule');
       const journalContainer = document.getElementById('journalContainer');
 
+      // Login Gate DOM
+      const loginGate = document.getElementById('loginGate');
+      const loginUser = document.getElementById('loginUser');
+      const loginPass = document.getElementById('loginPass');
+      const loginError = document.getElementById('loginError');
+      const chkRememberMe = document.getElementById('chkRememberMe');
+      const btnLoginSubmit = document.getElementById('btnLoginSubmit');
+      const btnLogout = document.getElementById('btnLogout');
+
+      // Sessions & Alerts DOM
+      const btnSoundToggle = document.getElementById('btnSoundToggle');
+      const btnSoundToggleDetail = document.getElementById('btnSoundToggleDetail');
+      const btnRequestNotif = document.getElementById('btnRequestNotif');
+      const btnTestAlert = document.getElementById('btnTestAlert');
+      const alertToast = document.getElementById('alertToast');
+      const btnAlertClose = document.getElementById('btnAlertClose');
+      const btnAlertAck = document.getElementById('btnAlertAck');
+      const lblCairoClock = document.getElementById('lblCairoClock');
+      const lblCairoClockDetail = document.getElementById('lblCairoClockDetail');
+      const lblActiveSessionTitle = document.getElementById('lblActiveSessionTitle');
+      const lblActiveSessionLot = document.getElementById('lblActiveSessionLot');
+      const lblActiveSessionDirective = document.getElementById('lblActiveSessionDirective');
+      const lblCurrentSessionName = document.getElementById('lblCurrentSessionName');
+      const lblCurrentSessionDesc = document.getElementById('lblCurrentSessionDesc');
+      const sessionTableBody = document.getElementById('sessionTableBody');
+
       // Tab Switcher
       document.querySelectorAll('.nav-tab').forEach(tab => {
         tab.addEventListener('click', () => {
@@ -1665,6 +2076,7 @@
           if (target) target.classList.add('active');
           if (tab.getAttribute('data-tab') === 'tab-stats') renderAnalytics();
           if (tab.getAttribute('data-tab') === 'tab-notes') renderJournal();
+          if (tab.getAttribute('data-tab') === 'tab-sessions') renderSessionsTable();
         });
       });
 
@@ -2686,8 +3098,476 @@
         return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
       }
 
+      // ==========================================
+      // AUTHENTICATION & LOGIN GATE
+      // ==========================================
+      const AUTH_KEY = 'gold_tracker_auth_v1';
+
+      function checkAuth() {
+        if (!loginGate) return;
+        const authed = localStorage.getItem(AUTH_KEY) === 'true' || sessionStorage.getItem(AUTH_KEY) === 'true';
+        if (authed) {
+          loginGate.classList.add('hidden');
+        } else {
+          loginGate.classList.remove('hidden');
+        }
+      }
+
+      function handleLogin() {
+        if (!loginUser || !loginPass) return;
+        const u = loginUser.value.trim().toLowerCase();
+        const p = loginPass.value.trim();
+
+        if (u === 'adel' && p === 'adel123') {
+          if (loginError) loginError.style.display = 'none';
+          if (chkRememberMe && chkRememberMe.checked) {
+            localStorage.setItem(AUTH_KEY, 'true');
+          } else {
+            sessionStorage.setItem(AUTH_KEY, 'true');
+          }
+          if (loginGate) loginGate.classList.add('hidden');
+          loginPass.value = '';
+        } else {
+          if (loginError) {
+            loginError.textContent = 'اسم المستخدم أو كلمة المرور غير صحيحة. يرجى التأكد من البيانات.';
+            loginError.style.display = 'block';
+          }
+        }
+      }
+
+      function handleLogout() {
+        localStorage.removeItem(AUTH_KEY);
+        sessionStorage.removeItem(AUTH_KEY);
+        if (loginError) loginError.style.display = 'none';
+        if (loginPass) loginPass.value = '';
+        if (loginGate) loginGate.classList.remove('hidden');
+      }
+
+      if (btnLoginSubmit) btnLoginSubmit.addEventListener('click', handleLogin);
+      if (loginPass) {
+        loginPass.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') handleLogin();
+        });
+      }
+      if (loginUser) {
+        loginUser.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') handleLogin();
+        });
+      }
+      if (btnLogout) {
+        btnLogout.addEventListener('click', handleLogout);
+      }
+
+      // ==========================================
+      // SESSIONS & GOLD LIQUIDITY ALERTS ENGINE
+      // ==========================================
+      const SESSIONS_DATA = [
+        {
+          id: 's_asia',
+          name: 'جلسة آسيا (Asian Session)',
+          timeDisplay: '01:00 - 09:00',
+          startHour: 1, startMin: 0,
+          endHour: 9, endMin: 0,
+          marketNature: 'تذبذب بطيء داخل نطاق عرضي ضيق',
+          lotRecommended: '0.01',
+          lotAllowed: true,
+          directive: 'تحديد قمة وقاع النطاق لرصد فخاخ السيولة لاحقاً.'
+        },
+        {
+          id: 's_london_open',
+          name: 'افتتاح لندن المالي (London Open)',
+          timeDisplay: '09:00 - 12:00',
+          startHour: 9, startMin: 0,
+          endHour: 12, endMin: 0,
+          marketNature: 'سيولة عالية وكسر نطاق آسيا وتحديد الاتجاه',
+          lotRecommended: '0.01',
+          lotAllowed: true,
+          directive: 'أفضل فترة لاصطياد الاتجاه اليومي الجديد.'
+        },
+        {
+          id: 's_lbma_fix',
+          name: 'تثبيت الذهب الصباحي (LBMA AM Fix)',
+          timeDisplay: '12:30 - 13:00',
+          startHour: 12, startMin: 30,
+          endHour: 13, endMin: 0,
+          marketNature: 'حركة فجائية وإعادة تسعير للسبائك',
+          lotRecommended: '0.01',
+          lotAllowed: true,
+          directive: 'الحذر من الذيول السريعة المفاجئة.'
+        },
+        {
+          id: 's_overlap_comex',
+          name: 'تداخل لندن - نيويورك + COMEX',
+          timeDisplay: '15:00 - 18:30',
+          startHour: 15, startMin: 0,
+          endHour: 18, endMin: 30,
+          marketNature: 'أعلى سيولة وأعنف تحركات واتجاهات قوية',
+          lotRecommended: 'فقط 0.01 (ممنوع رفعه نهائياً)',
+          lotAllowed: true,
+          directive: 'التداول فقط مع الاتجاه المؤكد بوقف خسارة صارم.'
+        },
+        {
+          id: 's_london_close',
+          name: 'إغلاق لندن (London Close Fix)',
+          timeDisplay: '18:30 - 19:30',
+          startHour: 18, startMin: 30,
+          endHour: 19, endMin: 30,
+          marketNature: 'تباطؤ نسبي واحتمال حدوث انعكاسات يومية',
+          lotRecommended: '0.01',
+          lotAllowed: true,
+          directive: 'تأمين الأرباح ونقل الوقف لنقطة الدخول.'
+        },
+        {
+          id: 's_ny_evening',
+          name: 'نيويورك المسائية',
+          timeDisplay: '19:30 - 23:00',
+          startHour: 19, startMin: 30,
+          endHour: 23, endMin: 0,
+          marketNature: 'استكمال هادئ للاتجاه أو مسار تصحيحي',
+          lotRecommended: '0.01',
+          lotAllowed: true,
+          directive: 'تداول خفيف وفرص محددة.'
+        },
+        {
+          id: 's_rollover',
+          name: 'فترة التبييت والتسوية (Rollover)',
+          timeDisplay: '23:00 - 01:00',
+          startHour: 23, startMin: 0,
+          endHour: 25, endMin: 0,
+          marketNature: 'فراغ سيولة واتساع هائل في السبريد',
+          lotRecommended: '0.00 (ممنوع التداول)',
+          lotAllowed: false,
+          directive: 'إغلاق كافة الصفقات وتجنب فتح أي أوامر.'
+        }
+      ];
+
+      const SCHEDULED_ALERTS = [
+        {
+          id: 'alert_0100',
+          hour: 1, min: 0,
+          tag: 'افتتاح جلسة',
+          title: 'بدء جلسة آسيا (01:00 ص)',
+          body: 'تذبذب بطيء داخل نطاق عرضي ضيق.',
+          directive: 'تحديد قمة وقاع النطاق لرصد فخاخ السيولة لاحقاً.',
+          lot: 'اللوت الموصى به: 0.01'
+        },
+        {
+          id: 'alert_0500',
+          hour: 5, min: 0,
+          tag: 'انضباط فجر صارم',
+          title: 'تنبيه الفجر: إغلاق الصفقات (05:00 ص)',
+          body: 'سيولة متدنية وتثبيت مراكز.',
+          directive: 'اقفل الصفقات حتى لو خسران لوقف تدفق السيولة والنزيف وحماية رصيدك.',
+          lot: 'اللوت: 0.00 (إغلاق وتأمين)'
+        },
+        {
+          id: 'alert_0900',
+          hour: 9, min: 0,
+          tag: 'افتتاح أوروبي',
+          title: 'افتتاح لندن المالي (09:00 ص)',
+          body: 'سيولة عالية وكسر نطاق آسيا وتحديد الاتجاه.',
+          directive: 'أفضل فترة لاصطياد الاتجاه اليومي الجديد.',
+          lot: 'اللوت الموصى به: 0.01'
+        },
+        {
+          id: 'alert_1230',
+          hour: 12, min: 30,
+          tag: 'تثبيت السبائك',
+          title: 'تثبيت الذهب الصباحي (LBMA AM Fix 12:30 م)',
+          body: 'حركة فجائية وإعادة تسعير للسبائك.',
+          directive: 'الحذر من الذيول السريعة المفاجئة.',
+          lot: 'اللوت الموصى به: 0.01'
+        },
+        {
+          id: 'alert_1500',
+          hour: 15, min: 0,
+          tag: 'ذروة السيولة',
+          title: 'تداخل لندن - نيويورك + COMEX (03:00 م)',
+          body: 'أعلى سيولة وأعنف تحركات واتجاهات قوية.',
+          directive: 'التداول فقط مع الاتجاه المؤكد بوقف خسارة صارم.',
+          lot: 'فقط 0.01 (ممنوع رفعه نهائياً)'
+        },
+        {
+          id: 'alert_1830',
+          hour: 18, min: 30,
+          tag: 'إغلاق أوروبي',
+          title: 'إغلاق لندن (London Close Fix 06:30 م)',
+          body: 'تباطؤ نسبي واحتمال حدوث انعكاسات يومية.',
+          directive: 'تأمين الأرباح ونقل الوقف لنقطة الدخول فوراً.',
+          lot: 'اللوت الموصى به: 0.01'
+        },
+        {
+          id: 'alert_1900',
+          hour: 19, min: 0,
+          tag: 'انضباط مسائي صارم',
+          title: 'تنبيه المساء: إغلاق الصفقات والشارت (07:00 م)',
+          body: 'إغلاق البنوك وانعدام السيولة المصرفية.',
+          directive: 'بعد الساعة 7 مساءً: اقفل الصفقات والشارت نظراً لقفل البنوك وانعدام السيولة -- حافظ على رصيدك.',
+          lot: 'اللوت: 0.00 (ممنوع التداول)'
+        },
+        {
+          id: 'alert_1930',
+          hour: 19, min: 30,
+          tag: 'جلسة مسائية',
+          title: 'نيويورك المسائية (07:30 م)',
+          body: 'استكمال هادئ للاتجاه أو مسار تصحيحي.',
+          directive: 'تداول خفيف وفرص محددة فقط.',
+          lot: 'اللوت الموصى به: 0.01'
+        },
+        {
+          id: 'alert_2300',
+          hour: 23, min: 0,
+          tag: 'فترة تبييت خطرة',
+          title: 'فترة التبييت والتسوية (Rollover 11:00 م)',
+          body: 'فراغ سيولة واتساع هائل في السبريد.',
+          directive: 'إغلاق كافة الصفقات وتجنب فتح أي أوامر نهائياً.',
+          lot: '0.00 (ممنوع التداول تماماً)'
+        }
+      ];
+
+      function getCairoDate() {
+        try {
+          const s = new Date().toLocaleString('en-US', { timeZone: 'Africa/Cairo' });
+          return new Date(s);
+        } catch(e) {
+          return new Date();
+        }
+      }
+
+      let audioCtx = null;
+      let soundEnabled = (localStorage.getItem('gold_tracker_sound') !== 'false');
+
+      function playAlertChime() {
+        if (!soundEnabled) return;
+        try {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (!AudioContext) return;
+          if (!audioCtx) audioCtx = new AudioContext();
+          if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+          }
+
+          const now = audioCtx.currentTime;
+
+          const osc1 = audioCtx.createOscillator();
+          const gain1 = audioCtx.createGain();
+          osc1.type = 'sine';
+          osc1.frequency.setValueAtTime(880, now);
+          osc1.frequency.exponentialRampToValueAtTime(1320, now + 0.15);
+          gain1.gain.setValueAtTime(0.01, now);
+          gain1.gain.linearRampToValueAtTime(0.25, now + 0.05);
+          gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+          osc1.connect(gain1);
+          gain1.connect(audioCtx.destination);
+          osc1.start(now);
+          osc1.stop(now + 0.45);
+
+          const osc2 = audioCtx.createOscillator();
+          const gain2 = audioCtx.createGain();
+          osc2.type = 'triangle';
+          osc2.frequency.setValueAtTime(440, now);
+          osc2.frequency.exponentialRampToValueAtTime(660, now + 0.2);
+          gain2.gain.setValueAtTime(0.01, now);
+          gain2.gain.linearRampToValueAtTime(0.18, now + 0.06);
+          gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+          osc2.connect(gain2);
+          gain2.connect(audioCtx.destination);
+          osc2.start(now);
+          osc2.stop(now + 0.5);
+        } catch(e) {}
+      }
+
+      function triggerAlert(alertItem) {
+        playAlertChime();
+
+        if (alertToast) {
+          const tagEl = document.getElementById('alertToastTag');
+          const timeEl = document.getElementById('alertToastTime');
+          const titleEl = document.getElementById('alertToastTitle');
+          const bodyEl = document.getElementById('alertToastBody');
+          const dirEl = document.getElementById('alertToastDirective');
+          const lotEl = document.getElementById('alertToastLot');
+
+          if (tagEl) tagEl.textContent = alertItem.tag || 'تنبيه سيولة مؤسسية';
+          if (timeEl) timeEl.textContent = new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
+          if (titleEl) titleEl.textContent = alertItem.title;
+          if (bodyEl) bodyEl.textContent = alertItem.body;
+          if (dirEl) dirEl.textContent = alertItem.directive;
+          if (lotEl) lotEl.textContent = alertItem.lot;
+
+          alertToast.classList.add('show');
+
+          if (window._alertTimer) clearTimeout(window._alertTimer);
+          window._alertTimer = setTimeout(() => {
+            alertToast.classList.remove('show');
+          }, 20000);
+        }
+
+        if ('Notification' in window && Notification.permission === 'granted') {
+          try {
+            new Notification('متتبع الذهب: ' + alertItem.title, {
+              body: `${alertItem.directive}\n${alertItem.lot}`,
+              tag: alertItem.id,
+              silent: !soundEnabled
+            });
+          } catch(e) {}
+        }
+      }
+
+      const triggeredAlerts = new Set();
+
+      function checkScheduledAlerts() {
+        const cairo = getCairoDate();
+        const curHour = cairo.getHours();
+        const curMin = cairo.getMinutes();
+        const dateKey = `${cairo.getFullYear()}-${cairo.getMonth()+1}-${cairo.getDate()}`;
+
+        SCHEDULED_ALERTS.forEach(alt => {
+          if (alt.hour === curHour && alt.min === curMin) {
+            const trigKey = `${dateKey}_${alt.id}_${curHour}_${curMin}`;
+            if (!triggeredAlerts.has(trigKey)) {
+              triggeredAlerts.add(trigKey);
+              triggerAlert(alt);
+            }
+          }
+        });
+
+        updateLiveSessionUI(cairo);
+      }
+
+      function isSessionActive(s, curMins) {
+        const start = s.startHour * 60 + s.startMin;
+        const end = s.endHour * 60 + s.endMin;
+        if (s.startHour > s.endHour || s.endHour > 24) {
+          return curMins >= start || curMins < (s.endHour % 24) * 60 + s.endMin;
+        }
+        return curMins >= start && curMins < end;
+      }
+
+      function updateLiveSessionUI(cairo) {
+        const curMins = cairo.getHours() * 60 + cairo.getMinutes();
+        const active = SESSIONS_DATA.find(s => isSessionActive(s, curMins)) || SESSIONS_DATA[0];
+
+        const h = cairo.getHours();
+        const m = String(cairo.getMinutes()).padStart(2, '0');
+        const s = String(cairo.getSeconds()).padStart(2, '0');
+        const ampm = h >= 12 ? 'م' : 'ص';
+        const h12 = h % 12 || 12;
+        const timeShort = `${h12}:${m} ${ampm} (القاهرة)`;
+        const timeLong = `${h12}:${m}:${s} ${ampm} (القاهرة)`;
+
+        if (lblCairoClock) lblCairoClock.textContent = timeShort;
+        if (lblCairoClockDetail) lblCairoClockDetail.textContent = timeLong;
+
+        if (lblActiveSessionTitle) lblActiveSessionTitle.textContent = `${active.name} (${active.timeDisplay})`;
+        if (lblActiveSessionLot) lblActiveSessionLot.textContent = `اللوت: ${active.lotRecommended}`;
+        if (lblActiveSessionDirective) lblActiveSessionDirective.textContent = `توجيه الجلسة: ${active.directive}`;
+
+        if (lblCurrentSessionName) lblCurrentSessionName.textContent = `${active.name} (${active.timeDisplay})`;
+        if (lblCurrentSessionDesc) lblCurrentSessionDesc.textContent = `${active.marketNature} | اللوت: ${active.lotRecommended} | ${active.directive}`;
+
+        const actTab = document.querySelector('.nav-tab.active');
+        if (actTab && actTab.getAttribute('data-tab') === 'tab-sessions') {
+          renderSessionsTable();
+        }
+      }
+
+      function renderSessionsTable() {
+        if (!sessionTableBody) return;
+        sessionTableBody.innerHTML = '';
+        const cairo = getCairoDate();
+        const curMins = cairo.getHours() * 60 + cairo.getMinutes();
+
+        SESSIONS_DATA.forEach(s => {
+          const tr = document.createElement('tr');
+          const isAct = isSessionActive(s, curMins);
+          if (isAct) tr.classList.add('active-row');
+
+          tr.innerHTML = `
+            <td style="font-weight:700;">${escapeHtml(s.name)}</td>
+            <td style="font-family:var(--font-num); direction:ltr; text-align:right;">${s.timeDisplay}</td>
+            <td style="color:var(--text-sub);">${escapeHtml(s.marketNature)}</td>
+            <td>
+              <span class="session-lot-tag ${s.lotAllowed ? 'allowed' : 'forbidden'}">
+                ${escapeHtml(s.lotRecommended)}
+              </span>
+            </td>
+            <td style="color:var(--text-main); font-weight:${isAct ? '700' : '400'};">${escapeHtml(s.directive)}</td>
+          `;
+          sessionTableBody.appendChild(tr);
+        });
+      }
+
+      function updateSoundBtnUI() {
+        const txt = soundEnabled ? 'صوت التنبيه: يعمل' : 'صوت التنبيه: مكتوم';
+        if (btnSoundToggle) {
+          btnSoundToggle.textContent = txt;
+          btnSoundToggle.style.color = soundEnabled ? 'var(--gold-light)' : 'var(--text-muted)';
+        }
+        if (btnSoundToggleDetail) {
+          btnSoundToggleDetail.textContent = txt;
+          btnSoundToggleDetail.style.color = soundEnabled ? 'var(--gold-light)' : 'var(--text-muted)';
+        }
+      }
+
+      function toggleSound() {
+        soundEnabled = !soundEnabled;
+        localStorage.setItem('gold_tracker_sound', soundEnabled ? 'true' : 'false');
+        updateSoundBtnUI();
+        if (soundEnabled) playAlertChime();
+      }
+
+      if (btnSoundToggle) btnSoundToggle.addEventListener('click', toggleSound);
+      if (btnSoundToggleDetail) btnSoundToggleDetail.addEventListener('click', toggleSound);
+
+      if (btnRequestNotif) {
+        btnRequestNotif.addEventListener('click', () => {
+          if (!('Notification' in window)) {
+            alert('متصفحك لا يدعم إشعارات سطح المكتب.');
+            return;
+          }
+          Notification.requestPermission().then(perm => {
+            if (perm === 'granted') {
+              alert('تم تفعيل إشعارات المتصفح بنجاح.');
+              btnRequestNotif.textContent = 'إشعارات المتصفح: مفعلة';
+              btnRequestNotif.style.color = 'var(--profit)';
+            } else {
+              alert('تم رفض أو حظر الإشعارات من المتصفح.');
+            }
+          });
+        });
+      }
+
+      if (btnTestAlert) {
+        btnTestAlert.addEventListener('click', () => {
+          const testItem = {
+            id: 'test_alert',
+            tag: 'اختبار التنبيه',
+            title: 'اختبار نظام التنبيهات المؤسسية',
+            body: 'إشارة تجريبية للتحقق من تشغيل الصوت والإشعار البصري وسطح المكتب.',
+            directive: 'النظام يعمل بكفاءة تامة وسينبهك فور حلول مواعيد الجلسات وإغلاق البنوك.',
+            lot: 'اللوت الموصى به: 0.01'
+          };
+          triggerAlert(testItem);
+        });
+      }
+
+      if (btnAlertClose) {
+        btnAlertClose.addEventListener('click', () => {
+          if (alertToast) alertToast.classList.remove('show');
+        });
+      }
+      if (btnAlertAck) {
+        btnAlertAck.addEventListener('click', () => {
+          if (alertToast) alertToast.classList.remove('show');
+        });
+      }
+
       // Initialize
       function init() {
+        checkAuth();
+        updateSoundBtnUI();
+
         if (!state.journal || !Array.isArray(state.journal) || state.journal.length < 60) {
           state.journal = JSON.parse(JSON.stringify(defaultState.journal));
           saveState();
@@ -2696,6 +3576,12 @@
         renderMain();
         renderAnalytics();
         renderJournal();
+        renderSessionsTable();
+        updateLiveSessionUI(getCairoDate());
+        checkScheduledAlerts();
+
+        setInterval(checkScheduledAlerts, 10000);
+        setInterval(() => updateLiveSessionUI(getCairoDate()), 1000);
 
         // Background sync of journal from data.json if newer
         fetch('data.json').then(r => r.json()).then(d => {
