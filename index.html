@@ -2131,12 +2131,9 @@
         const netTradingPnl = tradingProfits - tradingLosses;
         const netCashFlow = deposits - withdrawals;
 
-        // Final Active Balance after all deductions
-        const totalBalance = base + netCashFlow - eduDeduction + netTradingPnl;
-
         // Baseline benchmark as of Sept 25:
         // Baseline deposits = $367.50, withdrawals = $0.00, baseline trades PnL = -$466.48
-        // Live Available Trading Balance dynamically reflects all new deposits, withdrawals, and trades:
+        // Baseline Total Balance = -$1,215.00
         const baselineDeposits = 367.50;
         const baselineWithdrawals = 0.00;
         const baselineTradesPnl = -466.48;
@@ -2144,9 +2141,14 @@
         const deltaCashFlow = (deposits - baselineDeposits) - (withdrawals - baselineWithdrawals);
         const deltaTrading = (netTradingPnl - baselineTradesPnl);
 
+        // Live Available Trading Balance dynamically reflects all new deposits, withdrawals, and trades:
         const availableBalance = baseAvail + deltaCashFlow + deltaTrading;
-
         state.capital.availableBalance = availableBalance;
+
+        // Total Ledger / Recovery Deficit:
+        // New operational deposits fund the active trading balance (availableBalance) but do NOT artificially
+        // reduce historical deficit/debt. Only actual trading performance (PnL) impacts recovery progress.
+        const totalBalance = base + (baselineDeposits - baselineWithdrawals) - eduDeduction + netTradingPnl;
 
         return {
           base,
