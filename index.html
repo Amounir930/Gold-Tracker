@@ -195,6 +195,15 @@
       margin: 2px 0;
     }
 
+    .balance-sub-egp {
+      font-size: 0.76rem;
+      font-weight: 700;
+      font-family: var(--font-num), var(--font-ar);
+      direction: ltr;
+      display: block;
+      margin-top: 1px;
+      letter-spacing: 0.2px;
+    }
 
     .balance-actions-group {
       display: flex;
@@ -682,10 +691,12 @@
           <div>
             <div class="balance-label">رصيد التداول المتاح</div>
             <div class="balance-num" id="lblAvailableBalance" style="color:var(--profit); font-size:1.85rem;">$40.00</div>
+            <div class="balance-sub-egp" id="lblAvailableEgp" style="color:var(--profit); opacity:0.85;">≈ 2,000 ج.م</div>
           </div>
           <div style="text-align:left;">
             <div class="balance-label">الإجمالي بعد خصم كل شيء</div>
             <div class="balance-num" id="lblTotalBalance" style="color:var(--loss); font-size:1.35rem;">-$1,215.00</div>
+            <div class="balance-sub-egp" id="lblTotalEgp" style="color:var(--loss); opacity:0.85; text-align:left;">≈ -60,750 ج.م</div>
           </div>
           <div class="balance-actions-group">
             <button class="balance-action-btn" id="btnEditBaseCapital">ضبط الأساسي</button>
@@ -961,6 +972,10 @@
         <label class="field-lbl">الهدف اليومي اليدوي ($):</label>
         <input type="number" step="0.01" id="mTarget" class="input-compact input-mono" placeholder="50.00">
       </div>
+      <div class="field-group">
+        <label class="field-lbl">سعر صرف الدولار بالجنيه المصري (EGP):</label>
+        <input type="number" step="0.5" id="mEgpRate" class="input-compact input-mono" placeholder="50.00">
+      </div>
       <div style="display:flex; gap:6px; margin-top:12px;">
         <button class="btn-submit-main" id="mSaveCap" style="flex:2;">حفظ وتطبيق الخصم</button>
         <button class="btn-today" id="mCloseCap" style="flex:1;">إغلاق</button>
@@ -1047,6 +1062,7 @@
         version: '1.5.0',
         settings: {
           currency: 'USD',
+          egpRate: 50.0,
           defaultDailyTarget: 50.0,
           githubSync: { token: '', repo: '', branch: 'main', path: 'data.json', fileSha: null }
         },
@@ -1543,7 +1559,9 @@
 
       // DOM Elements
       const lblAvailableBalance = document.getElementById('lblAvailableBalance');
+      const lblAvailableEgp = document.getElementById('lblAvailableEgp');
       const lblTotalBalance = document.getElementById('lblTotalBalance');
+      const lblTotalEgp = document.getElementById('lblTotalEgp');
       const lblLedgerBreakdown = document.getElementById('lblLedgerBreakdown');
       const lblManualTarget = document.getElementById('lblManualTarget');
       const lblDynamicTarget = document.getElementById('lblDynamicTarget');
@@ -1599,6 +1617,7 @@
       const mRealCap = document.getElementById('mRealCap');
       const mEduCap = document.getElementById('mEduCap');
       const mTarget = document.getElementById('mTarget');
+      const mEgpRate = document.getElementById('mEgpRate');
 
       // Sync Modal
       const modalSync = document.getElementById('modalSync');
@@ -1742,6 +1761,19 @@
         return `$${absVal}`;
       }
 
+      function formatEgp(amountUsd, rate = null) {
+        const r = (rate !== null && rate !== undefined && !isNaN(rate)) ? Number(rate) : (Number(state?.settings?.egpRate) || 50.0);
+        const egp = (Number(amountUsd) || 0) * r;
+        const absVal = Math.abs(egp).toLocaleString('en-US', {
+          minimumFractionDigits: (egp % 1 === 0) ? 0 : 2,
+          maximumFractionDigits: 2
+        });
+        if (egp < 0) {
+          return `≈ -${absVal} ج.م`;
+        }
+        return `≈ ${absVal} ج.م`;
+      }
+
       // Dynamic Target based on empirical performance (balancing wins and losses)
       function calcPerformanceTargets() {
         const trades = Object.values(state.trades);
@@ -1781,16 +1813,27 @@
           lblAvailableBalance.textContent = formatMoney(metrics.availableBalance);
         }
 
+        if (lblAvailableEgp) {
+          lblAvailableEgp.textContent = formatEgp(metrics.availableBalance);
+          lblAvailableEgp.style.color = metrics.availableBalance >= 0 ? 'var(--profit)' : 'var(--loss)';
+        }
+
+        if (lblTotalEgp) {
+          lblTotalEgp.textContent = formatEgp(metrics.totalBalance);
+          lblTotalEgp.style.color = metrics.totalBalance >= 0 ? 'var(--profit)' : 'var(--loss)';
+        }
+
         // Micro-breakdown subtext (Dynamic Tag & Consistent RTL formatting)
         const isLoss = metrics.netTradingPnl < 0;
         const pnlTag = isLoss ? 'صافي خسائر صفقات:' : 'صافي أرباح صفقات:';
+        const egpRateVal = Number(state?.settings?.egpRate) || 50.0;
         lblLedgerBreakdown.innerHTML = `
           <span class="breakdown-pill"><span class="breakdown-tag">تأسيسي:</span> <span class="breakdown-val">${formatMoney(metrics.base)}</span></span>
           ${metrics.deposits > 0 ? `<span class="breakdown-pill"><span class="breakdown-tag">إيداعات:</span> <span class="breakdown-val" style="color:var(--profit);">${formatMoney(metrics.deposits, true)}</span></span>` : ''}
           ${metrics.withdrawals > 0 ? `<span class="breakdown-pill"><span class="breakdown-tag">سحوبات:</span> <span class="breakdown-val" style="color:var(--loss);">${formatMoney(-metrics.withdrawals, true)}</span></span>` : ''}
           <span class="breakdown-pill"><span class="breakdown-tag">مخصوم تعليم:</span> <span class="breakdown-val" style="color:#3b82f6;">${formatMoney(-metrics.eduDeduction, true)}</span></span>
           <span class="breakdown-pill"><span class="breakdown-tag">${pnlTag}</span> <span class="breakdown-val" style="color:${metrics.netTradingPnl >= 0 ? 'var(--profit)' : 'var(--loss)'};">${formatMoney(metrics.netTradingPnl, true)}</span></span>
-          
+          <span class="breakdown-pill"><span class="breakdown-tag">الصرف:</span> <span class="breakdown-val">${egpRateVal} ج.م/$</span></span>
         `;
 
         // Targets & Performance breakdown
@@ -2210,6 +2253,9 @@
         mRealCap.value = Number(state.capital.baseCapital) || 0;
         mEduCap.value = Number(state.capital.educationBudget) || 1116.02;
         mTarget.value = state.settings.defaultDailyTarget || 50;
+        if (mEgpRate) {
+          mEgpRate.value = state.settings.egpRate !== undefined ? state.settings.egpRate : 50.0;
+        }
         modalCapital.classList.add('open');
       }
       btnEditBaseCapital.addEventListener('click', openCapitalModal);
@@ -2220,6 +2266,7 @@
         const r = parseFloat(mRealCap.value);
         const e = parseFloat(mEduCap.value);
         const t = parseFloat(mTarget.value);
+        const egp = mEgpRate ? parseFloat(mEgpRate.value) : 50.0;
         if (isNaN(r) || isNaN(e) || isNaN(t)) {
           alert('يرجى إدخال أرقام صحيحة.');
           return;
@@ -2232,6 +2279,7 @@
         state.capital.baseCapital = r;
         state.capital.educationBudget = e;
         state.settings.defaultDailyTarget = t;
+        state.settings.egpRate = (isNaN(egp) || egp <= 0) ? 50.0 : egp;
         saveState();
         modalCapital.classList.remove('open');
         renderMain();

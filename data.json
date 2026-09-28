@@ -2,6 +2,7 @@
   "version": "1.5.0",
   "settings": {
     "currency": "USD",
+    "egpRate": 50.0,
     "defaultDailyTarget": 50.0,
     "githubSync": {
       "token": "",
