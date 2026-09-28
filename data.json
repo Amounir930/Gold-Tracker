@@ -13,6 +13,7 @@
   },
   "capital": {
     "baseCapital": 0.0,
+    "baseAvailableBalance": 40.0,
     "availableBalance": 40.0,
     "educationBudget": 1116.02
   },

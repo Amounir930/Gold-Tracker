@@ -1052,6 +1052,7 @@
         },
         capital: {
           baseCapital: 0.0,
+          baseAvailableBalance: 40.0,
           availableBalance: 40.0,
           educationBudget: 1116.02 // Calibrated so that Net Balance ends at -$1,215.00 exactly with $367.50 deposits
         },
@@ -1514,6 +1515,7 @@
               upgraded.journal = defaultState.journal;
             }
             upgraded.capital.baseCapital = (p.capital?.baseCapital === 1000) ? 0.0 : Number(p.capital?.baseCapital || 0.0);
+            upgraded.capital.baseAvailableBalance = p.capital?.baseAvailableBalance !== undefined ? Number(p.capital.baseAvailableBalance) : (Number(p.capital?.availableBalance) || 40.0);
             upgraded.capital.availableBalance = p.capital?.availableBalance !== undefined ? Number(p.capital.availableBalance) : 40.0;
             upgraded.capital.educationBudget = Number(p.capital?.educationBudget) || 1116.02;
             upgraded.version = '1.5.0';
@@ -1526,6 +1528,7 @@
             settings: { ...defaultState.settings, ...(p.settings || {}) },
             capital: {
               baseCapital: Number(p.capital?.baseCapital ?? 0.0),
+              baseAvailableBalance: Number(p.capital?.baseAvailableBalance ?? (p.capital?.availableBalance ?? 40.0)),
               availableBalance: Number(p.capital?.availableBalance ?? 40.0),
               educationBudget: Number(p.capital?.educationBudget ?? 1116.02)
             },
@@ -1665,11 +1668,13 @@
         return { name: days[dayIdx], isTrading: dayIdx >= 1 && dayIdx <= 5 };
       }
 
-      // Calculate Total Ledger Balance
+      // Calculate Total Ledger Balance and Live Available Trading Balance
       // Equation: Total = Base Capital + Total Deposits - Total Withdrawals - Education Deduction + Net Trading PnL
       function computeLedgerMetrics() {
         const base = Number(state.capital.baseCapital) || 0;
-        const availableBalance = state.capital.availableBalance !== undefined ? Number(state.capital.availableBalance) : 40.0;
+        const baseAvail = state.capital.baseAvailableBalance !== undefined
+          ? Number(state.capital.baseAvailableBalance)
+          : (Number(state.capital.availableBalance) || 40.0);
         const eduDeduction = Number(state.capital.educationBudget) || 0;
 
         let deposits = 0;
@@ -1693,6 +1698,20 @@
 
         // Final Active Balance after all deductions
         const totalBalance = base + netCashFlow - eduDeduction + netTradingPnl;
+
+        // Baseline benchmark as of Sept 25:
+        // Baseline deposits = $367.50, withdrawals = $0.00, baseline trades PnL = -$466.48
+        // Live Available Trading Balance dynamically reflects all new deposits, withdrawals, and trades:
+        const baselineDeposits = 367.50;
+        const baselineWithdrawals = 0.00;
+        const baselineTradesPnl = -466.48;
+
+        const deltaCashFlow = (deposits - baselineDeposits) - (withdrawals - baselineWithdrawals);
+        const deltaTrading = (netTradingPnl - baselineTradesPnl);
+
+        const availableBalance = baseAvail + deltaCashFlow + deltaTrading;
+
+        state.capital.availableBalance = availableBalance;
 
         return {
           base,
@@ -2205,6 +2224,10 @@
           alert('يرجى إدخال أرقام صحيحة.');
           return;
         }
+
+        const metrics = computeLedgerMetrics();
+        const delta = (metrics.deposits - 367.50) - (metrics.withdrawals - 0.00) + (metrics.netTradingPnl - (-466.48));
+        state.capital.baseAvailableBalance = isNaN(a) ? 40.0 : (a - delta);
         state.capital.availableBalance = isNaN(a) ? 40.0 : a;
         state.capital.baseCapital = r;
         state.capital.educationBudget = e;
