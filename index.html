@@ -2333,6 +2333,16 @@
       }
 
       function getTradingWeekInfo(dateStr) {
+        // Historical reconciliation exception for Excel Week 1 (01 - 05 سبتمبر)
+        if (dateStr >= '2026-09-01' && dateStr <= '2026-09-05') {
+          return {
+            key: '2026-09-01',
+            label: '01 - 05 سبتمبر',
+            weekStart: new Date(2026, 8, 1, 12, 0, 0),
+            weekEnd: new Date(2026, 8, 5, 12, 0, 0)
+          };
+        }
+
         const dt = parseLocalDate(dateStr);
         const day = dt.getDay(); // 0: Sun, 1: Mon, ..., 5: Fri, 6: Sat
         
@@ -2346,23 +2356,20 @@
         }
         
         const fri = new Date(mon.getFullYear(), mon.getMonth(), mon.getDate() + 4, 12, 0, 0);
-        
-        // If Monday is in previous month, clip start to 1st of trade's month and end to +4 days
-        let weekStart = mon;
-        let weekEnd = fri;
-        if (mon.getMonth() !== dt.getMonth()) {
-          weekStart = new Date(dt.getFullYear(), dt.getMonth(), 1, 12, 0, 0);
-          weekEnd = new Date(dt.getFullYear(), dt.getMonth(), 5, 12, 0, 0);
+        const key = formatLocalYMD(mon);
+
+        const startDayStr = String(mon.getDate()).padStart(2, '0');
+        const endDayStr = String(fri.getDate()).padStart(2, '0');
+
+        let label;
+        if (mon.getMonth() === fri.getMonth()) {
+          label = `${startDayStr} - ${endDayStr} ${getMonthArabicName(mon.getMonth())}`;
+        } else {
+          // Seamless cross-month trading week spanning Monday to Friday (e.g. 28 سبتمبر - 02 أكتوبر)
+          label = `${startDayStr} ${getMonthArabicName(mon.getMonth())} - ${endDayStr} ${getMonthArabicName(fri.getMonth())}`;
         }
         
-        const startDayStr = String(weekStart.getDate()).padStart(2, '0');
-        const endDayStr = String(weekEnd.getDate()).padStart(2, '0');
-        const monthName = getMonthArabicName(dt.getMonth());
-        
-        const key = formatLocalYMD(weekStart);
-        const label = `${startDayStr} - ${endDayStr} ${monthName}`;
-        
-        return { key, label, weekStart, weekEnd };
+        return { key, label, weekStart: mon, weekEnd: fri };
       }
 
       // Render Compact Trade Log
