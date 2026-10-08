@@ -1626,9 +1626,9 @@
   },
   "2026-08-13": {
     "date": "2026-08-13",
-    "pnl": -224.06,
+    "pnl": -325.06,
     "accountType": "real",
-    "notes": "FxPro MT5 - 180 deals",
+    "notes": "FxPro MT5 (-$224.06) + MT5 516282593 (-$101.00)",
     "updatedAt": "2026-08-13T16:00:00Z"
   },
   "2026-08-14": {
@@ -1668,16 +1668,23 @@
   },
   "2026-08-20": {
     "date": "2026-08-20",
-    "pnl": -139.24,
+    "pnl": -128.22,
     "accountType": "real",
-    "notes": "FxPro MT5 - 188 deals",
+    "notes": "FxPro MT5 (-$139.24) + cTrader (+$3.62) + MT5 516282593 (+$7.40)",
     "updatedAt": "2026-08-20T16:00:00Z"
+  },
+  "2026-08-21": {
+    "date": "2026-08-21",
+    "pnl": -44.65,
+    "accountType": "real",
+    "notes": "cTrader (+$5.46) + MT5 516282593 (-$50.11)",
+    "updatedAt": "2026-08-21T16:00:00Z"
   },
   "2026-08-24": {
     "date": "2026-08-24",
-    "pnl": 198.51,
+    "pnl": 173.62,
     "accountType": "real",
-    "notes": "FxPro MT5 - 98 deals",
+    "notes": "FxPro MT5 (+$198.51) + cTrader (-$24.89)",
     "updatedAt": "2026-08-24T16:00:00Z"
   },
   "2026-08-25": {
@@ -1766,9 +1773,9 @@
   },
   "2026-09-09": {
     "date": "2026-09-09",
-    "pnl": 24.03,
+    "pnl": 14.92,
     "accountType": "real",
-    "notes": "FxPro MT5 - 74 deals",
+    "notes": "FxPro MT5 (+$24.03) + MT5 516282593 (-$9.11)",
     "updatedAt": "2026-09-09T16:00:00Z"
   },
   "2026-09-10": {
@@ -1780,9 +1787,9 @@
   },
   "2026-09-11": {
     "date": "2026-09-11",
-    "pnl": -84.68,
+    "pnl": -85.75,
     "accountType": "real",
-    "notes": "FxPro MT5 - 107 deals",
+    "notes": "FxPro MT5 (-$84.68) + cTrader (-$1.07)",
     "updatedAt": "2026-09-11T16:00:00Z"
   },
   "2026-09-14": {
@@ -3637,7 +3644,7 @@
 ];
 
       const defaultState = {
-        version: '2.0.0',
+        version: '2.1.0',
         settings: {
           currency: 'USD',
           egpRate: 50.0,
@@ -3648,7 +3655,7 @@
           baseCapital: 0.0,
           baseAvailableBalance: 80.0,
           availableBalance: 80.0,
-          educationBudget: 479.56
+          educationBudget: 309.86
         },
         transactions: demoTransactions,
         trades: demoTrades,
@@ -4092,12 +4099,12 @@
           const hasTrades = p.trades && Object.keys(p.trades).length > 0;
           
           // Auto-migrate legacy states or clean up accidental 1000 base capital
-          if (p.version !== '2.0.0' || !hasTrades || !p.trades['2026-10-08'] || p.capital?.availableBalance === undefined) {
+          if (p.version !== '2.1.0' || !hasTrades || !p.trades['2026-10-08'] || p.capital?.availableBalance === undefined) {
             const upgraded = JSON.parse(JSON.stringify(defaultState));
             if (p.settings && p.settings.githubSync) {
               upgraded.settings.githubSync = p.settings.githubSync;
             }
-            upgraded.version = '2.0.0';
+            upgraded.version = '2.1.0';
             localStorage.setItem(STORAGE_KEY, JSON.stringify(upgraded));
             return upgraded;
           }
@@ -4109,7 +4116,7 @@
               baseCapital: Number(p.capital?.baseCapital ?? 0.0),
               baseAvailableBalance: Number(p.capital?.baseAvailableBalance ?? (p.capital?.availableBalance ?? 80.0)),
               availableBalance: Number(p.capital?.availableBalance ?? 80.0),
-              educationBudget: Number(p.capital?.educationBudget ?? 479.56)
+              educationBudget: Number(p.capital?.educationBudget ?? 309.86)
             },
             transactions: (Array.isArray(p.transactions) && p.transactions.length > 0) ? p.transactions : defaultState.transactions,
             trades: (p.trades && Object.keys(p.trades).length > 0) ? p.trades : defaultState.trades,
@@ -4310,7 +4317,7 @@
         // Baseline Total Balance = -$1,265.00, Available Balance = $80.00
         const baselineDeposits = 5180.40;
         const baselineWithdrawals = 4315.58;
-        const baselineTradesPnl = -785.44;
+        const baselineTradesPnl = -955.14;
 
         const deltaCashFlow = (deposits - baselineDeposits) - (withdrawals - baselineWithdrawals);
         const deltaTrading = (netTradingPnl - baselineTradesPnl);
@@ -4320,7 +4327,7 @@
         state.capital.availableBalance = availableBalance;
 
         // Total Ledger / Recovery Deficit:
-        // Decoupled from operational cash deposits. Total deficit = -$785.44 trading PnL - $479.56 education = -$1,265.00
+        // Decoupled from operational cash deposits. Total deficit = -$955.14 trading PnL - $309.86 education = -$1,265.00
         const totalBalance = base - eduDeduction + netTradingPnl;
 
         return {

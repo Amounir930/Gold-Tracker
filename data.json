@@ -1,5 +1,5 @@
 {
-  "version": "2.0.0",
+  "version": "2.1.0",
   "settings": {
     "currency": "USD",
     "egpRate": 50.0,
@@ -16,7 +16,7 @@
     "baseCapital": 0.0,
     "baseAvailableBalance": 80.0,
     "availableBalance": 80.0,
-    "educationBudget": 479.56
+    "educationBudget": 309.86
   },
   "transactions": [
     {
@@ -1750,9 +1750,9 @@
     },
     "2026-08-13": {
       "date": "2026-08-13",
-      "pnl": -224.06,
+      "pnl": -325.06,
       "accountType": "real",
-      "notes": "FxPro MT5 - 180 deals",
+      "notes": "FxPro MT5 (-$224.06) + MT5 516282593 (-$101.00)",
       "updatedAt": "2026-08-13T16:00:00Z"
     },
     "2026-08-14": {
@@ -1792,16 +1792,23 @@
     },
     "2026-08-20": {
       "date": "2026-08-20",
-      "pnl": -139.24,
+      "pnl": -128.22,
       "accountType": "real",
-      "notes": "FxPro MT5 - 188 deals",
+      "notes": "FxPro MT5 (-$139.24) + cTrader (+$3.62) + MT5 516282593 (+$7.40)",
       "updatedAt": "2026-08-20T16:00:00Z"
+    },
+    "2026-08-21": {
+      "date": "2026-08-21",
+      "pnl": -44.65,
+      "accountType": "real",
+      "notes": "cTrader (+$5.46) + MT5 516282593 (-$50.11)",
+      "updatedAt": "2026-08-21T16:00:00Z"
     },
     "2026-08-24": {
       "date": "2026-08-24",
-      "pnl": 198.51,
+      "pnl": 173.62,
       "accountType": "real",
-      "notes": "FxPro MT5 - 98 deals",
+      "notes": "FxPro MT5 (+$198.51) + cTrader (-$24.89)",
       "updatedAt": "2026-08-24T16:00:00Z"
     },
     "2026-08-25": {
@@ -1890,9 +1897,9 @@
     },
     "2026-09-09": {
       "date": "2026-09-09",
-      "pnl": 24.03,
+      "pnl": 14.92,
       "accountType": "real",
-      "notes": "FxPro MT5 - 74 deals",
+      "notes": "FxPro MT5 (+$24.03) + MT5 516282593 (-$9.11)",
       "updatedAt": "2026-09-09T16:00:00Z"
     },
     "2026-09-10": {
@@ -1904,9 +1911,9 @@
     },
     "2026-09-11": {
       "date": "2026-09-11",
-      "pnl": -84.68,
+      "pnl": -85.75,
       "accountType": "real",
-      "notes": "FxPro MT5 - 107 deals",
+      "notes": "FxPro MT5 (-$84.68) + cTrader (-$1.07)",
       "updatedAt": "2026-09-11T16:00:00Z"
     },
     "2026-09-14": {
