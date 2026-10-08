@@ -73,35 +73,11 @@
         padding: 14px 20px;
       }
       .header-inner {
-        max-width: 960px !important;
-      }
-    }
-
-    @media (min-width: 1100px) {
-      .container {
-        max-width: 1180px;
-        padding: 16px 24px;
-      }
-      .header-inner {
-        max-width: 1180px !important;
-      }
-    }
-
-    /* Minimal Header */
-    header {
-      background: var(--bg-card);
-      border-bottom: 1px solid var(--border);
-      position: sticky;
-      top: 0;
-      z-index: 40;
-    }
-
-    .header-inner {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 8px 12px;
-      max-width: 600px;
+      max-width: 620px;
       margin: 0 auto;
     }
 
@@ -693,26 +669,12 @@
     .chart-canvas-wrap {
       position: relative;
       width: 100%;
-      height: 380px;
-      background: #07090e;
-      border: 1px solid var(--border-light);
+      height: 300px;
+      background: #080a10;
+      border: 1px solid var(--border);
       border-radius: var(--radius-sm);
       overflow: hidden;
       touch-action: none;
-      transition: height 0.25s ease;
-    }
-    @media (min-width: 768px) {
-      .chart-canvas-wrap {
-        height: 450px;
-      }
-    }
-    @media (min-width: 1100px) {
-      .chart-canvas-wrap {
-        height: 500px;
-      }
-    }
-    .chart-canvas-wrap.extra-tall {
-      height: 620px !important;
     }
     .chart-canvas {
       display: block;
@@ -1372,7 +1334,6 @@
         <div class="chart-header-row">
           <div class="chart-title-box">
             <span class="chart-title">مسار تداول الذهب (Equity & Performance Curve)</span>
-            <button class="btn-today" id="btnToggleChartSize" style="padding:3px 10px; font-size:0.75rem; border:1px solid var(--gold-dim); background:var(--gold-bg); color:var(--gold-light); cursor:pointer;">تكبير الشارت</button>
           </div>
           <div class="chart-kpi-badges">
             <div class="chart-badge">أعلى رصيد: <span id="chartPeakEquity" style="color:var(--profit);">$0.00</span></div>
@@ -4982,7 +4943,7 @@
             runningCum += w.pnl;
             rawSeries.push({
               key: wKey,
-              label: w.label,
+              label: w.label.replace('أغسطس', 'أغس').replace('سبتمبر', 'سبت').replace('أكتوبر', 'أكت'),
               fullDate: `أسبوع: ${w.label}`,
               pnl: Math.round(w.pnl * 100) / 100,
               cumulative: Math.round(runningCum * 100) / 100,
@@ -4995,7 +4956,7 @@
             const mKey = dStr.slice(0, 7);
             if (!monthsMap[mKey]) {
               const mIdx = parseInt(dStr.slice(5, 7), 10) - 1;
-              monthsMap[mKey] = { key: mKey, label: getMonthArabicName(mIdx) + ' ' + dStr.slice(0,4), pnl: 0, daysCount: 0 };
+              monthsMap[mKey] = { key: mKey, label: getMonthArabicName(mIdx), pnl: 0, daysCount: 0 };
             }
             monthsMap[mKey].pnl += (Number(state.trades[dStr].pnl) || 0);
             monthsMap[mKey].daysCount++;
@@ -5081,10 +5042,10 @@
         if (chartMaxDrawdown) chartMaxDrawdown.textContent = formatMoney(valley, true);
         if (chartRangeTotal) chartRangeTotal.textContent = formatMoney(sumPnl, true);
 
-        const padTop = 32;
-        const padBottom = 44;
-        const padLeft = 18;
-        const padRight = 85;
+        const padTop = 24;
+        const padBottom = 34;
+        const padLeft = 14;
+        const padRight = 65;
         const plotW = width - padLeft - padRight;
         const plotH = height - padTop - padBottom;
 
@@ -5168,9 +5129,9 @@
             ctx.stroke();
           });
         } else {
-          // Periodic Bars with dynamic spacing & direct value labels
-          const maxBarW = chartTimeframe === 'daily' ? 24 : 52;
-          const barWidth = Math.max(6, Math.min(maxBarW, (plotW / data.length) * 0.6));
+          // Periodic Bars with elegant balanced spacing
+          const maxW = chartTimeframe === 'monthly' ? 44 : (chartTimeframe === 'weekly' ? 28 : 14);
+          const barWidth = Math.max(6, Math.min(maxW, (plotW / data.length) * 0.55));
           data.forEach((d, idx) => {
             const x = getX(idx) - barWidth / 2;
             const yVal = getY(d.pnl);
@@ -5180,19 +5141,19 @@
             ctx.fillStyle = d.pnl >= 0 ? '#10b981' : '#ef4444';
             ctx.beginPath();
             if (ctx.roundRect) {
-              ctx.roundRect(x, yTop, barWidth, bH, 4);
+              ctx.roundRect(x, yTop, barWidth, bH, 3);
             } else {
               ctx.rect(x, yTop, barWidth, bH);
             }
             ctx.fill();
 
-            // Direct PnL text indicator on wide bars (weekly / monthly or zoomed)
-            if (barWidth >= 22) {
+            // Direct value text on weekly & monthly bars
+            if (barWidth >= 18) {
               ctx.fillStyle = d.pnl >= 0 ? '#10b981' : '#ef4444';
               ctx.font = '10px JetBrains Mono, monospace';
               ctx.textAlign = 'center';
               ctx.direction = 'ltr';
-              const textY = d.pnl >= 0 ? yTop - 6 : yTop + bH + 13;
+              const textY = d.pnl >= 0 ? yTop - 5 : yTop + bH + 12;
               ctx.fillText(formatMoney(d.pnl, true), x + barWidth / 2, textY);
             }
           });
@@ -5203,92 +5164,20 @@
         ctx.font = '10px Tajawal, sans-serif';
         ctx.textAlign = 'center';
         ctx.direction = 'rtl';
-        const step = chartTimeframe === 'daily' ? Math.max(1, Math.ceil(data.length / (plotW > 700 ? 10 : 6))) : 1;
+        const step = chartTimeframe === 'daily' ? Math.max(1, Math.ceil(data.length / 6)) : 1;
         data.forEach((d, idx) => {
           const isLast = (idx === data.length - 1);
           const isStep = (idx % step === 0);
           if (chartTimeframe === 'daily') {
             if (isStep && (data.length - 1 - idx) < (step * 0.6) && !isLast) return;
             if (isStep || isLast) {
-              ctx.fillText(d.label, getX(idx), height - 12);
+              ctx.fillText(d.label, getX(idx), height - 10);
             }
           } else {
-            // For weekly & monthly: show every period clearly
-            ctx.fillText(d.label, getX(idx), height - 12);
+            // For weekly and monthly: show every period clearly
+            ctx.fillText(d.label, getX(idx), height - 10);
           }
         });
-
-        // 4. Pointer Crosshair & Tooltip if active
-        if (chartPointerIdx >= 0 && chartPointerIdx < data.length) {
-          const pt = data[chartPointerIdx];
-          const px = getX(chartPointerIdx);
-          const py = chartMode === 'trajectory' ? getY(pt.cumulative) : getY(pt.pnl);
-
-          // Vertical indicator line
-          ctx.strokeStyle = '#f5d77f';
-          ctx.lineWidth = 1;
-          ctx.setLineDash([3, 3]);
-          ctx.beginPath();
-          ctx.moveTo(px, padTop);
-          ctx.lineTo(px, height - padBottom);
-          ctx.stroke();
-          ctx.setLineDash([]);
-
-          // Glowing dot
-          ctx.beginPath();
-          ctx.arc(px, py, 6, 0, Math.PI * 2);
-          ctx.fillStyle = '#f5d77f';
-          ctx.fill();
-          ctx.strokeStyle = '#000';
-          ctx.lineWidth = 2;
-          ctx.stroke();
-
-          // Update tooltip position & content with boundary clamping
-          if (chartTooltip) {
-            chartTooltip.style.display = 'block';
-            chartTooltip.style.left = `${px}px`;
-            chartTooltip.style.top = `${Math.max(py, 40)}px`;
-            if (px < 100) {
-              chartTooltip.style.transform = 'translate(10px, -115%)';
-            } else if (px > width - 110) {
-              chartTooltip.style.transform = 'translate(-95%, -115%)';
-            } else {
-              chartTooltip.style.transform = 'translate(-50%, -115%)';
-            }
-            chartTooltip.innerHTML = `
-              <div style="font-weight:700; color:var(--gold-light); margin-bottom:2px;">${pt.fullDate}</div>
-              <div style="display:flex; justify-content:space-between; gap:10px;">
-                <span>نتيجة الفترة:</span>
-                <strong style="color:${pt.pnl >= 0 ? 'var(--profit)' : 'var(--loss)'}; font-family:var(--font-num);">${formatMoney(pt.pnl, true)}</strong>
-              </div>
-              <div style="display:flex; justify-content:space-between; gap:10px;">
-                <span>المسار التراكمي:</span>
-                <strong style="color:var(--text-main); font-family:var(--font-num);">${formatMoney(pt.cumulative, true)}</strong>
-              </div>
-              ${pt.notes ? `<div style="font-size:0.68rem; color:var(--text-muted); margin-top:2px;">${escapeHtml(pt.notes)}</div>` : ''}
-            `;
-          }
-
-          if (chartPointInspector) {
-            chartPointInspector.innerHTML = `<strong>${pt.fullDate}</strong> | النتيجة: <span style="color:${pt.pnl >= 0 ? 'var(--profit)' : 'var(--loss)'};">${formatMoney(pt.pnl, true)}</span> | التراكمي: <strong>${formatMoney(pt.cumulative, true)}</strong>`;
-          }
-        } else {
-          if (chartTooltip) chartTooltip.style.display = 'none';
-        }
-      }
-
-      function setupChartInteractions() {
-        if (!chartCanvasWrap || !chartCanvas) return;
-
-        const btnToggleChartSize = document.getElementById('btnToggleChartSize');
-        if (btnToggleChartSize) {
-          btnToggleChartSize.addEventListener('click', () => {
-            chartCanvasWrap.classList.toggle('extra-tall');
-            const isTall = chartCanvasWrap.classList.contains('extra-tall');
-            btnToggleChartSize.textContent = isTall ? 'تصغير الشارت' : 'تكبير الشارت';
-            resizeCanvas();
-          });
-        }
 
         function handlePointerMove(e) {
           if (chartRenderedData.length === 0) return;
@@ -5297,7 +5186,7 @@
           const x = clientX - rect.left;
 
           const padLeft = 10;
-          const padRight = 85;
+          const padRight = 65;
           const plotW = rect.width - padLeft - padRight;
 
           let nearest = 0;
