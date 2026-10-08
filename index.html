@@ -1416,39 +1416,2027 @@
 
       // Demo dataset matching the September Excel trading records with -$1,215.00 ending balance
       const demoTrades = {
-        '2026-09-01': { date: '2026-09-01', pnl: -90.00, accountType: 'real', notes: 'خسارة بداية الشهر', updatedAt: '2026-09-01T16:00:00Z' },
-        '2026-09-02': { date: '2026-09-02', pnl: 46.00, accountType: 'real', notes: 'أرباح اليوم الأول', updatedAt: '2026-09-02T16:00:00Z' },
-        '2026-09-03': { date: '2026-09-03', pnl: -131.00, accountType: 'real', notes: 'خسارة -131', updatedAt: '2026-09-03T16:00:00Z' },
-        '2026-09-04': { date: '2026-09-04', pnl: -37.00, accountType: 'real', notes: 'خسارة -37', updatedAt: '2026-09-04T16:00:00Z' },
-        '2026-09-07': { date: '2026-09-07', pnl: -40.00, accountType: 'real', notes: 'خسارة -40', updatedAt: '2026-09-07T16:00:00Z' },
-        '2026-09-08': { date: '2026-09-08', pnl: 27.00, accountType: 'real', notes: 'ربح 27', updatedAt: '2026-09-08T16:00:00Z' },
-        '2026-09-09': { date: '2026-09-09', pnl: 14.00, accountType: 'real', notes: 'ربح 14', updatedAt: '2026-09-09T16:00:00Z' },
-        '2026-09-10': { date: '2026-09-10', pnl: 10.00, accountType: 'real', notes: 'ربح 10', updatedAt: '2026-09-10T16:00:00Z' },
-        '2026-09-11': { date: '2026-09-11', pnl: -130.00, accountType: 'real', notes: 'خسارة -130', updatedAt: '2026-09-11T16:00:00Z' },
-        '2026-09-14': { date: '2026-09-14', pnl: -21.50, accountType: 'real', notes: 'خسارة -21.5', updatedAt: '2026-09-14T16:00:00Z' },
-        '2026-09-15': { date: '2026-09-15', pnl: -37.70, accountType: 'real', notes: 'خسارة -37.7', updatedAt: '2026-09-15T16:00:00Z' },
-        '2026-09-16': { date: '2026-09-16', pnl: 11.41, accountType: 'real', notes: 'ربح 11.41', updatedAt: '2026-09-16T16:00:00Z' },
-        '2026-09-17': { date: '2026-09-17', pnl: -16.59, accountType: 'real', notes: 'خسارة -16.59', updatedAt: '2026-09-17T16:00:00Z' },
-        '2026-09-18': { date: '2026-09-18', pnl: -14.30, accountType: 'real', notes: 'خسارة -14.3', updatedAt: '2026-09-18T16:00:00Z' },
-        '2026-09-21': { date: '2026-09-21', pnl: 0.00, accountType: 'real', notes: 'تعادل بدون صفقات', updatedAt: '2026-09-21T16:00:00Z' },
-        '2026-09-22': { date: '2026-09-22', pnl: -17.00, accountType: 'real', notes: 'خسارة -17', updatedAt: '2026-09-22T16:00:00Z' },
-        '2026-09-23': { date: '2026-09-23', pnl: 12.00, accountType: 'real', notes: 'ربح 12', updatedAt: '2026-09-23T16:00:00Z' },
-        '2026-09-24': { date: '2026-09-24', pnl: -43.00, accountType: 'real', notes: 'خسارة -43', updatedAt: '2026-09-24T16:00:00Z' },
-        '2026-09-25': { date: '2026-09-25', pnl: -8.80, accountType: 'real', notes: 'خسارة -8.8', updatedAt: '2026-09-25T16:00:00Z' }
-      };
+  "2026-08-12": {
+    "date": "2026-08-12",
+    "pnl": 477.01,
+    "accountType": "real",
+    "notes": "FxPro MT5 - 154 deals",
+    "updatedAt": "2026-08-12T16:00:00Z"
+  },
+  "2026-08-13": {
+    "date": "2026-08-13",
+    "pnl": -224.06,
+    "accountType": "real",
+    "notes": "FxPro MT5 - 180 deals",
+    "updatedAt": "2026-08-13T16:00:00Z"
+  },
+  "2026-08-14": {
+    "date": "2026-08-14",
+    "pnl": -48.96,
+    "accountType": "real",
+    "notes": "FxPro MT5 - 322 deals",
+    "updatedAt": "2026-08-14T16:00:00Z"
+  },
+  "2026-08-16": {
+    "date": "2026-08-16",
+    "pnl": -0.34,
+    "accountType": "real",
+    "notes": "FxPro MT5 - 4 deals",
+    "updatedAt": "2026-08-16T16:00:00Z"
+  },
+  "2026-08-17": {
+    "date": "2026-08-17",
+    "pnl": -26.94,
+    "accountType": "real",
+    "notes": "FxPro MT5 - 288 deals",
+    "updatedAt": "2026-08-17T16:00:00Z"
+  },
+  "2026-08-18": {
+    "date": "2026-08-18",
+    "pnl": -182.93,
+    "accountType": "real",
+    "notes": "FxPro MT5 - 408 deals",
+    "updatedAt": "2026-08-18T16:00:00Z"
+  },
+  "2026-08-19": {
+    "date": "2026-08-19",
+    "pnl": -95.59,
+    "accountType": "real",
+    "notes": "FxPro MT5 - 223 deals",
+    "updatedAt": "2026-08-19T16:00:00Z"
+  },
+  "2026-08-20": {
+    "date": "2026-08-20",
+    "pnl": -139.24,
+    "accountType": "real",
+    "notes": "FxPro MT5 - 188 deals",
+    "updatedAt": "2026-08-20T16:00:00Z"
+  },
+  "2026-08-24": {
+    "date": "2026-08-24",
+    "pnl": 198.51,
+    "accountType": "real",
+    "notes": "FxPro MT5 - 98 deals",
+    "updatedAt": "2026-08-24T16:00:00Z"
+  },
+  "2026-08-25": {
+    "date": "2026-08-25",
+    "pnl": -69.86,
+    "accountType": "real",
+    "notes": "FxPro MT5 - 324 deals",
+    "updatedAt": "2026-08-25T16:00:00Z"
+  },
+  "2026-08-26": {
+    "date": "2026-08-26",
+    "pnl": -170.71,
+    "accountType": "real",
+    "notes": "FxPro MT5 - 462 deals",
+    "updatedAt": "2026-08-26T16:00:00Z"
+  },
+  "2026-08-27": {
+    "date": "2026-08-27",
+    "pnl": 12.6,
+    "accountType": "real",
+    "notes": "FxPro MT5 - 52 deals",
+    "updatedAt": "2026-08-27T16:00:00Z"
+  },
+  "2026-08-28": {
+    "date": "2026-08-28",
+    "pnl": 18.74,
+    "accountType": "real",
+    "notes": "FxPro MT5 - 54 deals",
+    "updatedAt": "2026-08-28T16:00:00Z"
+  },
+  "2026-08-29": {
+    "date": "2026-08-29",
+    "pnl": 6.14,
+    "accountType": "real",
+    "notes": "FxPro MT5 - 6 deals",
+    "updatedAt": "2026-08-29T16:00:00Z"
+  },
+  "2026-08-31": {
+    "date": "2026-08-31",
+    "pnl": -1.85,
+    "accountType": "real",
+    "notes": "FxPro MT5 - 54 deals",
+    "updatedAt": "2026-08-31T16:00:00Z"
+  },
+  "2026-09-01": {
+    "date": "2026-09-01",
+    "pnl": -89.38,
+    "accountType": "real",
+    "notes": "FxPro MT5 - 84 deals",
+    "updatedAt": "2026-09-01T16:00:00Z"
+  },
+  "2026-09-02": {
+    "date": "2026-09-02",
+    "pnl": 45.89,
+    "accountType": "real",
+    "notes": "FxPro MT5 - 40 deals",
+    "updatedAt": "2026-09-02T16:00:00Z"
+  },
+  "2026-09-03": {
+    "date": "2026-09-03",
+    "pnl": -129.41,
+    "accountType": "real",
+    "notes": "FxPro MT5 - 58 deals",
+    "updatedAt": "2026-09-03T16:00:00Z"
+  },
+  "2026-09-04": {
+    "date": "2026-09-04",
+    "pnl": -36.87,
+    "accountType": "real",
+    "notes": "FxPro MT5 - 26 deals",
+    "updatedAt": "2026-09-04T16:00:00Z"
+  },
+  "2026-09-07": {
+    "date": "2026-09-07",
+    "pnl": -39.83,
+    "accountType": "real",
+    "notes": "FxPro MT5 - 23 deals",
+    "updatedAt": "2026-09-07T16:00:00Z"
+  },
+  "2026-09-08": {
+    "date": "2026-09-08",
+    "pnl": 26.98,
+    "accountType": "real",
+    "notes": "FxPro MT5 - 27 deals",
+    "updatedAt": "2026-09-08T16:00:00Z"
+  },
+  "2026-09-09": {
+    "date": "2026-09-09",
+    "pnl": 24.03,
+    "accountType": "real",
+    "notes": "FxPro MT5 - 74 deals",
+    "updatedAt": "2026-09-09T16:00:00Z"
+  },
+  "2026-09-10": {
+    "date": "2026-09-10",
+    "pnl": -16.86,
+    "accountType": "real",
+    "notes": "FxPro MT5 - 84 deals",
+    "updatedAt": "2026-09-10T16:00:00Z"
+  },
+  "2026-09-11": {
+    "date": "2026-09-11",
+    "pnl": -84.68,
+    "accountType": "real",
+    "notes": "FxPro MT5 - 107 deals",
+    "updatedAt": "2026-09-11T16:00:00Z"
+  },
+  "2026-09-14": {
+    "date": "2026-09-14",
+    "pnl": -80.55,
+    "accountType": "real",
+    "notes": "FxPro MT5 - 43 deals",
+    "updatedAt": "2026-09-14T16:00:00Z"
+  },
+  "2026-09-15": {
+    "date": "2026-09-15",
+    "pnl": -37.62,
+    "accountType": "real",
+    "notes": "FxPro MT5 - 18 deals",
+    "updatedAt": "2026-09-15T16:00:00Z"
+  },
+  "2026-09-16": {
+    "date": "2026-09-16",
+    "pnl": 11.04,
+    "accountType": "real",
+    "notes": "FxPro MT5 - 40 deals",
+    "updatedAt": "2026-09-16T16:00:00Z"
+  },
+  "2026-09-17": {
+    "date": "2026-09-17",
+    "pnl": -16.59,
+    "accountType": "real",
+    "notes": "FxPro MT5 - 46 deals",
+    "updatedAt": "2026-09-17T16:00:00Z"
+  },
+  "2026-09-18": {
+    "date": "2026-09-18",
+    "pnl": -14.3,
+    "accountType": "real",
+    "notes": "FxPro MT5 - 32 deals",
+    "updatedAt": "2026-09-18T16:00:00Z"
+  },
+  "2026-09-21": {
+    "date": "2026-09-21",
+    "pnl": 0.24,
+    "accountType": "real",
+    "notes": "FxPro MT5 - 4 deals",
+    "updatedAt": "2026-09-21T16:00:00Z"
+  },
+  "2026-09-22": {
+    "date": "2026-09-22",
+    "pnl": -17.19,
+    "accountType": "real",
+    "notes": "FxPro MT5 - 14 deals",
+    "updatedAt": "2026-09-22T16:00:00Z"
+  },
+  "2026-09-23": {
+    "date": "2026-09-23",
+    "pnl": 12.58,
+    "accountType": "real",
+    "notes": "FxPro MT5 - 24 deals",
+    "updatedAt": "2026-09-23T16:00:00Z"
+  },
+  "2026-09-24": {
+    "date": "2026-09-24",
+    "pnl": -43.57,
+    "accountType": "real",
+    "notes": "FxPro MT5 - 24 deals",
+    "updatedAt": "2026-09-24T16:00:00Z"
+  },
+  "2026-09-25": {
+    "date": "2026-09-25",
+    "pnl": -8.58,
+    "accountType": "real",
+    "notes": "FxPro MT5 - 46 deals",
+    "updatedAt": "2026-09-25T16:00:00Z"
+  },
+  "2026-09-28": {
+    "date": "2026-09-28",
+    "pnl": -3.95,
+    "accountType": "real",
+    "notes": "FxPro MT5 - 5 deals",
+    "updatedAt": "2026-09-28T16:00:00Z"
+  },
+  "2026-09-30": {
+    "date": "2026-09-30",
+    "pnl": -30.49,
+    "accountType": "real",
+    "notes": "FxPro MT5 - 5 deals",
+    "updatedAt": "2026-09-30T16:00:00Z"
+  },
+  "2026-10-01": {
+    "date": "2026-10-01",
+    "pnl": -25.49,
+    "accountType": "real",
+    "notes": "FxPro MT5 - 36 deals",
+    "updatedAt": "2026-10-01T16:00:00Z"
+  },
+  "2026-10-02": {
+    "date": "2026-10-02",
+    "pnl": 7.26,
+    "accountType": "real",
+    "notes": "FxPro MT5 - 8 deals",
+    "updatedAt": "2026-10-02T16:00:00Z"
+  },
+  "2026-10-05": {
+    "date": "2026-10-05",
+    "pnl": -1.08,
+    "accountType": "real",
+    "notes": "FxPro MT5 - 19 deals",
+    "updatedAt": "2026-10-05T16:00:00Z"
+  },
+  "2026-10-06": {
+    "date": "2026-10-06",
+    "pnl": -5.85,
+    "accountType": "real",
+    "notes": "FxPro MT5 - 11 deals",
+    "updatedAt": "2026-10-06T16:00:00Z"
+  },
+  "2026-10-07": {
+    "date": "2026-10-07",
+    "pnl": 4.3,
+    "accountType": "real",
+    "notes": "FxPro MT5 - 8 deals",
+    "updatedAt": "2026-10-07T16:00:00Z"
+  },
+  "2026-10-08": {
+    "date": "2026-10-08",
+    "pnl": 12.01,
+    "accountType": "real",
+    "notes": "FxPro MT5 - 8 deals",
+    "updatedAt": "2026-10-08T16:00:00Z"
+  }
+};
 
       const demoTransactions = [
-        { id: 'tx_1', date: '2026-09-08', type: 'deposit', amount: 23.00, notes: 'تسوية رصيد', createdAt: '2026-09-08T10:00:00Z' },
-        { id: 'tx_2', date: '2026-09-09', type: 'deposit', amount: 36.00, notes: 'إيداع تعزيز رصيد لتعويض الخسارة', createdAt: '2026-09-09T10:00:00Z' },
-        { id: 'tx_3', date: '2026-09-10', type: 'deposit', amount: 33.50, notes: 'إيداع إضافي', createdAt: '2026-09-10T10:00:00Z' },
-        { id: 'tx_4', date: '2026-09-11', type: 'deposit', amount: 100.00, notes: 'إيداع تعزيز رصيد لتعويض الخسارة', createdAt: '2026-09-11T10:00:00Z' },
-        { id: 'tx_5', date: '2026-09-14', type: 'deposit', amount: 50.00, notes: 'إيداع تعزيز رصيد لتعويض الخسارة', createdAt: '2026-09-14T10:00:00Z' },
-        { id: 'tx_6', date: '2026-09-18', type: 'deposit', amount: 50.00, notes: 'إيداع تعزيز رصيد لتعويض الخسارة', createdAt: '2026-09-18T10:00:00Z' },
-        { id: 'tx_7', date: '2026-09-25', type: 'deposit', amount: 75.00, notes: 'إيداع تعزيز رصيد لتعويض الخسارة', createdAt: '2026-09-25T10:00:00Z' }
-      ];
+  {
+    "id": "tx_290529702",
+    "date": "2026-08-11",
+    "type": "deposit",
+    "amount": 199.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-11 21:41:02Z"
+  },
+  {
+    "id": "tx_290573264",
+    "date": "2026-08-12",
+    "type": "deposit",
+    "amount": 0.35,
+    "notes": "NBP-bot",
+    "createdAt": "2026-08-12 01:19:38Z"
+  },
+  {
+    "id": "tx_290652523",
+    "date": "2026-08-12",
+    "type": "deposit",
+    "amount": 98.85,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-12 05:32:54Z"
+  },
+  {
+    "id": "tx_290811170",
+    "date": "2026-08-12",
+    "type": "withdraw",
+    "amount": 318.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-08-12 11:38:39Z"
+  },
+  {
+    "id": "tx_290811288",
+    "date": "2026-08-12",
+    "type": "deposit",
+    "amount": 300.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-12 11:38:57Z"
+  },
+  {
+    "id": "tx_290811724",
+    "date": "2026-08-12",
+    "type": "withdraw",
+    "amount": 300.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-08-12 11:40:04Z"
+  },
+  {
+    "id": "tx_290812023",
+    "date": "2026-08-12",
+    "type": "deposit",
+    "amount": 318.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-12 11:40:56Z"
+  },
+  {
+    "id": "tx_290901875",
+    "date": "2026-08-12",
+    "type": "withdraw",
+    "amount": 100.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-08-12 14:01:01Z"
+  },
+  {
+    "id": "tx_291015200",
+    "date": "2026-08-12",
+    "type": "withdraw",
+    "amount": 200.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-08-12 15:37:46Z"
+  },
+  {
+    "id": "tx_291069560",
+    "date": "2026-08-12",
+    "type": "deposit",
+    "amount": 98.85,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-12 16:03:34Z"
+  },
+  {
+    "id": "tx_291131766",
+    "date": "2026-08-12",
+    "type": "withdraw",
+    "amount": 50.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-08-12 16:45:41Z"
+  },
+  {
+    "id": "tx_291160443",
+    "date": "2026-08-12",
+    "type": "withdraw",
+    "amount": 50.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-08-12 17:05:53Z"
+  },
+  {
+    "id": "tx_291173925",
+    "date": "2026-08-12",
+    "type": "deposit",
+    "amount": 50.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-12 17:19:01Z"
+  },
+  {
+    "id": "tx_291191588",
+    "date": "2026-08-12",
+    "type": "withdraw",
+    "amount": 100.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-08-12 17:32:39Z"
+  },
+  {
+    "id": "tx_291201152",
+    "date": "2026-08-12",
+    "type": "deposit",
+    "amount": 100.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-12 17:39:28Z"
+  },
+  {
+    "id": "tx_291208598",
+    "date": "2026-08-12",
+    "type": "withdraw",
+    "amount": 150.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-08-12 17:45:59Z"
+  },
+  {
+    "id": "tx_291241617",
+    "date": "2026-08-12",
+    "type": "withdraw",
+    "amount": 50.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-08-12 18:19:41Z"
+  },
+  {
+    "id": "tx_291245513",
+    "date": "2026-08-12",
+    "type": "withdraw",
+    "amount": 50.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-08-12 18:25:48Z"
+  },
+  {
+    "id": "tx_291279080",
+    "date": "2026-08-12",
+    "type": "withdraw",
+    "amount": 50.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-08-12 19:13:28Z"
+  },
+  {
+    "id": "tx_291357117",
+    "date": "2026-08-12",
+    "type": "deposit",
+    "amount": 50.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-12 21:01:22Z"
+  },
+  {
+    "id": "tx_291362417",
+    "date": "2026-08-12",
+    "type": "withdraw",
+    "amount": 150.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-08-12 21:10:28Z"
+  },
+  {
+    "id": "tx_291679220",
+    "date": "2026-08-13",
+    "type": "deposit",
+    "amount": 50.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-13 10:57:58Z"
+  },
+  {
+    "id": "tx_291681462",
+    "date": "2026-08-13",
+    "type": "deposit",
+    "amount": 50.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-13 11:00:48Z"
+  },
+  {
+    "id": "tx_291687951",
+    "date": "2026-08-13",
+    "type": "deposit",
+    "amount": 50.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-13 11:10:12Z"
+  },
+  {
+    "id": "tx_291703667",
+    "date": "2026-08-13",
+    "type": "withdraw",
+    "amount": 200.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-08-13 11:47:45Z"
+  },
+  {
+    "id": "tx_291727754",
+    "date": "2026-08-13",
+    "type": "deposit",
+    "amount": 50.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-13 12:41:44Z"
+  },
+  {
+    "id": "tx_291735615",
+    "date": "2026-08-13",
+    "type": "deposit",
+    "amount": 50.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-13 13:00:22Z"
+  },
+  {
+    "id": "tx_291742885",
+    "date": "2026-08-13",
+    "type": "withdraw",
+    "amount": 50.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-08-13 13:17:01Z"
+  },
+  {
+    "id": "tx_291744743",
+    "date": "2026-08-13",
+    "type": "deposit",
+    "amount": 50.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-13 13:19:21Z"
+  },
+  {
+    "id": "tx_291748552",
+    "date": "2026-08-13",
+    "type": "deposit",
+    "amount": 50.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-13 13:27:39Z"
+  },
+  {
+    "id": "tx_291755480",
+    "date": "2026-08-13",
+    "type": "deposit",
+    "amount": 50.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-13 13:43:35Z"
+  },
+  {
+    "id": "tx_291758489",
+    "date": "2026-08-13",
+    "type": "deposit",
+    "amount": 50.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-13 13:50:42Z"
+  },
+  {
+    "id": "tx_291760678",
+    "date": "2026-08-13",
+    "type": "deposit",
+    "amount": 50.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-13 13:53:21Z"
+  },
+  {
+    "id": "tx_291762649",
+    "date": "2026-08-13",
+    "type": "withdraw",
+    "amount": 50.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-08-13 13:58:50Z"
+  },
+  {
+    "id": "tx_291763123",
+    "date": "2026-08-13",
+    "type": "deposit",
+    "amount": 50.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-13 14:00:46Z"
+  },
+  {
+    "id": "tx_291767701",
+    "date": "2026-08-13",
+    "type": "withdraw",
+    "amount": 50.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-08-13 14:06:45Z"
+  },
+  {
+    "id": "tx_291769631",
+    "date": "2026-08-13",
+    "type": "deposit",
+    "amount": 50.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-13 14:11:52Z"
+  },
+  {
+    "id": "tx_291777823",
+    "date": "2026-08-13",
+    "type": "deposit",
+    "amount": 98.8,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-13 14:26:50Z"
+  },
+  {
+    "id": "tx_291780787",
+    "date": "2026-08-13",
+    "type": "withdraw",
+    "amount": 150.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-08-13 14:31:49Z"
+  },
+  {
+    "id": "tx_291781425",
+    "date": "2026-08-13",
+    "type": "deposit",
+    "amount": 50.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-13 14:33:09Z"
+  },
+  {
+    "id": "tx_291794528",
+    "date": "2026-08-13",
+    "type": "withdraw",
+    "amount": 50.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-08-13 14:55:50Z"
+  },
+  {
+    "id": "tx_291836654",
+    "date": "2026-08-13",
+    "type": "deposit",
+    "amount": 0.6,
+    "notes": "NBP-bot",
+    "createdAt": "2026-08-13 15:34:34Z"
+  },
+  {
+    "id": "tx_291844446",
+    "date": "2026-08-13",
+    "type": "deposit",
+    "amount": 98.8,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-13 15:37:49Z"
+  },
+  {
+    "id": "tx_291845420",
+    "date": "2026-08-13",
+    "type": "withdraw",
+    "amount": 5.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-08-13 15:38:47Z"
+  },
+  {
+    "id": "tx_291907572",
+    "date": "2026-08-13",
+    "type": "deposit",
+    "amount": 5.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-13 16:34:11Z"
+  },
+  {
+    "id": "tx_291960115",
+    "date": "2026-08-13",
+    "type": "deposit",
+    "amount": 98.8,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-13 17:09:33Z"
+  },
+  {
+    "id": "tx_291974979",
+    "date": "2026-08-13",
+    "type": "withdraw",
+    "amount": 99.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-08-13 17:20:52Z"
+  },
+  {
+    "id": "tx_291979492",
+    "date": "2026-08-13",
+    "type": "deposit",
+    "amount": 50.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-13 17:25:11Z"
+  },
+  {
+    "id": "tx_291992076",
+    "date": "2026-08-13",
+    "type": "withdraw",
+    "amount": 50.2,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-08-13 17:32:51Z"
+  },
+  {
+    "id": "tx_292029220",
+    "date": "2026-08-13",
+    "type": "deposit",
+    "amount": 100.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-13 18:08:39Z"
+  },
+  {
+    "id": "tx_292035808",
+    "date": "2026-08-13",
+    "type": "withdraw",
+    "amount": 100.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-08-13 18:14:45Z"
+  },
+  {
+    "id": "tx_292046055",
+    "date": "2026-08-13",
+    "type": "deposit",
+    "amount": 50.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-13 18:23:18Z"
+  },
+  {
+    "id": "tx_292059124",
+    "date": "2026-08-13",
+    "type": "withdraw",
+    "amount": 50.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-08-13 18:32:44Z"
+  },
+  {
+    "id": "tx_292099008",
+    "date": "2026-08-13",
+    "type": "withdraw",
+    "amount": 100.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-08-13 19:18:07Z"
+  },
+  {
+    "id": "tx_292116428",
+    "date": "2026-08-13",
+    "type": "deposit",
+    "amount": 50.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-13 19:38:23Z"
+  },
+  {
+    "id": "tx_292202785",
+    "date": "2026-08-13",
+    "type": "withdraw",
+    "amount": 40.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-08-13 22:26:00Z"
+  },
+  {
+    "id": "tx_292336492",
+    "date": "2026-08-14",
+    "type": "withdraw",
+    "amount": 50.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-08-14 05:55:53Z"
+  },
+  {
+    "id": "tx_292816771",
+    "date": "2026-08-14",
+    "type": "deposit",
+    "amount": 0.46,
+    "notes": "NBP-bot",
+    "createdAt": "2026-08-14 19:13:57Z"
+  },
+  {
+    "id": "tx_292817330",
+    "date": "2026-08-14",
+    "type": "deposit",
+    "amount": 50.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-14 19:15:29Z"
+  },
+  {
+    "id": "tx_292886028",
+    "date": "2026-08-14",
+    "type": "deposit",
+    "amount": 48.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-14 22:23:08Z"
+  },
+  {
+    "id": "tx_292896713",
+    "date": "2026-08-14",
+    "type": "withdraw",
+    "amount": 49.15,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-08-14 23:29:30Z"
+  },
+  {
+    "id": "tx_292934431",
+    "date": "2026-08-16",
+    "type": "withdraw",
+    "amount": 30.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-08-16 03:05:25Z"
+  },
+  {
+    "id": "tx_292965847",
+    "date": "2026-08-17",
+    "type": "deposit",
+    "amount": 30.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-17 00:58:17Z"
+  },
+  {
+    "id": "tx_292976778",
+    "date": "2026-08-17",
+    "type": "deposit",
+    "amount": 30.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-17 01:33:27Z"
+  },
+  {
+    "id": "tx_292977044",
+    "date": "2026-08-17",
+    "type": "deposit",
+    "amount": 20.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-17 01:34:18Z"
+  },
+  {
+    "id": "tx_292982756",
+    "date": "2026-08-17",
+    "type": "deposit",
+    "amount": 98.75,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-17 01:53:18Z"
+  },
+  {
+    "id": "tx_292992089",
+    "date": "2026-08-17",
+    "type": "deposit",
+    "amount": 98.75,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-17 02:17:23Z"
+  },
+  {
+    "id": "tx_293021355",
+    "date": "2026-08-17",
+    "type": "deposit",
+    "amount": 98.75,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-17 03:19:22Z"
+  },
+  {
+    "id": "tx_293022584",
+    "date": "2026-08-17",
+    "type": "withdraw",
+    "amount": 40.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-08-17 03:20:45Z"
+  },
+  {
+    "id": "tx_293025002",
+    "date": "2026-08-17",
+    "type": "deposit",
+    "amount": 40.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-17 03:26:07Z"
+  },
+  {
+    "id": "tx_293029508",
+    "date": "2026-08-17",
+    "type": "deposit",
+    "amount": 118.5,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-17 03:32:38Z"
+  },
+  {
+    "id": "tx_293030276",
+    "date": "2026-08-17",
+    "type": "withdraw",
+    "amount": 50.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-08-17 03:34:48Z"
+  },
+  {
+    "id": "tx_293036078",
+    "date": "2026-08-17",
+    "type": "deposit",
+    "amount": 50.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-17 03:44:54Z"
+  },
+  {
+    "id": "tx_293038055",
+    "date": "2026-08-17",
+    "type": "withdraw",
+    "amount": 25.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-08-17 03:50:09Z"
+  },
+  {
+    "id": "tx_293043753",
+    "date": "2026-08-17",
+    "type": "deposit",
+    "amount": 59.25,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-17 04:00:25Z"
+  },
+  {
+    "id": "tx_293274275",
+    "date": "2026-08-17",
+    "type": "withdraw",
+    "amount": 120.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-08-17 11:45:25Z"
+  },
+  {
+    "id": "tx_293570878",
+    "date": "2026-08-17",
+    "type": "withdraw",
+    "amount": 80.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-08-17 17:27:15Z"
+  },
+  {
+    "id": "tx_293579440",
+    "date": "2026-08-17",
+    "type": "deposit",
+    "amount": 40.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-17 17:33:46Z"
+  },
+  {
+    "id": "tx_293600093",
+    "date": "2026-08-17",
+    "type": "withdraw",
+    "amount": 80.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-08-17 17:57:31Z"
+  },
+  {
+    "id": "tx_293614171",
+    "date": "2026-08-17",
+    "type": "withdraw",
+    "amount": 10.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-08-17 18:14:40Z"
+  },
+  {
+    "id": "tx_293749367",
+    "date": "2026-08-17",
+    "type": "deposit",
+    "amount": 50.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-17 22:06:21Z"
+  },
+  {
+    "id": "tx_293760947",
+    "date": "2026-08-17",
+    "type": "withdraw",
+    "amount": 200.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-08-17 22:32:04Z"
+  },
+  {
+    "id": "tx_293815647",
+    "date": "2026-08-18",
+    "type": "withdraw",
+    "amount": 110.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-08-18 03:19:44Z"
+  },
+  {
+    "id": "tx_293833382",
+    "date": "2026-08-18",
+    "type": "withdraw",
+    "amount": 100.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-08-18 04:01:47Z"
+  },
+  {
+    "id": "tx_293842024",
+    "date": "2026-08-18",
+    "type": "deposit",
+    "amount": 50.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-18 04:18:12Z"
+  },
+  {
+    "id": "tx_293844154",
+    "date": "2026-08-18",
+    "type": "deposit",
+    "amount": 25.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-18 04:22:06Z"
+  },
+  {
+    "id": "tx_293845702",
+    "date": "2026-08-18",
+    "type": "deposit",
+    "amount": 25.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-18 04:25:56Z"
+  },
+  {
+    "id": "tx_293919616",
+    "date": "2026-08-18",
+    "type": "deposit",
+    "amount": 0.9,
+    "notes": "NBP-bot",
+    "createdAt": "2026-08-18 07:39:31Z"
+  },
+  {
+    "id": "tx_293929634",
+    "date": "2026-08-18",
+    "type": "deposit",
+    "amount": 65.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-18 08:14:02Z"
+  },
+  {
+    "id": "tx_294052194",
+    "date": "2026-08-18",
+    "type": "deposit",
+    "amount": 49.45,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-18 11:34:20Z"
+  },
+  {
+    "id": "tx_294171637",
+    "date": "2026-08-18",
+    "type": "deposit",
+    "amount": 65.27,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-18 15:12:51Z"
+  },
+  {
+    "id": "tx_294517246",
+    "date": "2026-08-18",
+    "type": "deposit",
+    "amount": 9.61,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-18 21:55:19Z"
+  },
+  {
+    "id": "tx_294566153",
+    "date": "2026-08-19",
+    "type": "deposit",
+    "amount": 50.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-19 00:31:06Z"
+  },
+  {
+    "id": "tx_295039214",
+    "date": "2026-08-19",
+    "type": "deposit",
+    "amount": 0.43,
+    "notes": "NBP-bot",
+    "createdAt": "2026-08-19 16:00:38Z"
+  },
+  {
+    "id": "tx_295040045",
+    "date": "2026-08-19",
+    "type": "deposit",
+    "amount": 98.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-19 16:01:09Z"
+  },
+  {
+    "id": "tx_295846110",
+    "date": "2026-08-20",
+    "type": "deposit",
+    "amount": 50.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-20 15:30:31Z"
+  },
+  {
+    "id": "tx_295992689",
+    "date": "2026-08-20",
+    "type": "deposit",
+    "amount": 8.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-20 17:49:19Z"
+  },
+  {
+    "id": "tx_296007657",
+    "date": "2026-08-20",
+    "type": "deposit",
+    "amount": 0.06,
+    "notes": "NBP-bot",
+    "createdAt": "2026-08-20 18:01:12Z"
+  },
+  {
+    "id": "tx_296078251",
+    "date": "2026-08-20",
+    "type": "deposit",
+    "amount": 0.94,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-20 19:01:02Z"
+  },
+  {
+    "id": "tx_296081752",
+    "date": "2026-08-20",
+    "type": "deposit",
+    "amount": 0.23,
+    "notes": "NBP-bot",
+    "createdAt": "2026-08-20 19:06:54Z"
+  },
+  {
+    "id": "tx_296911264",
+    "date": "2026-08-21",
+    "type": "deposit",
+    "amount": 10.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-21 21:19:10Z"
+  },
+  {
+    "id": "tx_297171120",
+    "date": "2026-08-23",
+    "type": "withdraw",
+    "amount": 9.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-08-23 17:54:15Z"
+  },
+  {
+    "id": "tx_297358903",
+    "date": "2026-08-24",
+    "type": "deposit",
+    "amount": 0.01,
+    "notes": "NBP-bot",
+    "createdAt": "2026-08-24 05:37:23Z"
+  },
+  {
+    "id": "tx_297362084",
+    "date": "2026-08-24",
+    "type": "deposit",
+    "amount": 48.77,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-24 05:41:10Z"
+  },
+  {
+    "id": "tx_297914087",
+    "date": "2026-08-24",
+    "type": "withdraw",
+    "amount": 49.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-08-24 18:04:19Z"
+  },
+  {
+    "id": "tx_298516656",
+    "date": "2026-08-25",
+    "type": "withdraw",
+    "amount": 150.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-08-25 13:04:30Z"
+  },
+  {
+    "id": "tx_298533467",
+    "date": "2026-08-25",
+    "type": "deposit",
+    "amount": 150.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-25 13:39:23Z"
+  },
+  {
+    "id": "tx_298661804",
+    "date": "2026-08-25",
+    "type": "withdraw",
+    "amount": 50.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-08-25 16:24:59Z"
+  },
+  {
+    "id": "tx_298670021",
+    "date": "2026-08-25",
+    "type": "deposit",
+    "amount": 50.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-25 16:29:44Z"
+  },
+  {
+    "id": "tx_298802491",
+    "date": "2026-08-25",
+    "type": "withdraw",
+    "amount": 50.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-08-25 18:25:05Z"
+  },
+  {
+    "id": "tx_299251115",
+    "date": "2026-08-26",
+    "type": "deposit",
+    "amount": 0.99,
+    "notes": "NBP-bot",
+    "createdAt": "2026-08-26 12:01:51Z"
+  },
+  {
+    "id": "tx_299269871",
+    "date": "2026-08-26",
+    "type": "deposit",
+    "amount": 50.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-26 12:27:01Z"
+  },
+  {
+    "id": "tx_299619850",
+    "date": "2026-08-26",
+    "type": "deposit",
+    "amount": 33.95,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-26 18:24:25Z"
+  },
+  {
+    "id": "tx_299645975",
+    "date": "2026-08-26",
+    "type": "deposit",
+    "amount": 0.56,
+    "notes": "NBP-bot",
+    "createdAt": "2026-08-26 18:55:21Z"
+  },
+  {
+    "id": "tx_299654970",
+    "date": "2026-08-26",
+    "type": "deposit",
+    "amount": 2.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-26 19:03:42Z"
+  },
+  {
+    "id": "tx_299656212",
+    "date": "2026-08-26",
+    "type": "deposit",
+    "amount": 0.14,
+    "notes": "NBP-bot",
+    "createdAt": "2026-08-26 19:05:26Z"
+  },
+  {
+    "id": "tx_299658893",
+    "date": "2026-08-26",
+    "type": "deposit",
+    "amount": 43.68,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-26 19:10:16Z"
+  },
+  {
+    "id": "tx_299710124",
+    "date": "2026-08-26",
+    "type": "withdraw",
+    "amount": 5.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-08-26 20:53:47Z"
+  },
+  {
+    "id": "tx_299726026",
+    "date": "2026-08-26",
+    "type": "deposit",
+    "amount": 15.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-26 21:27:57Z"
+  },
+  {
+    "id": "tx_300403609",
+    "date": "2026-08-27",
+    "type": "withdraw",
+    "amount": 12.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-08-27 18:59:29Z"
+  },
+  {
+    "id": "tx_300450954",
+    "date": "2026-08-27",
+    "type": "deposit",
+    "amount": 12.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-08-27 20:23:55Z"
+  },
+  {
+    "id": "tx_302905729",
+    "date": "2026-09-01",
+    "type": "deposit",
+    "amount": 0.43,
+    "notes": "NBP-bot",
+    "createdAt": "2026-09-01 15:40:14Z"
+  },
+  {
+    "id": "tx_302907608",
+    "date": "2026-09-01",
+    "type": "deposit",
+    "amount": 48.8,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-01 15:42:19Z"
+  },
+  {
+    "id": "tx_304257903",
+    "date": "2026-09-03",
+    "type": "deposit",
+    "amount": 0.05,
+    "notes": "NBP-bot",
+    "createdAt": "2026-09-03 06:14:40Z"
+  },
+  {
+    "id": "tx_304260633",
+    "date": "2026-09-03",
+    "type": "deposit",
+    "amount": 48.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-03 06:19:45Z"
+  },
+  {
+    "id": "tx_305026283",
+    "date": "2026-09-04",
+    "type": "deposit",
+    "amount": 20.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-04 00:58:00Z"
+  },
+  {
+    "id": "tx_305073160",
+    "date": "2026-09-04",
+    "type": "deposit",
+    "amount": 2.68,
+    "notes": "NBP-bot",
+    "createdAt": "2026-09-04 04:13:11Z"
+  },
+  {
+    "id": "tx_305073575",
+    "date": "2026-09-04",
+    "type": "deposit",
+    "amount": 19.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-04 04:13:53Z"
+  },
+  {
+    "id": "tx_305418131",
+    "date": "2026-09-04",
+    "type": "deposit",
+    "amount": 10.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-04 15:27:11Z"
+  },
+  {
+    "id": "tx_306061689",
+    "date": "2026-09-07",
+    "type": "deposit",
+    "amount": 10.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-07 03:32:17Z"
+  },
+  {
+    "id": "tx_306074825",
+    "date": "2026-09-07",
+    "type": "deposit",
+    "amount": 7.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-07 03:59:34Z"
+  },
+  {
+    "id": "tx_306083911",
+    "date": "2026-09-07",
+    "type": "deposit",
+    "amount": 0.09,
+    "notes": "NBP-bot",
+    "createdAt": "2026-09-07 04:10:35Z"
+  },
+  {
+    "id": "tx_306084207",
+    "date": "2026-09-07",
+    "type": "deposit",
+    "amount": 10.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-07 04:10:48Z"
+  },
+  {
+    "id": "tx_306112371",
+    "date": "2026-09-07",
+    "type": "deposit",
+    "amount": 10.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-07 04:55:57Z"
+  },
+  {
+    "id": "tx_306634114",
+    "date": "2026-09-07",
+    "type": "deposit",
+    "amount": 5.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-07 17:47:16Z"
+  },
+  {
+    "id": "tx_306649716",
+    "date": "2026-09-07",
+    "type": "deposit",
+    "amount": 18.8,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-07 18:00:35Z"
+  },
+  {
+    "id": "tx_307466979",
+    "date": "2026-09-08",
+    "type": "withdraw",
+    "amount": 22.9,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-09-08 18:28:57Z"
+  },
+  {
+    "id": "tx_307819363",
+    "date": "2026-09-09",
+    "type": "deposit",
+    "amount": 8.6,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-09 08:18:26Z"
+  },
+  {
+    "id": "tx_307831988",
+    "date": "2026-09-09",
+    "type": "deposit",
+    "amount": 10.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-09 08:39:21Z"
+  },
+  {
+    "id": "tx_307848883",
+    "date": "2026-09-09",
+    "type": "deposit",
+    "amount": 0.12,
+    "notes": "NBP-bot",
+    "createdAt": "2026-09-09 09:03:13Z"
+  },
+  {
+    "id": "tx_307895261",
+    "date": "2026-09-09",
+    "type": "deposit",
+    "amount": 20.89,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-09 10:21:56Z"
+  },
+  {
+    "id": "tx_308470321",
+    "date": "2026-09-09",
+    "type": "withdraw",
+    "amount": 14.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-09-09 20:31:03Z"
+  },
+  {
+    "id": "tx_308933573",
+    "date": "2026-09-10",
+    "type": "withdraw",
+    "amount": 33.26,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-09-10 13:54:46Z"
+  },
+  {
+    "id": "tx_308940533",
+    "date": "2026-09-10",
+    "type": "withdraw",
+    "amount": 75.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-09-10 13:59:50Z"
+  },
+  {
+    "id": "tx_309207871",
+    "date": "2026-09-10",
+    "type": "deposit",
+    "amount": 30.51,
+    "notes": "NBP-bot",
+    "createdAt": "2026-09-10 16:57:00Z"
+  },
+  {
+    "id": "tx_309208754",
+    "date": "2026-09-10",
+    "type": "deposit",
+    "amount": 10.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-10 16:58:10Z"
+  },
+  {
+    "id": "tx_309214199",
+    "date": "2026-09-10",
+    "type": "deposit",
+    "amount": 5.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-10 17:02:20Z"
+  },
+  {
+    "id": "tx_309453766",
+    "date": "2026-09-10",
+    "type": "deposit",
+    "amount": 10.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-10 21:49:00Z"
+  },
+  {
+    "id": "tx_309491185",
+    "date": "2026-09-10",
+    "type": "withdraw",
+    "amount": 30.03,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-09-10 22:48:09Z"
+  },
+  {
+    "id": "tx_309514611",
+    "date": "2026-09-11",
+    "type": "deposit",
+    "amount": 10.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-11 01:02:10Z"
+  },
+  {
+    "id": "tx_309553680",
+    "date": "2026-09-11",
+    "type": "deposit",
+    "amount": 17.76,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-11 03:30:40Z"
+  },
+  {
+    "id": "tx_309636854",
+    "date": "2026-09-11",
+    "type": "deposit",
+    "amount": 10.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-11 06:33:24Z"
+  },
+  {
+    "id": "tx_309642976",
+    "date": "2026-09-11",
+    "type": "deposit",
+    "amount": 10.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-11 06:47:57Z"
+  },
+  {
+    "id": "tx_309649618",
+    "date": "2026-09-11",
+    "type": "deposit",
+    "amount": 5.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-11 07:02:26Z"
+  },
+  {
+    "id": "tx_309654396",
+    "date": "2026-09-11",
+    "type": "deposit",
+    "amount": 25.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-11 07:09:59Z"
+  },
+  {
+    "id": "tx_309712852",
+    "date": "2026-09-11",
+    "type": "deposit",
+    "amount": 0.01,
+    "notes": "NBP-bot",
+    "createdAt": "2026-09-11 08:57:28Z"
+  },
+  {
+    "id": "tx_309713009",
+    "date": "2026-09-11",
+    "type": "deposit",
+    "amount": 20.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-11 08:57:43Z"
+  },
+  {
+    "id": "tx_309898424",
+    "date": "2026-09-11",
+    "type": "withdraw",
+    "amount": 10.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-09-11 14:20:21Z"
+  },
+  {
+    "id": "tx_309921316",
+    "date": "2026-09-11",
+    "type": "withdraw",
+    "amount": 1.78,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-09-11 14:57:30Z"
+  },
+  {
+    "id": "tx_309984824",
+    "date": "2026-09-11",
+    "type": "deposit",
+    "amount": 5.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-11 15:34:52Z"
+  },
+  {
+    "id": "tx_310016106",
+    "date": "2026-09-11",
+    "type": "deposit",
+    "amount": 5.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-11 15:44:38Z"
+  },
+  {
+    "id": "tx_310023862",
+    "date": "2026-09-11",
+    "type": "withdraw",
+    "amount": 10.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-09-11 15:47:49Z"
+  },
+  {
+    "id": "tx_310054822",
+    "date": "2026-09-11",
+    "type": "deposit",
+    "amount": 5.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-11 16:00:35Z"
+  },
+  {
+    "id": "tx_310073487",
+    "date": "2026-09-11",
+    "type": "deposit",
+    "amount": 5.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-11 16:09:25Z"
+  },
+  {
+    "id": "tx_310120572",
+    "date": "2026-09-11",
+    "type": "deposit",
+    "amount": 10.08,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-11 16:41:43Z"
+  },
+  {
+    "id": "tx_310130526",
+    "date": "2026-09-11",
+    "type": "deposit",
+    "amount": 10.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-11 16:49:15Z"
+  },
+  {
+    "id": "tx_310131491",
+    "date": "2026-09-11",
+    "type": "deposit",
+    "amount": 10.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-11 16:49:52Z"
+  },
+  {
+    "id": "tx_310231440",
+    "date": "2026-09-11",
+    "type": "deposit",
+    "amount": 48.3,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-11 18:06:35Z"
+  },
+  {
+    "id": "tx_310578351",
+    "date": "2026-09-14",
+    "type": "deposit",
+    "amount": 48.37,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-14 01:31:24Z"
+  },
+  {
+    "id": "tx_310726350",
+    "date": "2026-09-14",
+    "type": "withdraw",
+    "amount": 50.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-09-14 06:18:16Z"
+  },
+  {
+    "id": "tx_311185270",
+    "date": "2026-09-14",
+    "type": "deposit",
+    "amount": 5.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-14 16:31:29Z"
+  },
+  {
+    "id": "tx_311295145",
+    "date": "2026-09-14",
+    "type": "deposit",
+    "amount": 5.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-14 18:06:32Z"
+  },
+  {
+    "id": "tx_311375180",
+    "date": "2026-09-14",
+    "type": "deposit",
+    "amount": 5.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-14 19:29:13Z"
+  },
+  {
+    "id": "tx_311377177",
+    "date": "2026-09-14",
+    "type": "deposit",
+    "amount": 5.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-14 19:31:49Z"
+  },
+  {
+    "id": "tx_311380428",
+    "date": "2026-09-14",
+    "type": "deposit",
+    "amount": 10.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-14 19:37:27Z"
+  },
+  {
+    "id": "tx_311397884",
+    "date": "2026-09-14",
+    "type": "deposit",
+    "amount": 5.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-14 19:52:32Z"
+  },
+  {
+    "id": "tx_311402765",
+    "date": "2026-09-14",
+    "type": "deposit",
+    "amount": 10.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-14 19:59:07Z"
+  },
+  {
+    "id": "tx_311421537",
+    "date": "2026-09-14",
+    "type": "deposit",
+    "amount": 5.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-14 20:32:46Z"
+  },
+  {
+    "id": "tx_314734806",
+    "date": "2026-09-18",
+    "type": "deposit",
+    "amount": 0.1,
+    "notes": "NBP-bot",
+    "createdAt": "2026-09-18 16:57:54Z"
+  },
+  {
+    "id": "tx_314738084",
+    "date": "2026-09-18",
+    "type": "deposit",
+    "amount": 15.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-18 17:01:17Z"
+  },
+  {
+    "id": "tx_314883028",
+    "date": "2026-09-18",
+    "type": "deposit",
+    "amount": 5.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-18 19:55:45Z"
+  },
+  {
+    "id": "tx_314904349",
+    "date": "2026-09-18",
+    "type": "deposit",
+    "amount": 10.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-18 20:33:15Z"
+  },
+  {
+    "id": "tx_314909094",
+    "date": "2026-09-18",
+    "type": "deposit",
+    "amount": 10.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-18 20:37:33Z"
+  },
+  {
+    "id": "tx_315479818",
+    "date": "2026-09-21",
+    "type": "withdraw",
+    "amount": 20.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-09-21 11:46:01Z"
+  },
+  {
+    "id": "tx_315480313",
+    "date": "2026-09-21",
+    "type": "deposit",
+    "amount": 7.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-21 11:46:56Z"
+  },
+  {
+    "id": "tx_315480437",
+    "date": "2026-09-21",
+    "type": "deposit",
+    "amount": 0.62,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-21 11:47:09Z"
+  },
+  {
+    "id": "tx_316850465",
+    "date": "2026-09-22",
+    "type": "deposit",
+    "amount": 20.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-22 21:05:38Z"
+  },
+  {
+    "id": "tx_318180454",
+    "date": "2026-09-24",
+    "type": "deposit",
+    "amount": 0.18,
+    "notes": "NBP-bot",
+    "createdAt": "2026-09-24 15:34:47Z"
+  },
+  {
+    "id": "tx_318604647",
+    "date": "2026-09-25",
+    "type": "deposit",
+    "amount": 7.9,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-25 02:46:24Z"
+  },
+  {
+    "id": "tx_318652935",
+    "date": "2026-09-25",
+    "type": "deposit",
+    "amount": 2.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-25 05:09:40Z"
+  },
+  {
+    "id": "tx_319262894",
+    "date": "2026-09-25",
+    "type": "deposit",
+    "amount": 2.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-25 19:08:33Z"
+  },
+  {
+    "id": "tx_319270307",
+    "date": "2026-09-25",
+    "type": "deposit",
+    "amount": 0.02,
+    "notes": "NBP-bot",
+    "createdAt": "2026-09-25 19:15:43Z"
+  },
+  {
+    "id": "tx_319270479",
+    "date": "2026-09-25",
+    "type": "deposit",
+    "amount": 6.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-25 19:15:52Z"
+  },
+  {
+    "id": "tx_319272218",
+    "date": "2026-09-25",
+    "type": "deposit",
+    "amount": 5.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-25 19:17:27Z"
+  },
+  {
+    "id": "tx_319287768",
+    "date": "2026-09-25",
+    "type": "withdraw",
+    "amount": 10.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-09-25 19:35:42Z"
+  },
+  {
+    "id": "tx_319306209",
+    "date": "2026-09-25",
+    "type": "deposit",
+    "amount": 2.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-25 20:08:52Z"
+  },
+  {
+    "id": "tx_319307641",
+    "date": "2026-09-25",
+    "type": "deposit",
+    "amount": 8.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-25 20:13:27Z"
+  },
+  {
+    "id": "tx_319346358",
+    "date": "2026-09-25",
+    "type": "deposit",
+    "amount": 25.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-25 21:40:02Z"
+  },
+  {
+    "id": "tx_319350824",
+    "date": "2026-09-25",
+    "type": "withdraw",
+    "amount": 30.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-09-25 21:52:07Z"
+  },
+  {
+    "id": "tx_319647405",
+    "date": "2026-09-28",
+    "type": "deposit",
+    "amount": 5.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-28 05:18:09Z"
+  },
+  {
+    "id": "tx_319650892",
+    "date": "2026-09-28",
+    "type": "deposit",
+    "amount": 3.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-28 05:30:11Z"
+  },
+  {
+    "id": "tx_319653791",
+    "date": "2026-09-28",
+    "type": "deposit",
+    "amount": 10.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-28 05:33:43Z"
+  },
+  {
+    "id": "tx_319657209",
+    "date": "2026-09-28",
+    "type": "deposit",
+    "amount": 12.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-28 05:38:14Z"
+  },
+  {
+    "id": "tx_319694893",
+    "date": "2026-09-28",
+    "type": "deposit",
+    "amount": 47.95,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-28 06:41:54Z"
+  },
+  {
+    "id": "tx_319800408",
+    "date": "2026-09-28",
+    "type": "deposit",
+    "amount": 47.95,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-28 09:35:57Z"
+  },
+  {
+    "id": "tx_319806697",
+    "date": "2026-09-28",
+    "type": "withdraw",
+    "amount": 10.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-09-28 09:45:30Z"
+  },
+  {
+    "id": "tx_319807234",
+    "date": "2026-09-28",
+    "type": "withdraw",
+    "amount": 3.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-09-28 09:46:25Z"
+  },
+  {
+    "id": "tx_319821578",
+    "date": "2026-09-28",
+    "type": "deposit",
+    "amount": 52.74,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-28 10:00:07Z"
+  },
+  {
+    "id": "tx_320356416",
+    "date": "2026-09-28",
+    "type": "deposit",
+    "amount": 47.95,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-09-28 18:45:35Z"
+  },
+  {
+    "id": "tx_322330504",
+    "date": "2026-10-01",
+    "type": "withdraw",
+    "amount": 100.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-10-01 08:10:07Z"
+  },
+  {
+    "id": "tx_323548543",
+    "date": "2026-10-02",
+    "type": "withdraw",
+    "amount": 60.0,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-10-02 15:14:52Z"
+  },
+  {
+    "id": "tx_323553593",
+    "date": "2026-10-02",
+    "type": "deposit",
+    "amount": 15.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-10-02 15:21:49Z"
+  },
+  {
+    "id": "tx_323554782",
+    "date": "2026-10-02",
+    "type": "withdraw",
+    "amount": 4.26,
+    "notes": "OTXX-WD(93793514)-D",
+    "createdAt": "2026-10-02 15:23:17Z"
+  },
+  {
+    "id": "tx_323557888",
+    "date": "2026-10-02",
+    "type": "deposit",
+    "amount": 4.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-10-02 15:27:01Z"
+  },
+  {
+    "id": "tx_324792862",
+    "date": "2026-10-05",
+    "type": "deposit",
+    "amount": 45.0,
+    "notes": "OTXX-DP(93793514)-D",
+    "createdAt": "2026-10-05 16:44:39Z"
+  }
+];
 
       const defaultState = {
-        version: '1.5.0',
+        version: '2.0.0',
         settings: {
           currency: 'USD',
           egpRate: 50.0,
@@ -1457,9 +3445,9 @@
         },
         capital: {
           baseCapital: 0.0,
-          baseAvailableBalance: 40.0,
-          availableBalance: 40.0,
-          educationBudget: 1116.02 // Calibrated so that Net Balance ends at -$1,215.00 exactly with $367.50 deposits
+          baseAvailableBalance: 80.0,
+          availableBalance: 80.0,
+          educationBudget: 479.56
         },
         transactions: demoTransactions,
         trades: demoTrades,
@@ -1903,27 +3891,12 @@
           const hasTrades = p.trades && Object.keys(p.trades).length > 0;
           
           // Auto-migrate legacy states or clean up accidental 1000 base capital
-          if (p.version !== '1.5.0' || !hasTrades || !p.trades['2026-09-01'] || p.capital?.baseCapital === 1000 || p.capital?.availableBalance === undefined) {
+          if (p.version !== '2.0.0' || !hasTrades || !p.trades['2026-10-08'] || p.capital?.availableBalance === undefined) {
             const upgraded = JSON.parse(JSON.stringify(defaultState));
             if (p.settings && p.settings.githubSync) {
               upgraded.settings.githubSync = p.settings.githubSync;
             }
-            if (p.trades && Object.keys(p.trades).length > 0) {
-              upgraded.trades = p.trades;
-            }
-            if (Array.isArray(p.transactions) && p.transactions.length > 0) {
-              upgraded.transactions = p.transactions;
-            }
-            if (Array.isArray(p.journal) && p.journal.length >= 60) {
-              upgraded.journal = p.journal;
-            } else {
-              upgraded.journal = defaultState.journal;
-            }
-            upgraded.capital.baseCapital = (p.capital?.baseCapital === 1000) ? 0.0 : Number(p.capital?.baseCapital || 0.0);
-            upgraded.capital.baseAvailableBalance = p.capital?.baseAvailableBalance !== undefined ? Number(p.capital.baseAvailableBalance) : (Number(p.capital?.availableBalance) || 40.0);
-            upgraded.capital.availableBalance = p.capital?.availableBalance !== undefined ? Number(p.capital.availableBalance) : 40.0;
-            upgraded.capital.educationBudget = Number(p.capital?.educationBudget) || 1116.02;
-            upgraded.version = '1.5.0';
+            upgraded.version = '2.0.0';
             localStorage.setItem(STORAGE_KEY, JSON.stringify(upgraded));
             return upgraded;
           }
@@ -1933,9 +3906,9 @@
             settings: { ...defaultState.settings, ...(p.settings || {}) },
             capital: {
               baseCapital: Number(p.capital?.baseCapital ?? 0.0),
-              baseAvailableBalance: Number(p.capital?.baseAvailableBalance ?? (p.capital?.availableBalance ?? 40.0)),
-              availableBalance: Number(p.capital?.availableBalance ?? 40.0),
-              educationBudget: Number(p.capital?.educationBudget ?? 1116.02)
+              baseAvailableBalance: Number(p.capital?.baseAvailableBalance ?? (p.capital?.availableBalance ?? 80.0)),
+              availableBalance: Number(p.capital?.availableBalance ?? 80.0),
+              educationBudget: Number(p.capital?.educationBudget ?? 479.56)
             },
             transactions: (Array.isArray(p.transactions) && p.transactions.length > 0) ? p.transactions : defaultState.transactions,
             trades: (p.trades && Object.keys(p.trades).length > 0) ? p.trades : defaultState.trades,
@@ -2131,12 +4104,12 @@
         const netTradingPnl = tradingProfits - tradingLosses;
         const netCashFlow = deposits - withdrawals;
 
-        // Baseline benchmark as of Sept 25:
-        // Baseline deposits = $367.50, withdrawals = $0.00, baseline trades PnL = -$466.48
-        // Baseline Total Balance = -$1,215.00
-        const baselineDeposits = 367.50;
-        const baselineWithdrawals = 0.00;
-        const baselineTradesPnl = -466.48;
+        // Baseline benchmark as of MT5 report (October 08, 2026):
+        // Baseline deposits = $5,180.40, withdrawals = $4,315.58, baseline trades PnL = -$785.44
+        // Baseline Total Balance = -$1,265.00, Available Balance = $80.00
+        const baselineDeposits = 5180.40;
+        const baselineWithdrawals = 4315.58;
+        const baselineTradesPnl = -785.44;
 
         const deltaCashFlow = (deposits - baselineDeposits) - (withdrawals - baselineWithdrawals);
         const deltaTrading = (netTradingPnl - baselineTradesPnl);
@@ -2146,9 +4119,8 @@
         state.capital.availableBalance = availableBalance;
 
         // Total Ledger / Recovery Deficit:
-        // New operational deposits fund the active trading balance (availableBalance) but do NOT artificially
-        // reduce historical deficit/debt. Only actual trading performance (PnL) impacts recovery progress.
-        const totalBalance = base + (baselineDeposits - baselineWithdrawals) - eduDeduction + netTradingPnl;
+        // Decoupled from operational cash deposits. Total deficit = -$785.44 trading PnL - $479.56 education = -$1,265.00
+        const totalBalance = base - eduDeduction + netTradingPnl;
 
         return {
           base,
@@ -2333,14 +4305,7 @@
       }
 
       function getTradingWeekInfo(dateStr) {
-        // Historical reconciliation exception for Excel Week 1 (01 - 05 سبتمبر)
-        if (dateStr >= '2026-09-01' && dateStr <= '2026-09-05') {
-          return {
-            key: '2026-09-01',
-            label: '01 - 05 سبتمبر',
-            weekStart: new Date(2026, 8, 1, 12, 0, 0),
-            weekEnd: new Date(2026, 8, 5, 12, 0, 0)
-          };
+        ;
         }
 
         const dt = parseLocalDate(dateStr);
