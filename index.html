@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>متتبع تداول الذهب | Gold Tracker</title>
   
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='14' fill='%23d4af37'/><text x='16' y='21' font-size='16' font-family='Arial' font-weight='bold' fill='%230f121d' text-anchor='middle'>G</text></svg>">
   <meta name="description" content="دفتر أستاذ متقدم لتتبع أداء تداول الذهب وإدارة رأس المال وحركات الإيداع والسحب.">
   <meta name="author" content="عادل منير">
   
@@ -572,6 +573,142 @@
       font-weight: 700;
       direction: ltr;
       color: var(--text-main);
+    }
+
+    
+    /* Interactive Trading Trajectory & Period Chart */
+    .chart-container-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+    .chart-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .chart-title-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .chart-title {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--gold-light);
+    }
+    .chart-kpi-badges {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .chart-badge {
+      background: var(--bg-card-sub);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 3px 8px;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      font-family: var(--font-num);
+    }
+    .chart-badge span {
+      font-weight: 700;
+    }
+    .chart-controls-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 6px 8px;
+      margin-bottom: 10px;
+    }
+    .chart-btn-group {
+      display: inline-flex;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--bg-card-sub);
+    }
+    .chart-toggle-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 5px 10px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: var(--font-main);
+    }
+    .chart-toggle-btn.active {
+      background: var(--gold);
+      color: #000;
+    }
+    .chart-search-box {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .chart-date-input {
+      background: var(--bg-card-sub);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 4px 8px;
+      border-radius: var(--radius-sm);
+      font-size: 0.75rem;
+      font-family: var(--font-num);
+      outline: none;
+    }
+    .chart-canvas-wrap {
+      position: relative;
+      width: 100%;
+      height: 260px;
+      background: #0a0c12;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      touch-action: none;
+    }
+    .chart-canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    .chart-tooltip {
+      position: absolute;
+      pointer-events: none;
+      display: none;
+      background: rgba(18, 21, 28, 0.95);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--gold-dim);
+      border-radius: var(--radius-sm);
+      padding: 6px 10px;
+      font-size: 0.75rem;
+      color: var(--text-main);
+      z-index: 10;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.6);
+      transform: translate(-50%, -115%);
+      white-space: nowrap;
+    }
+    .chart-legend-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 8px;
+      font-size: 0.72rem;
+      color: var(--text-sub);
+      flex-wrap: wrap;
+      gap: 6px;
     }
 
     .projection-compact {
@@ -1194,6 +1331,70 @@
 
     <!-- PANE 2: STATS & PROJECTIONS -->
     <div id="tab-stats" class="view-pane">
+
+      <!-- Interactive Trading Trajectory & Period Chart -->
+      <div class="chart-container-card" id="chartCard">
+        <div class="chart-header-row">
+          <div class="chart-title-box">
+            <span class="chart-title">مسار تداول الذهب (Equity & Performance Curve)</span>
+          </div>
+          <div class="chart-kpi-badges">
+            <div class="chart-badge">أعلى رصيد: <span id="chartPeakEquity" style="color:var(--profit);">$0.00</span></div>
+            <div class="chart-badge">أقصى تراجع: <span id="chartMaxDrawdown" style="color:var(--loss);">$0.00</span></div>
+            <div class="chart-badge">حصيلة النطاق: <span id="chartRangeTotal" style="color:var(--gold-light);">$0.00</span></div>
+          </div>
+        </div>
+
+        <!-- Controls: Timeframe, Mode, and Search Filter -->
+        <div class="chart-controls-bar">
+          <div style="display:flex; gap:6px; flex-wrap:wrap; align-items:center;">
+            <!-- Timeframe Group -->
+            <div class="chart-btn-group">
+              <button class="chart-toggle-btn active" id="btnTfDaily" data-tf="daily">يومي</button>
+              <button class="chart-toggle-btn" id="btnTfWeekly" data-tf="weekly">أسبوعي</button>
+              <button class="chart-toggle-btn" id="btnTfMonthly" data-tf="monthly">شهري</button>
+            </div>
+
+            <!-- Metric Mode Group -->
+            <div class="chart-btn-group">
+              <button class="chart-toggle-btn active" id="btnModeTrajectory" data-mode="trajectory">المسار التراكمي</button>
+              <button class="chart-toggle-btn" id="btnModePeriodic" data-mode="periodic">أرباح / خسائر</button>
+            </div>
+          </div>
+
+          <!-- Quick Presets & Date Search Filter -->
+          <div class="chart-search-box">
+            <select id="chartPresetSelect" class="chart-date-input" style="cursor:pointer;">
+              <option value="all">الكل (من أول يوم)</option>
+              <option value="last14">آخر 14 يوم عمل</option>
+              <option value="last30">آخر 30 يوم عمل</option>
+              <option value="2026-10">أكتوبر 2026</option>
+              <option value="2026-09">سبتمبر 2026</option>
+              <option value="2026-08">أغسطس 2026</option>
+              <option value="custom">تحديد تاريخ مخصص...</option>
+            </select>
+            <input type="date" id="chartDateSearch" class="chart-date-input" style="display:none;" title="اختر تاريخ محدد للتركيز عليه">
+            <button class="btn-today" id="btnResetChartFilter" style="display:none; padding:4px 8px; font-size:0.75rem;">إلغاء التحديد</button>
+          </div>
+        </div>
+
+        <!-- Canvas Container -->
+        <div class="chart-canvas-wrap" id="chartCanvasWrap">
+          <canvas id="tradingChartCanvas" class="chart-canvas"></canvas>
+          <div class="chart-tooltip" id="chartTooltip"></div>
+        </div>
+
+        <!-- Legend and Point Inspector -->
+        <div class="chart-legend-row">
+          <div style="display:flex; gap:12px; align-items:center;">
+            <span><span style="display:inline-block; width:10px; height:3px; background:var(--gold); vertical-align:middle; margin-left:4px;"></span>منحنى المسار التراكمي</span>
+            <span><span style="display:inline-block; width:8px; height:8px; background:var(--profit); vertical-align:middle; margin-left:4px; border-radius:2px;"></span>ربح الفترة</span>
+            <span><span style="display:inline-block; width:8px; height:8px; background:var(--loss); vertical-align:middle; margin-left:4px; border-radius:2px;"></span>خسارة الفترة</span>
+          </div>
+          <div id="chartPointInspector" style="font-family:var(--font-num); color:var(--gold-light);">المس أو مرر على الرسم لعرض التفاصيل</div>
+        </div>
+      </div>
+
 
       <!-- Compact Monthly Projection -->
       <div class="projection-compact" id="boxProjection" style="padding:8px 12px; margin-bottom:8px;">
@@ -4305,9 +4506,6 @@
       }
 
       function getTradingWeekInfo(dateStr) {
-        ;
-        }
-
         const dt = parseLocalDate(dateStr);
         const day = dt.getDay(); // 0: Sun, 1: Mon, ..., 5: Fri, 6: Sat
         
@@ -4680,7 +4878,438 @@
       });
 
       // Render Analytics View
+      
+      // ==========================================
+      // INTERACTIVE TRADING TRAJECTORY CHART ENGINE
+      // ==========================================
+      let chartTimeframe = 'daily';     // 'daily' | 'weekly' | 'monthly'
+      let chartMode = 'trajectory';     // 'trajectory' | 'periodic'
+      let chartPreset = 'all';          // 'all' | 'last14' | 'last30' | '2026-10' | '2026-09' | '2026-08' | 'custom'
+      let chartCustomDate = null;
+
+      const chartCanvas = document.getElementById('tradingChartCanvas');
+      const chartCanvasWrap = document.getElementById('chartCanvasWrap');
+      const chartTooltip = document.getElementById('chartTooltip');
+      const chartPointInspector = document.getElementById('chartPointInspector');
+      const chartPeakEquity = document.getElementById('chartPeakEquity');
+      const chartMaxDrawdown = document.getElementById('chartMaxDrawdown');
+      const chartRangeTotal = document.getElementById('chartRangeTotal');
+      const chartPresetSelect = document.getElementById('chartPresetSelect');
+      const chartDateSearch = document.getElementById('chartDateSearch');
+      const btnResetChartFilter = document.getElementById('btnResetChartFilter');
+
+      let chartRenderedData = [];
+      let chartPointerIdx = -1;
+
+      function prepareChartData() {
+        const sortedDates = Object.keys(state.trades).sort((a,b) => a.localeCompare(b));
+        if (sortedDates.length === 0) return [];
+
+        let rawSeries = [];
+
+        if (chartTimeframe === 'daily') {
+          let runningCum = 0;
+          sortedDates.forEach(dStr => {
+            const t = state.trades[dStr];
+            const p = Number(t.pnl) || 0;
+            runningCum += p;
+            rawSeries.push({
+              key: dStr,
+              label: dStr.slice(5), // MM-DD
+              fullDate: dStr,
+              pnl: p,
+              cumulative: Math.round(runningCum * 100) / 100,
+              notes: t.notes || ''
+            });
+          });
+        } else if (chartTimeframe === 'weekly') {
+          const weeksMap = {};
+          sortedDates.forEach(dStr => {
+            const info = getTradingWeekInfo(dStr);
+            if (!weeksMap[info.key]) {
+              weeksMap[info.key] = { key: info.key, label: info.label, pnl: 0, daysCount: 0 };
+            }
+            weeksMap[info.key].pnl += (Number(state.trades[dStr].pnl) || 0);
+            weeksMap[info.key].daysCount++;
+          });
+
+          let runningCum = 0;
+          Object.keys(weeksMap).sort((a,b) => a.localeCompare(b)).forEach(wKey => {
+            const w = weeksMap[wKey];
+            runningCum += w.pnl;
+            rawSeries.push({
+              key: wKey,
+              label: w.label.split(' ')[0] + ' ' + (w.label.split(' ')[1] || ''),
+              fullDate: `أسبوع: ${w.label}`,
+              pnl: Math.round(w.pnl * 100) / 100,
+              cumulative: Math.round(runningCum * 100) / 100,
+              notes: `${w.daysCount} أيام تداول`
+            });
+          });
+        } else if (chartTimeframe === 'monthly') {
+          const monthsMap = {};
+          sortedDates.forEach(dStr => {
+            const mKey = dStr.slice(0, 7);
+            if (!monthsMap[mKey]) {
+              const mIdx = parseInt(dStr.slice(5, 7), 10) - 1;
+              monthsMap[mKey] = { key: mKey, label: getMonthArabicName(mIdx) + ' ' + dStr.slice(0,4), pnl: 0, daysCount: 0 };
+            }
+            monthsMap[mKey].pnl += (Number(state.trades[dStr].pnl) || 0);
+            monthsMap[mKey].daysCount++;
+          });
+
+          let runningCum = 0;
+          Object.keys(monthsMap).sort((a,b) => a.localeCompare(b)).forEach(mKey => {
+            const m = monthsMap[mKey];
+            runningCum += m.pnl;
+            rawSeries.push({
+              key: mKey,
+              label: m.label.split(' ')[0],
+              fullDate: m.label,
+              pnl: Math.round(m.pnl * 100) / 100,
+              cumulative: Math.round(runningCum * 100) / 100,
+              notes: `${m.daysCount} أيام تداول`
+            });
+          });
+        }
+
+        // Apply Preset Filter
+        if (chartPreset === 'last14') {
+          return rawSeries.slice(-14);
+        } else if (chartPreset === 'last30') {
+          return rawSeries.slice(-30);
+        } else if (chartPreset === '2026-10') {
+          return rawSeries.filter(item => item.key.startsWith('2026-10'));
+        } else if (chartPreset === '2026-09') {
+          return rawSeries.filter(item => item.key.startsWith('2026-09'));
+        } else if (chartPreset === '2026-08') {
+          return rawSeries.filter(item => item.key.startsWith('2026-08'));
+        } else if (chartPreset === 'custom' && chartCustomDate) {
+          const idx = rawSeries.findIndex(item => item.key === chartCustomDate || item.key.startsWith(chartCustomDate));
+          if (idx !== -1) {
+            chartPointerIdx = idx;
+          }
+          return rawSeries;
+        }
+
+        return rawSeries;
+      }
+
+      function renderTradingChart() {
+        if (!chartCanvas || !chartCanvasWrap) return;
+        const ctx = chartCanvas.getContext('2d');
+        if (!ctx) return;
+
+        const data = prepareChartData();
+        chartRenderedData = data;
+
+        const rect = chartCanvasWrap.getBoundingClientRect();
+        const dpr = window.devicePixelRatio || 1;
+        const width = rect.width;
+        const height = rect.height;
+
+        chartCanvas.width = width * dpr;
+        chartCanvas.height = height * dpr;
+        ctx.resetTransform();
+        ctx.scale(dpr, dpr);
+
+        ctx.clearRect(0, 0, width, height);
+
+        if (data.length === 0) {
+          ctx.fillStyle = '#6b7280';
+          ctx.font = '12px Tajawal, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('لا توجد بيانات متاحة للنطاق المحدد', width / 2, height / 2);
+          return;
+        }
+
+        // Calculate KPI Badges
+        let peak = -Infinity;
+        let valley = Infinity;
+        let sumPnl = 0;
+        data.forEach(d => {
+          sumPnl += d.pnl;
+          const val = chartMode === 'trajectory' ? d.cumulative : d.pnl;
+          if (val > peak) peak = val;
+          if (val < valley) valley = val;
+        });
+
+        if (chartPeakEquity) chartPeakEquity.textContent = formatMoney(peak, true);
+        if (chartMaxDrawdown) chartMaxDrawdown.textContent = formatMoney(valley, true);
+        if (chartRangeTotal) chartRangeTotal.textContent = formatMoney(sumPnl, true);
+
+        const padTop = 25;
+        const padBottom = 30;
+        const padLeft = 10;
+        const padRight = 50;
+        const plotW = width - padLeft - padRight;
+        const plotH = height - padTop - padBottom;
+
+        // Min & Max calculations
+        const values = data.map(d => chartMode === 'trajectory' ? d.cumulative : d.pnl);
+        let minVal = Math.min(...values, 0);
+        let maxVal = Math.max(...values, 0);
+        const margin = (maxVal - minVal) * 0.1 || 10;
+        minVal -= margin;
+        maxVal += margin;
+
+        const getY = (val) => padTop + plotH - ((val - minVal) / (maxVal - minVal)) * plotH;
+        const getX = (idx) => {
+          if (data.length === 1) return padLeft + plotW / 2;
+          return padLeft + (idx / (data.length - 1)) * plotW;
+        };
+
+        const zeroY = getY(0);
+
+        // 1. Draw Zero Gridline
+        ctx.strokeStyle = '#2a3447';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([4, 4]);
+        ctx.beginPath();
+        ctx.moveTo(padLeft, zeroY);
+        ctx.lineTo(width - padRight, zeroY);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Zero label on right
+        ctx.fillStyle = '#8c9ab0';
+        ctx.font = '10px JetBrains Mono, monospace';
+        ctx.textAlign = 'left';
+        ctx.fillText('$0.00', width - padRight + 6, zeroY + 3);
+
+        // Max / Min labels
+        ctx.fillText(formatMoney(maxVal), width - padRight + 6, padTop + 10);
+        ctx.fillText(formatMoney(minVal), width - padRight + 6, padTop + plotH);
+
+        // 2. Draw Trajectory Line & Gradient Fill OR Periodic Bars
+        if (chartMode === 'trajectory') {
+          // Gradient area fill under curve
+          const grad = ctx.createLinearGradient(0, padTop, 0, padTop + plotH);
+          grad.addColorStop(0, 'rgba(212, 175, 55, 0.35)');
+          grad.addColorStop(0.5, 'rgba(212, 175, 55, 0.1)');
+          grad.addColorStop(1, 'rgba(212, 175, 55, 0.0)');
+
+          ctx.beginPath();
+          ctx.moveTo(getX(0), zeroY);
+          data.forEach((d, idx) => {
+            ctx.lineTo(getX(idx), getY(d.cumulative));
+          });
+          ctx.lineTo(getX(data.length - 1), zeroY);
+          ctx.closePath();
+          ctx.fillStyle = grad;
+          ctx.fill();
+
+          // Stroke line
+          ctx.beginPath();
+          data.forEach((d, idx) => {
+            const x = getX(idx);
+            const y = getY(d.cumulative);
+            if (idx === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          });
+          ctx.strokeStyle = '#d4af37';
+          ctx.lineWidth = 2.5;
+          ctx.stroke();
+
+          // Points
+          data.forEach((d, idx) => {
+            const x = getX(idx);
+            const y = getY(d.cumulative);
+            ctx.beginPath();
+            ctx.arc(x, y, data.length > 25 ? 2.5 : 4, 0, Math.PI * 2);
+            ctx.fillStyle = d.pnl >= 0 ? '#10b981' : '#ef4444';
+            ctx.fill();
+            ctx.strokeStyle = '#0a0c12';
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+          });
+        } else {
+          // Periodic Bars
+          const barWidth = Math.max(3, Math.min(22, (plotW / data.length) * 0.7));
+          data.forEach((d, idx) => {
+            const x = getX(idx) - barWidth / 2;
+            const yVal = getY(d.pnl);
+            const yTop = Math.min(zeroY, yVal);
+            const bH = Math.max(2, Math.abs(zeroY - yVal));
+
+            ctx.fillStyle = d.pnl >= 0 ? '#10b981' : '#ef4444';
+            ctx.fillRect(x, yTop, barWidth, bH);
+          });
+        }
+
+        // 3. Draw X-axis date tick labels
+        ctx.fillStyle = '#6b7280';
+        ctx.font = '9px JetBrains Mono, monospace';
+        ctx.textAlign = 'center';
+        const step = Math.ceil(data.length / 6);
+        data.forEach((d, idx) => {
+          if (idx % step === 0 || idx === data.length - 1) {
+            ctx.fillText(d.label, getX(idx), height - 10);
+          }
+        });
+
+        // 4. Pointer Crosshair & Tooltip if active
+        if (chartPointerIdx >= 0 && chartPointerIdx < data.length) {
+          const pt = data[chartPointerIdx];
+          const px = getX(chartPointerIdx);
+          const py = chartMode === 'trajectory' ? getY(pt.cumulative) : getY(pt.pnl);
+
+          // Vertical indicator line
+          ctx.strokeStyle = '#f5d77f';
+          ctx.lineWidth = 1;
+          ctx.setLineDash([3, 3]);
+          ctx.beginPath();
+          ctx.moveTo(px, padTop);
+          ctx.lineTo(px, height - padBottom);
+          ctx.stroke();
+          ctx.setLineDash([]);
+
+          // Glowing dot
+          ctx.beginPath();
+          ctx.arc(px, py, 6, 0, Math.PI * 2);
+          ctx.fillStyle = '#f5d77f';
+          ctx.fill();
+          ctx.strokeStyle = '#000';
+          ctx.lineWidth = 2;
+          ctx.stroke();
+
+          // Update tooltip position & content
+          if (chartTooltip) {
+            chartTooltip.style.display = 'block';
+            chartTooltip.style.left = `${px}px`;
+            chartTooltip.style.top = `${py}px`;
+            chartTooltip.innerHTML = `
+              <div style="font-weight:700; color:var(--gold-light); margin-bottom:2px;">${pt.fullDate}</div>
+              <div style="display:flex; justify-content:space-between; gap:10px;">
+                <span>نتيجة الفترة:</span>
+                <strong style="color:${pt.pnl >= 0 ? 'var(--profit)' : 'var(--loss)'}; font-family:var(--font-num);">${formatMoney(pt.pnl, true)}</strong>
+              </div>
+              <div style="display:flex; justify-content:space-between; gap:10px;">
+                <span>المسار التراكمي:</span>
+                <strong style="color:var(--text-main); font-family:var(--font-num);">${formatMoney(pt.cumulative, true)}</strong>
+              </div>
+              ${pt.notes ? `<div style="font-size:0.68rem; color:var(--text-muted); margin-top:2px;">${escapeHtml(pt.notes)}</div>` : ''}
+            `;
+          }
+
+          if (chartPointInspector) {
+            chartPointInspector.innerHTML = `<strong>${pt.fullDate}</strong> | النتيجة: <span style="color:${pt.pnl >= 0 ? 'var(--profit)' : 'var(--loss)'};">${formatMoney(pt.pnl, true)}</span> | التراكمي: <strong>${formatMoney(pt.cumulative, true)}</strong>`;
+          }
+        } else {
+          if (chartTooltip) chartTooltip.style.display = 'none';
+        }
+      }
+
+      function setupChartInteractions() {
+        if (!chartCanvasWrap || !chartCanvas) return;
+
+        function handlePointerMove(e) {
+          if (chartRenderedData.length === 0) return;
+          const rect = chartCanvasWrap.getBoundingClientRect();
+          const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+          const x = clientX - rect.left;
+
+          const padLeft = 10;
+          const padRight = 50;
+          const plotW = rect.width - padLeft - padRight;
+
+          let nearest = 0;
+          let minDist = Infinity;
+          chartRenderedData.forEach((_, idx) => {
+            const ptX = chartRenderedData.length === 1 ? padLeft + plotW / 2 : padLeft + (idx / (chartRenderedData.length - 1)) * plotW;
+            const dist = Math.abs(x - ptX);
+            if (dist < minDist) {
+              minDist = dist;
+              nearest = idx;
+            }
+          });
+
+          chartPointerIdx = nearest;
+          renderTradingChart();
+        }
+
+        chartCanvasWrap.addEventListener('mousemove', handlePointerMove);
+        chartCanvasWrap.addEventListener('touchmove', handlePointerMove, { passive: true });
+
+        chartCanvasWrap.addEventListener('mouseleave', () => {
+          chartPointerIdx = -1;
+          renderTradingChart();
+        });
+
+        // Timeframe button toggles
+        ['btnTfDaily', 'btnTfWeekly', 'btnTfMonthly'].forEach(id => {
+          const btn = document.getElementById(id);
+          if (btn) {
+            btn.addEventListener('click', () => {
+              document.querySelectorAll('.chart-toggle-btn[data-tf]').forEach(b => b.classList.remove('active'));
+              btn.classList.add('active');
+              chartTimeframe = btn.getAttribute('data-tf');
+              chartPointerIdx = -1;
+              renderTradingChart();
+            });
+          }
+        });
+
+        // Mode button toggles
+        ['btnModeTrajectory', 'btnModePeriodic'].forEach(id => {
+          const btn = document.getElementById(id);
+          if (btn) {
+            btn.addEventListener('click', () => {
+              document.querySelectorAll('.chart-toggle-btn[data-mode]').forEach(b => b.classList.remove('active'));
+              btn.classList.add('active');
+              chartMode = btn.getAttribute('data-mode');
+              chartPointerIdx = -1;
+              renderTradingChart();
+            });
+          }
+        });
+
+        // Preset select
+        if (chartPresetSelect) {
+          chartPresetSelect.addEventListener('change', () => {
+            chartPreset = chartPresetSelect.value;
+            if (chartPreset === 'custom') {
+              if (chartDateSearch) chartDateSearch.style.display = 'inline-block';
+              if (btnResetChartFilter) btnResetChartFilter.style.display = 'inline-block';
+            } else {
+              if (chartDateSearch) chartDateSearch.style.display = 'none';
+              if (btnResetChartFilter) btnResetChartFilter.style.display = 'none';
+              chartCustomDate = null;
+            }
+            chartPointerIdx = -1;
+            renderTradingChart();
+          });
+        }
+
+        // Custom Date Search
+        if (chartDateSearch) {
+          chartDateSearch.addEventListener('change', () => {
+            chartCustomDate = chartDateSearch.value;
+            chartPointerIdx = -1;
+            renderTradingChart();
+          });
+        }
+
+        // Reset Filter
+        if (btnResetChartFilter) {
+          btnResetChartFilter.addEventListener('click', () => {
+            chartPreset = 'all';
+            if (chartPresetSelect) chartPresetSelect.value = 'all';
+            if (chartDateSearch) { chartDateSearch.value = ''; chartDateSearch.style.display = 'none'; }
+            btnResetChartFilter.style.display = 'none';
+            chartCustomDate = null;
+            chartPointerIdx = -1;
+            renderTradingChart();
+          });
+        }
+
+        window.addEventListener('resize', () => {
+          renderTradingChart();
+        });
+      }
+
       function renderAnalytics() {
+        renderTradingChart();
         const metrics = computeLedgerMetrics();
         valBaseCapital.textContent = formatMoney(metrics.base);
         valTotalDeposits.textContent = formatMoney(metrics.deposits, true);
@@ -5546,6 +6175,7 @@
 
       // Initialize
       function init() {
+        setupChartInteractions();
         checkAuth();
         updateSoundBtnUI();
 
