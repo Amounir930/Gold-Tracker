@@ -5048,7 +5048,7 @@
         const padTop = 25;
         const padBottom = 30;
         const padLeft = 10;
-        const padRight = 50;
+        const padRight = 62;
         const plotW = width - padLeft - padRight;
         const plotH = height - padTop - padBottom;
 
@@ -5148,9 +5148,14 @@
         ctx.fillStyle = '#6b7280';
         ctx.font = '9px JetBrains Mono, monospace';
         ctx.textAlign = 'center';
-        const step = Math.ceil(data.length / 6);
+        const step = Math.max(1, Math.ceil(data.length / 6));
         data.forEach((d, idx) => {
-          if (idx % step === 0 || idx === data.length - 1) {
+          const isLast = (idx === data.length - 1);
+          const isStep = (idx % step === 0);
+          if (isStep && (data.length - 1 - idx) < (step * 0.6) && !isLast) {
+            return;
+          }
+          if (isStep || isLast) {
             ctx.fillText(d.label, getX(idx), height - 10);
           }
         });
@@ -5217,7 +5222,7 @@
           const x = clientX - rect.left;
 
           const padLeft = 10;
-          const padRight = 50;
+          const padRight = 62;
           const plotW = rect.width - padLeft - padRight;
 
           let nearest = 0;
