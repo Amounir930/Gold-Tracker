@@ -61,9 +61,30 @@
 
     .container {
       width: 100%;
-      max-width: 600px;
+      max-width: 620px;
       margin: 0 auto;
       padding: 10px 12px;
+      transition: max-width 0.25s ease;
+    }
+
+    @media (min-width: 768px) {
+      .container {
+        max-width: 960px;
+        padding: 14px 20px;
+      }
+      .header-inner {
+        max-width: 960px !important;
+      }
+    }
+
+    @media (min-width: 1100px) {
+      .container {
+        max-width: 1180px;
+        padding: 16px 24px;
+      }
+      .header-inner {
+        max-width: 1180px !important;
+      }
     }
 
     /* Minimal Header */
@@ -672,12 +693,26 @@
     .chart-canvas-wrap {
       position: relative;
       width: 100%;
-      height: 260px;
-      background: #0a0c12;
-      border: 1px solid var(--border);
+      height: 380px;
+      background: #07090e;
+      border: 1px solid var(--border-light);
       border-radius: var(--radius-sm);
       overflow: hidden;
       touch-action: none;
+      transition: height 0.25s ease;
+    }
+    @media (min-width: 768px) {
+      .chart-canvas-wrap {
+        height: 450px;
+      }
+    }
+    @media (min-width: 1100px) {
+      .chart-canvas-wrap {
+        height: 500px;
+      }
+    }
+    .chart-canvas-wrap.extra-tall {
+      height: 620px !important;
     }
     .chart-canvas {
       display: block;
@@ -1337,6 +1372,7 @@
         <div class="chart-header-row">
           <div class="chart-title-box">
             <span class="chart-title">مسار تداول الذهب (Equity & Performance Curve)</span>
+            <button class="btn-today" id="btnToggleChartSize" style="padding:3px 10px; font-size:0.75rem; border:1px solid var(--gold-dim); background:var(--gold-bg); color:var(--gold-light); cursor:pointer;">تكبير الشارت</button>
           </div>
           <div class="chart-kpi-badges">
             <div class="chart-badge">أعلى رصيد: <span id="chartPeakEquity" style="color:var(--profit);">$0.00</span></div>
@@ -4946,7 +4982,7 @@
             runningCum += w.pnl;
             rawSeries.push({
               key: wKey,
-              label: w.label.split(' ')[0] + ' ' + (w.label.split(' ')[1] || ''),
+              label: w.label,
               fullDate: `أسبوع: ${w.label}`,
               pnl: Math.round(w.pnl * 100) / 100,
               cumulative: Math.round(runningCum * 100) / 100,
@@ -5045,10 +5081,10 @@
         if (chartMaxDrawdown) chartMaxDrawdown.textContent = formatMoney(valley, true);
         if (chartRangeTotal) chartRangeTotal.textContent = formatMoney(sumPnl, true);
 
-        const padTop = 25;
-        const padBottom = 30;
-        const padLeft = 10;
-        const padRight = 62;
+        const padTop = 32;
+        const padBottom = 44;
+        const padLeft = 18;
+        const padRight = 85;
         const plotW = width - padLeft - padRight;
         const plotH = height - padTop - padBottom;
 
@@ -5078,15 +5114,16 @@
         ctx.stroke();
         ctx.setLineDash([]);
 
-        // Zero label on right
+        // Zero label on right with strict LTR direction
         ctx.fillStyle = '#8c9ab0';
-        ctx.font = '10px JetBrains Mono, monospace';
+        ctx.font = '11px JetBrains Mono, monospace';
         ctx.textAlign = 'left';
-        ctx.fillText('$0.00', width - padRight + 6, zeroY + 3);
+        ctx.direction = 'ltr';
+        ctx.fillText('$0.00', width - padRight + 10, zeroY + 4);
 
         // Max / Min labels
-        ctx.fillText(formatMoney(maxVal), width - padRight + 6, padTop + 10);
-        ctx.fillText(formatMoney(minVal), width - padRight + 6, padTop + plotH);
+        ctx.fillText(formatMoney(maxVal), width - padRight + 10, padTop + 10);
+        ctx.fillText(formatMoney(minVal), width - padRight + 10, padTop + plotH);
 
         // 2. Draw Trajectory Line & Gradient Fill OR Periodic Bars
         if (chartMode === 'trajectory') {
@@ -5131,32 +5168,53 @@
             ctx.stroke();
           });
         } else {
-          // Periodic Bars
-          const barWidth = Math.max(3, Math.min(22, (plotW / data.length) * 0.7));
+          // Periodic Bars with dynamic spacing & direct value labels
+          const maxBarW = chartTimeframe === 'daily' ? 24 : 52;
+          const barWidth = Math.max(6, Math.min(maxBarW, (plotW / data.length) * 0.6));
           data.forEach((d, idx) => {
             const x = getX(idx) - barWidth / 2;
             const yVal = getY(d.pnl);
             const yTop = Math.min(zeroY, yVal);
-            const bH = Math.max(2, Math.abs(zeroY - yVal));
+            const bH = Math.max(3, Math.abs(zeroY - yVal));
 
             ctx.fillStyle = d.pnl >= 0 ? '#10b981' : '#ef4444';
-            ctx.fillRect(x, yTop, barWidth, bH);
+            ctx.beginPath();
+            if (ctx.roundRect) {
+              ctx.roundRect(x, yTop, barWidth, bH, 4);
+            } else {
+              ctx.rect(x, yTop, barWidth, bH);
+            }
+            ctx.fill();
+
+            // Direct PnL text indicator on wide bars (weekly / monthly or zoomed)
+            if (barWidth >= 22) {
+              ctx.fillStyle = d.pnl >= 0 ? '#10b981' : '#ef4444';
+              ctx.font = '10px JetBrains Mono, monospace';
+              ctx.textAlign = 'center';
+              ctx.direction = 'ltr';
+              const textY = d.pnl >= 0 ? yTop - 6 : yTop + bH + 13;
+              ctx.fillText(formatMoney(d.pnl, true), x + barWidth / 2, textY);
+            }
           });
         }
 
         // 3. Draw X-axis date tick labels
-        ctx.fillStyle = '#6b7280';
-        ctx.font = '9px JetBrains Mono, monospace';
+        ctx.fillStyle = '#9ca3af';
+        ctx.font = '10px Tajawal, sans-serif';
         ctx.textAlign = 'center';
-        const step = Math.max(1, Math.ceil(data.length / 6));
+        ctx.direction = 'rtl';
+        const step = chartTimeframe === 'daily' ? Math.max(1, Math.ceil(data.length / (plotW > 700 ? 10 : 6))) : 1;
         data.forEach((d, idx) => {
           const isLast = (idx === data.length - 1);
           const isStep = (idx % step === 0);
-          if (isStep && (data.length - 1 - idx) < (step * 0.6) && !isLast) {
-            return;
-          }
-          if (isStep || isLast) {
-            ctx.fillText(d.label, getX(idx), height - 10);
+          if (chartTimeframe === 'daily') {
+            if (isStep && (data.length - 1 - idx) < (step * 0.6) && !isLast) return;
+            if (isStep || isLast) {
+              ctx.fillText(d.label, getX(idx), height - 12);
+            }
+          } else {
+            // For weekly & monthly: show every period clearly
+            ctx.fillText(d.label, getX(idx), height - 12);
           }
         });
 
@@ -5185,11 +5243,18 @@
           ctx.lineWidth = 2;
           ctx.stroke();
 
-          // Update tooltip position & content
+          // Update tooltip position & content with boundary clamping
           if (chartTooltip) {
             chartTooltip.style.display = 'block';
             chartTooltip.style.left = `${px}px`;
-            chartTooltip.style.top = `${py}px`;
+            chartTooltip.style.top = `${Math.max(py, 40)}px`;
+            if (px < 100) {
+              chartTooltip.style.transform = 'translate(10px, -115%)';
+            } else if (px > width - 110) {
+              chartTooltip.style.transform = 'translate(-95%, -115%)';
+            } else {
+              chartTooltip.style.transform = 'translate(-50%, -115%)';
+            }
             chartTooltip.innerHTML = `
               <div style="font-weight:700; color:var(--gold-light); margin-bottom:2px;">${pt.fullDate}</div>
               <div style="display:flex; justify-content:space-between; gap:10px;">
@@ -5215,6 +5280,16 @@
       function setupChartInteractions() {
         if (!chartCanvasWrap || !chartCanvas) return;
 
+        const btnToggleChartSize = document.getElementById('btnToggleChartSize');
+        if (btnToggleChartSize) {
+          btnToggleChartSize.addEventListener('click', () => {
+            chartCanvasWrap.classList.toggle('extra-tall');
+            const isTall = chartCanvasWrap.classList.contains('extra-tall');
+            btnToggleChartSize.textContent = isTall ? 'تصغير الشارت' : 'تكبير الشارت';
+            resizeCanvas();
+          });
+        }
+
         function handlePointerMove(e) {
           if (chartRenderedData.length === 0) return;
           const rect = chartCanvasWrap.getBoundingClientRect();
@@ -5222,7 +5297,7 @@
           const x = clientX - rect.left;
 
           const padLeft = 10;
-          const padRight = 62;
+          const padRight = 85;
           const plotW = rect.width - padLeft - padRight;
 
           let nearest = 0;
